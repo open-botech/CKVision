@@ -24,3 +24,5 @@ click-cat
 *.njsproj
 *.sln
 *.sw?
+
+build
