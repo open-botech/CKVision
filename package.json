@@ -9,13 +9,12 @@
     "build:updateVersion": "sh update.sh",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "husky install",
     "lint:lint-staged": "lint-staged"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix",
+      "git add"
     ]
   },
   "dependencies": {
@@ -57,7 +56,6 @@
     "eslint-plugin-n": "15.0.0",
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-vue": "9.1.1",
-    "husky": "8.0.0",
     "lint-staged": "13.0.2",
     "sass": "1.52.3",
     "typescript": "4.5.4",
