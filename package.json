@@ -9,6 +9,7 @@
     "build:updateVersion": "sh update.sh",
     "build": "vite build",
     "preview": "vite preview",
+    "serve": "serve click-cat -l 8080 --cors --no-request-logging",
     "lint:lint-staged": "lint-staged"
   },
   "lint-staged": {
@@ -41,13 +42,13 @@
     "vue-router": "4"
   },
   "devDependencies": {
-    "3d-force-graph": "1.67.7",
     "@commitlint/cli": "17.0.2",
     "@commitlint/config-conventional": "17.0.2",
     "@types/jquery": "3.5.14",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
     "@vitejs/plugin-vue": "2.3.3",
+    "3d-force-graph": "1.67.7",
     "cross-env": "7.0.3",
     "eslint": "8.17.0",
     "eslint-config-standard": "17.0.0",
@@ -57,11 +58,12 @@
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-vue": "9.1.1",
     "lint-staged": "13.0.2",
+    "rollup": "1.20.0",
     "sass": "1.52.3",
+    "serve": "^14.2.1",
     "typescript": "4.5.4",
     "vite": "2.9.9",
     "vite-plugin-monaco-editor": "1.0.10",
-    "vue-tsc": "0.34.7",
-    "rollup": "1.20.0"
+    "vue-tsc": "0.34.7"
   }
 }
