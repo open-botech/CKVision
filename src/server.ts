@@ -8,6 +8,13 @@ import { parse } from 'node-html-parser'
 const app = express()
 
 
+// remove _cat from the url
+app.use((req, res, next) => {
+  if (req.url.includes('_cat')) {
+    req.url = req.url.replace('_cat', '')
+  }
+  next()
+})
 
 function serveIndex(req: Request, res: Response) {
   const url = process.env.CONNECTION_URL
