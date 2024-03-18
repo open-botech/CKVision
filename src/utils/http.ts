@@ -92,7 +92,4 @@ export function query(sql?: string, settings?: string, connection?: Connection, 
   const connectionData = connection ?? loginStore.connection
   const url = getRequestUrl(connectionData, settings)
   return request(url, init)
-    .then((r) => {
-      return r
-    })
 }

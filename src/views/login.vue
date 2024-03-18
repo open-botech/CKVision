@@ -226,7 +226,7 @@
         goTo('Metrics')
       })
       .catch((err) => {
-        console.log(err, '1')
+        console.error(err)
         ElNotification({
           title: 'Login',
           message: 'Login failed, please check your user name or password!',

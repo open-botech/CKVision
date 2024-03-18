@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "@element-plus/icons-vue": "2.0.6",
+    "@element-plus/icons-vue": "2.3.1",
     "butterfly-dag": "4.3.6",
     "dayjs": "1.11.3",
     "echarts": "5.3.3",
@@ -28,7 +28,7 @@
     "express": "^4.18.3",
     "jquery": "3.6.0",
     "lodash": "4.17.21",
-    "monaco-editor": "0.29.x",
+    "monaco-editor": "^0.47.0",
     "node-html-parser": "^6.1.12",
     "pinia": "2.0.14",
     "pinia-plugin-persist": "1.0.0",
@@ -41,8 +41,8 @@
     "uuid": "8.3.2",
     "uuidjs": "4.2.11",
     "vite-plugin-svg-icons": "2.0.1",
-    "vue": "3.2.25",
-    "vue-i18n": "9.2.0-beta.40",
+    "vue": "3.4.21",
+    "vue-i18n": "9.10.2",
     "vue-router": "4"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "@types/serve-static": "^1.15.5",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
-    "@vitejs/plugin-vue": "2.3.3",
+    "@vitejs/plugin-vue": "5.0.4",
     "3d-force-graph": "1.67.7",
     "cross-env": "7.0.3",
     "eslint": "8.17.0",
@@ -62,13 +62,13 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-n": "15.0.0",
     "eslint-plugin-promise": "6.0.0",
-    "eslint-plugin-vue": "9.1.1",
+    "eslint-plugin-vue": "9.23.0",
     "lint-staged": "13.0.2",
     "rollup": "1.20.0",
     "sass": "1.52.3",
     "typescript": "4.5.4",
-    "vite": "2.9.9",
-    "vite-plugin-monaco-editor": "1.0.10",
-    "vue-tsc": "0.34.7"
+    "vite": "5.1.6",
+    "vite-plugin-monaco-editor": "1.1.0",
+    "vue-tsc": "2.0.6"
   }
 }
