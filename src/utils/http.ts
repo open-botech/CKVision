@@ -17,11 +17,10 @@ function getRequestInit(query?: string, isLogin = false): RequestInit {
 function request(request: Request | string, init?: RequestInit) {
   return fetch(request, init)
     .then((response) => {
-      const contentType = response.headers.get('content-type')
+      const contentType = response.headers.get('content-type')      
       if (
         contentType &&
         response.status === 200 &&
-        response.statusText.toLowerCase() === 'ok' &&
         (contentType.includes('text/plain') ||
           contentType.includes('application/xml') ||
           contentType.includes('text/csv') ||
