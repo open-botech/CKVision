@@ -63,6 +63,7 @@ const initEditor = () => {
     theme: 'vs'
   })
   editorInstance.setValue(props.tab.sql as string)
+  editorInstance.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, emitQueryAction);
   editorInstance.focus()
   editorInstance.onDidChangeModelContent(() => {
     if (timer) {
