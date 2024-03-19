@@ -26,6 +26,7 @@ export const queryProcesses = () => {
     ProfileEvents,
     Settings
     FROM clusterAllReplicas(main, system.processes)
+    order by elapsed desc
 
 
    ${JSON_SUFFIX}
