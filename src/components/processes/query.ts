@@ -25,7 +25,7 @@ export const queryProcesses = () => {
     thread_ids,
     ProfileEvents,
     Settings
-    FROM system.processes
+    FROM clusterAllReplicas(main, system.processes)
 
 
    ${JSON_SUFFIX}
@@ -47,7 +47,7 @@ export const queryMutations = (limit = 100, offset = 0) => {
           latest_failed_part,
           latest_fail_time,
           latest_fail_reason
-      FROM system.mutations
+      FROM clusterAllReplicas(main, system.mutations)
       ORDER BY create_time DESC
       LIMIT ${limit} OFFSET ${offset}
     ${JSON_SUFFIX}`
