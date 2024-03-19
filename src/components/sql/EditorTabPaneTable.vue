@@ -1,117 +1,96 @@
-<script lang='ts' setup>
-import { ref, toRaw, toRefs, nextTick } from 'vue'
-import { ArrowDown, Download, FullScreen } from '@element-plus/icons-vue'
-import { Statistics } from './types'
-import Empty from '../metrics/Empty.vue'
+<script lang="ts" setup>
+import { ref, toRaw, toRefs, nextTick } from 'vue';
+import { ArrowDown, Download, FullScreen } from '@element-plus/icons-vue';
+import { Statistics } from './types';
+import Empty from '../metrics/Empty.vue';
 
 const props = defineProps<{
-  columns: any[],
-  tableData: any[],
-  statistics?: Statistics,
-  notTitle?: boolean,
-  dragEle?: HTMLElement
-  loading: boolean,
-  errorMsg?: string
-}>()
+  columns: any[];
+  tableData: any[];
+  statistics?: Statistics;
+  notTitle?: boolean;
+  dragEle?: HTMLElement;
+  loading: boolean;
+  errorMsg?: string;
+}>();
 
-const { columns } = toRefs(props)
+const { columns } = toRefs(props);
 
-const emit = defineEmits(['changeRows', 'export', 'fullScreen'])
+const emit = defineEmits(['changeRows', 'export', 'fullScreen']);
 
-const rows = ref<string>('100')
-const containerRef = ref<HTMLElement>()
-const dragEle = ref<HTMLElement>()
+const rows = ref<string>('100');
+const containerRef = ref<HTMLElement>();
+const dragEle = ref<HTMLElement>();
 
 const handleChangeRows = (command: string) => {
-  rows.value = command
-  emit('changeRows', command)
-}
+  rows.value = command;
+  emit('changeRows', command);
+};
 const handleDownload = (command: string) => {
-  emit('export', command)
-}
+  emit('export', command);
+};
 const fullScreen = () => {
-  emit('fullScreen')
-}
+  emit('fullScreen');
+};
 
 const getDragElement = () => {
-  return dragEle.value
-}
+  return dragEle.value;
+};
 
 const resetEditMode = () => {
   //reset
-  props.tableData.forEach(rowItem => {
-    rowItem.editMode = false
-  })
-  columns.value.forEach(item => {
-    item.editMode = false
-  })
-}
+  props.tableData.forEach((rowItem) => {
+    rowItem.editMode = false;
+  });
+  columns.value.forEach((item) => {
+    item.editMode = false;
+  });
+};
 
-const entryEditMode = (row:any, column:any, cell:any) => {
-  resetEditMode()
+const entryEditMode = (row: any, column: any, cell: any) => {
+  resetEditMode();
 
   // 设置单元格编辑模式
-  row.editMode = true
-  const { label } = toRaw(column)
-  const index = columns.value.findIndex(item => {
-    return toRaw(item).name === label
-  })
-  columns.value[index].editMode = true
+  row.editMode = true;
+  const { label } = toRaw(column);
+  const index = columns.value.findIndex((item) => {
+    return toRaw(item).name === label;
+  });
+  columns.value[index].editMode = true;
 
   // 设置输入框焦点
   nextTick(() => {
-    const input = cell.querySelector('input')
-    input.focus()
-  })
-}
+    const input = cell.querySelector('input');
+    input.focus();
+  });
+};
 
 defineExpose({
-  getDragElement
-})
+  getDragElement,
+});
 </script>
 <template>
-  <section
-    ref="containerRef"
-    class="editor-table-container"
-  >
+  <section ref="containerRef" class="editor-table-container">
     <div class="content-container">
-      <div
-        ref="dragEle"
-        class="drag-box"
-      ></div>
+      <div ref="dragEle" class="drag-box"></div>
       <h3 class="table-title">
-        <span
-          v-if="!notTitle"
-          class="title-content"
-        >Data / Table</span>
+        <span v-if="!notTitle" class="title-content">Data / Table</span>
       </h3>
-      <div
-        v-loading="loading"
-        class="table-container"
-      >
-        <div
-          v-if="errorMsg"
-          class="error-msg"
-        >
+      <div v-loading="loading" class="table-container">
+        <div v-if="errorMsg" class="error-msg">
           {{ errorMsg }}
         </div>
         <el-table
           v-if="tableData?.length && columns.length"
           :data="tableData"
-          style="width: 100%;"
+          style="width: 100%"
           height="100%"
           tooltip-effect="dark"
           :border="true"
           @cell-dblclick="entryEditMode"
         >
-          <el-table-column
-            type="index"
-            width="60"
-          />
-          <template
-            v-for="col in columns"
-            :key="col.name"
-          >
+          <el-table-column type="index" width="60" />
+          <template v-for="col in columns" :key="col.name">
             <el-table-column
               :show-overflow-tooltip="true"
               :prop="col.name"
@@ -122,22 +101,19 @@ defineExpose({
                 <el-input
                   v-if="col.editMode && scope.row.editMode"
                   v-model="scope.row[col.name]"
-                  @blur="scope.row.editMode=false"
+                  @blur="scope.row.editMode = false"
                 ></el-input>
-                
+
                 <span v-else>{{ scope.row[col.name] }}</span>
               </template>
             </el-table-column>
           </template>
         </el-table>
-        <Empty
-          v-if="!errorMsg"
-          style="height: 200px"
-        ></Empty>
+        <Empty v-if="!errorMsg" style="height: 200px"></Empty>
       </div>
     </div>
     <div class="action-box">
-      <template v-if="!errorMsg && !!statistics">
+      <template v-if="!!statistics">
         <span>{{ statistics?.elapsed }} sec</span>
         <el-divider direction="vertical" />
         <span>{{ statistics?.rows_read }} rows</span>
@@ -151,15 +127,9 @@ defineExpose({
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="100">
-              100 rows
-            </el-dropdown-item>
-            <el-dropdown-item command="300">
-              300 rows
-            </el-dropdown-item>
-            <el-dropdown-item command="500">
-              500 rows
-            </el-dropdown-item>
+            <el-dropdown-item command="100"> 100 rows </el-dropdown-item>
+            <el-dropdown-item command="300"> 300 rows </el-dropdown-item>
+            <el-dropdown-item command="500"> 500 rows </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -170,32 +140,21 @@ defineExpose({
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="CSVHeaders">
-              CSV with headers
-            </el-dropdown-item>
-            <el-dropdown-item command="CSV">
-              CSV without headers
-            </el-dropdown-item>
-            <el-dropdown-item command="TSVHeaders">
-              TSV with headers
-            </el-dropdown-item>
-            <el-dropdown-item command="TSV">
-              TSV without headers
-            </el-dropdown-item>
+            <el-dropdown-item command="CSVHeaders"> CSV with headers </el-dropdown-item>
+            <el-dropdown-item command="CSV"> CSV without headers </el-dropdown-item>
+            <el-dropdown-item command="TSVHeaders"> TSV with headers </el-dropdown-item>
+            <el-dropdown-item command="TSV"> TSV without headers </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
       <el-divider direction="vertical" />
-      <el-icon
-        class="el-icon--right"
-        @click="fullScreen"
-      >
+      <el-icon class="el-icon--right" @click="fullScreen">
         <FullScreen />
       </el-icon>
     </div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .editor-table-container {
   position: relative;
   width: 100%;
@@ -240,7 +199,7 @@ defineExpose({
 
   .drag-box {
     height: 36px;
-    background-color: #F0F0F0;
+    background-color: #f0f0f0;
     cursor: ns-resize;
   }
 
@@ -249,10 +208,10 @@ defineExpose({
     left: 0;
     top: 0;
     height: 36px;
-    border-top: 1px solid #E2E2E2;
-    border-bottom: 1px solid #E2E2E2;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
     box-sizing: border-box;
-    background-color: #F0F0F0;
+    background-color: #f0f0f0;
 
     .title-content {
       display: block;

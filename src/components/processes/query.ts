@@ -1,4 +1,5 @@
 import { query } from '@/utils/http'
+import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls'
 
 export const queryProcesses = () => {
   const sql = `SELECT
@@ -27,7 +28,7 @@ export const queryProcesses = () => {
     FROM system.processes
 
 
-    FORMAT JSON
+   ${JSON_SUFFIX}
   `
   return query(sql)
 }
@@ -49,6 +50,6 @@ export const queryMutations = (limit = 100, offset = 0) => {
       FROM system.mutations
       ORDER BY create_time DESC
       LIMIT ${limit} OFFSET ${offset}
-    FORMAT JSON`
+    ${JSON_SUFFIX}`
   return query(sql)
 }

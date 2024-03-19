@@ -2,6 +2,7 @@
 import { useLoginStore } from '@/store'
 import { query } from '@/utils/http'
 import { ColumnItem, DatabaseItem, TableItem } from './types'
+import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls'
 
 export const createTree = (columns: ColumnItem[], tables: TableItem[], database: DatabaseItem[]) => {
   const loginStore = useLoginStore()
@@ -54,7 +55,7 @@ export const getMakeSelectSql = (table: any) => {
 }
 
 export const getSqlDescribe = (table: any) => {
-  const sql = `SHOW CREATE TABLE ${table.database}.${table.name} FORMAT JSON`
+  const sql = `SHOW CREATE TABLE ${table.database}.${table.name} ${JSON_SUFFIX}`
   return query(sql)
     .then(res => {
       return res.data[0].statement

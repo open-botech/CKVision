@@ -1,9 +1,7 @@
-import { query } from '@/utils/http'
+import { query } from '@/utils/http';
+import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls';
 
-export const queryLineage = ({
-  database,
-  name
-}: any) => {
+export const queryLineage = ({ database, name }: any) => {
   const sql = `
     WITH
         (SELECT groupUniqArray(concat(database, '.', name))
@@ -61,12 +59,12 @@ export const queryLineage = ({
           )
 
          )
-    `
+    `;
 
-  return query(sql).then(res => {
-    return res
-  })
-}
+  return query(sql).then((res) => {
+    return res;
+  });
+};
 
 export const queryAllTables = () => {
   const sql = `SELECT t.database,
@@ -77,46 +75,47 @@ export const queryAllTables = () => {
     FROM system.tables as t ANY LEFT JOIN ( SELECT database,table as name,formatReadableSize(sum(bytes)) as size FROM system.parts  GROUP BY database,name ) as pa USING (database,name)
     LIMIT 10000
 
-    FORMAT JSON`
-  return query(sql).then(res => {
-    return res
-  })
-}
+    ${JSON_SUFFIX};`;
+  return query(sql).then((res) => {
+    return res;
+  });
+};
 
 export const queryAllDatabases = () => {
   const sql = `SELECT name FROM system.databases LIMIT 10000
 
-  FORMAT JSON`
-  return query(sql).then(res => {
-    return res
-  })
-}
+  ${JSON_SUFFIX}`;
+  return query(sql).then((res) => {
+    return res;
+  });
+};
 
 export const queryAllColumns = () => {
   const sql = `SELECT * FROM system.columns
 
     LIMIT 50000
 
-  FORMAT JSON`
-  return query(sql).then(res => {
-    return res
-  })
-}
+  ${JSON_SUFFIX}`;
+  return query(sql).then((res) => {
+    return res;
+  });
+};
 
 export const queryTableDataPaneData = (table: any, rows = 100) => {
-  const sql = `select * from ${table.database}.${table.name} limit ${rows}
-  FORMAT JSON;`
-  return query(sql).then(res => {
-    return res
-  })
-}
+  const sql = `select * from ${table.database}.${table.name} limit ${rows}`;
+  return query(sql).then((res) => {
+    console.log(res, 'res');
+
+    return res;
+  });
+};
 
 export const queryPropertiesColumns = (table: any) => {
-  const sql = `DESCRIBE TABLE ${table.database}.${table.name} FORMAT JSON`
-  return query(sql).then(res => {
-    return res
-  })
-}
+  const sql = `DESCRIBE TABLE ${table.database}.${table.name} ${JSON_SUFFIX}`;
+  return query(sql).then((res) => {
+    return res;
+  });
+};
 
 export const queryPropertiesStatistics = (table: any) => {
   const sql = `SELECT table,
@@ -127,25 +126,26 @@ export const queryPropertiesStatistics = (table: any) => {
     FROM system.parts
     WHERE active
     and database = '${table.database}' and table = '${table.name}'
-    GROUP BY table FORMAT JSON
-  `
-  return query(sql).then(res => {
-    const data = res.data[0]
+    GROUP BY table ${JSON_SUFFIX}`;
+  return query(sql).then((res) => {
+    const data = res.data[0];
     return {
       columns: [
         {
-          name: 'Name'
+          name: 'Name',
         },
         {
-          name: 'Value'
+          name: 'Value',
         },
       ],
-      tableData: data && res.meta.map((item: any) => {
-        return {
-          Name: item.name,
-          Value: data[item.name]
-        }
-      })
-    }
-  })
-}
+      tableData:
+        data &&
+        res.meta.map((item: any) => {
+          return {
+            Name: item.name,
+            Value: data[item.name],
+          };
+        }),
+    };
+  });
+};

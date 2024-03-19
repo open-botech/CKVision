@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "git.ignoreSubmodules": true,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 100,
+}
