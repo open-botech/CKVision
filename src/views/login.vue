@@ -166,7 +166,7 @@
       type="primary"
       @click="login"
     >
-      SING IN
+      SIGN IN
     </el-button>
   </div>
 </template>
