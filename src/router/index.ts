@@ -1,79 +1,70 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-type RouteItem = RouteRecordRaw & { meta: AppRoute.RouteMeta }
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+type RouteItem = RouteRecordRaw & { meta: AppRoute.RouteMeta };
 
 export const menuRoutesList = [
   {
     name: 'GraphAdd',
     path: '/graph/add',
-    'meta': {
-        'title': 'Graph'
+    meta: {
+      title: 'Graph',
     },
     component: () => import('@/views/graph/add.vue'),
   },
   {
-    'name': 'Graph',
-    'path': '/graph',
-    'props': true,
-    'meta': {
-        'title': 'Graph'
+    name: 'Graph',
+    path: '/graph',
+    props: true,
+    meta: {
+      title: 'Graph',
     },
     component: () => import('@/views/graph/index.vue'),
   },
-{
-    'name': 'GraphResult',
-    'path': '/graph/result',
-    'props': true,
-    'meta': {
-        'title': 'GraphResult'
+  {
+    name: 'GraphResult',
+    path: '/graph/result',
+    props: true,
+    meta: {
+      title: 'GraphResult',
     },
     component: () => import('@/views/graph/result.vue'),
   },
   {
-    'name': 'History SQL',
-    'path': '/history-sql',
-    'props': true,
-    'meta': {
-        'title': 'History SQL'
+    name: 'History SQL',
+    path: '/history-sql',
+    props: true,
+    meta: {
+      title: 'History SQL',
     },
     component: () => import('@/views/history-sql/index.vue'),
   },
   {
-    'name': 'Machine Learning',
-    'path': '/machine-learning',
-    'props': true,
-    'meta': {
-        'title': '工作台'
-    },
-    component: () => import('@/views/machine-learning/index.vue'),
-  },
-  {
-    'name': 'Metrics',
-    'path': '/metrics',
-    'props': true,
-    'meta': {
-        'title': '工作台'
+    name: 'Metrics',
+    path: '/metrics',
+    props: true,
+    meta: {
+      title: '工作台',
     },
     component: () => import('@/views/metrics/index.vue'),
   },
   {
-    'name': 'Processes',
-    'path': '/processes',
-    'props': true,
-    'meta': {
-        'title': 'Processes'
+    name: 'Processes',
+    path: '/processes',
+    props: true,
+    meta: {
+      title: 'Processes',
     },
     component: () => import('@/views/processes/index.vue'),
   },
   {
-    'name': 'SQL',
-    'path': '/sql',
-    'props': true,
-    'meta': {
-        'title': 'SQL'
+    name: 'SQL',
+    path: '/sql',
+    props: true,
+    meta: {
+      title: 'SQL',
     },
     component: () => import('@/views/sql/index.vue'),
-  }
-]
+  },
+];
 
 const routes: RouteItem[] = [
   {
@@ -81,16 +72,16 @@ const routes: RouteItem[] = [
     component: () => import('@/layout/index.vue'),
     meta: {},
     redirect: '/metrics',
-    children: menuRoutesList
+    children: menuRoutesList,
   },
   {
     path: '/login',
     component: () => import('@/views/login.vue'),
-    meta: {}
+    meta: {},
   },
-]
+];
 
 export const router = createRouter({
   history: createWebHistory(),
-  routes: routes as RouteItem[]
-})
+  routes: routes as RouteItem[],
+});
