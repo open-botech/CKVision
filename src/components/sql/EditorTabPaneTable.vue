@@ -50,7 +50,6 @@ const resetEditMode = () => {
 const entryEditMode = (row: any, column: any, cell: any) => {
   resetEditMode();
 
-  // 设置单元格编辑模式
   row.editMode = true;
   const { label } = toRaw(column);
   const index = columns.value.findIndex((item) => {
@@ -58,7 +57,6 @@ const entryEditMode = (row: any, column: any, cell: any) => {
   });
   columns.value[index].editMode = true;
 
-  // 设置输入框焦点
   nextTick(() => {
     const input = cell.querySelector('input');
     input.focus();

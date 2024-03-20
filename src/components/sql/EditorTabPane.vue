@@ -80,11 +80,11 @@ const queryTableData = (rows = 100) => {
         elapsed: elapsed.toFixed(2),
         rows_read,
       };
-      if (res.data !== 'OK') {
+      if (typeof res.data !== 'string') {
         columns.value = res.meta;
         tableData.value = res.data;
       } else {
-        queryTableDataErrorMsg.value = 'Completed';
+        queryTableDataErrorMsg.value = res.data;
       }
     })
     .catch((e) => {
