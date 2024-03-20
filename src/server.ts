@@ -30,6 +30,10 @@ function serveIndex(req: Request, res: Response) {
   res.send(content);
 }
 
+app.get('/cluster-info', (req, res) => {
+  res.json(JSON.parse(process.env.CLUSTER_INFO as string));
+});
+
 app.get('/', serveIndex);
 
 app.use(cacheMiddleware, serveStatic(path.join('click-cat')));
