@@ -5,7 +5,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 
 import CommonTableVue from '@/components/CommonTable.vue';
 import {
-  queryProcesses,
+  queryProcessesSelects,
   queryProcessesImports,
   queryMutations,
   queryHistoricalImports,
@@ -22,7 +22,7 @@ type ListItem = {
 
 const processesRef = ref<any>(null);
 const mutationsRef = ref<any>(null);
-const defaultCard = ref('Processes');
+const defaultCard = ref('ProcessesImports');
 const rows = ref<string>('100');
 const page = ref<number>(0);
 const pageTotal = ref<number>(0);
@@ -158,20 +158,23 @@ const getTotal2Computed = (total: number) => {
       </div>
     </section>
     <el-tabs v-model="defaultCard" type="border-card">
-      <!-- :label="$t('Processes')" -->
-      <el-tab-pane label="Processes" name="Processes">
-        <CommonTableVue
-          ref="processesRef"
-          :query-func="queryProcesses"
-          :show-selection="true"
-          @selection-change="changeProcesses"
-        ></CommonTableVue>
-      </el-tab-pane>
       <el-tab-pane label="Processes - imports" name="ProcessesImports">
         <CommonTableVue
           ref="processesImportsRef"
           :query-func="queryProcessesImports"
           :show-selection="true"
+        ></CommonTableVue>
+      </el-tab-pane>
+      <el-tab-pane label="Historical imports" :lazy="true" name="Historical imports">
+        <CommonTableVue ref="importsRef" :query-func="queryHistoricalImports"></CommonTableVue>
+      </el-tab-pane>
+      <!-- :label="$t('Processes')" -->
+      <el-tab-pane label="Processes - selects" name="ProcessesSelects">
+        <CommonTableVue
+          ref="processesRef"
+          :query-func="queryProcessesSelects"
+          :show-selection="true"
+          @selection-change="changeProcesses"
         ></CommonTableVue>
       </el-tab-pane>
       <!-- :label="$t('Mutations')" -->
@@ -184,9 +187,6 @@ const getTotal2Computed = (total: number) => {
           @firstGetData="getTotal2Computed"
           @selection-change="changeMutations"
         ></CommonTableVue>
-      </el-tab-pane>
-      <el-tab-pane label="Historical Imports" :lazy="true" name="Historical Imports">
-        <CommonTableVue ref="importsRef" :query-func="queryHistoricalImports"></CommonTableVue>
       </el-tab-pane>
     </el-tabs>
   </section>

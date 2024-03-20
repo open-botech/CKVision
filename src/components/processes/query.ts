@@ -32,7 +32,7 @@ export const queryProcessesImports = () => {
   return query(sql);
 };
 
-export const queryProcesses = () => {
+export const queryProcessesSelects = () => {
   const sql = `SELECT
     now() as time,
     round(elapsed,1) as elapsed ,
@@ -57,6 +57,7 @@ export const queryProcesses = () => {
     ProfileEvents,
     Settings
     FROM clusterAllReplicas(main, system.processes)
+    where query_kind='Select'
     order by elapsed asc
 
 
