@@ -1,154 +1,138 @@
-<script lang='ts' setup>
-import { ref } from 'vue'
-import { Close, Refresh, ArrowLeft, ArrowRight, ArrowDown } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { Close, Refresh, ArrowLeft, ArrowRight, ArrowDown } from '@element-plus/icons-vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
-import CommonTableVue from '@/components/CommonTable.vue'
-import { queryProcesses, queryMutations } from '@/components/processes/query'
-import { query } from '@/utils/http'
+import CommonTableVue from '@/components/CommonTable.vue';
+import {
+  queryProcesses,
+  queryProcessesImports,
+  queryMutations,
+  queryHistoricalImports,
+} from '@/components/processes/query';
+import { query } from '@/utils/http';
 
 type ListItem = {
-  name: string,
-  database: string,
-  table: string,
-  query_id: string,
-  mutation_id: string
-}
+  name: string;
+  database: string;
+  table: string;
+  query_id: string;
+  mutation_id: string;
+};
 
-const processesRef = ref<any>(null)
-const mutationsRef = ref<any>(null)
-const defaultCard = ref('Processes')
-const rows = ref<string>('100')
-const page = ref<number>(0)
-const pageTotal = ref<number>(0)
-let selectedProcesses: ListItem[] = []
-let selectedMutations: ListItem[] = []
+const processesRef = ref<any>(null);
+const mutationsRef = ref<any>(null);
+const defaultCard = ref('Processes');
+const rows = ref<string>('100');
+const page = ref<number>(0);
+const pageTotal = ref<number>(0);
+let selectedProcesses: ListItem[] = [];
+let selectedMutations: ListItem[] = [];
 
 const changeProcesses = (val: ListItem[]) => {
-  selectedProcesses = val
-}
+  selectedProcesses = val;
+};
 const changeMutations = (val: ListItem[]) => {
-  selectedMutations = val
-}
+  selectedMutations = val;
+};
 
 const kill = async () => {
-  let sql = ''
+  let sql = '';
   if (defaultCard.value === 'Processes') {
     if (!selectedProcesses.length) {
       return ElMessage({
         message: 'Please select at least one piece of "Processes" data.',
         grouping: true,
         type: 'error',
-      })
+      });
     }
-    const idArr = selectedProcesses.map(item => {
-      return `query_id ='${item.query_id}'`
-    })
+    const idArr = selectedProcesses.map((item) => {
+      return `query_id ='${item.query_id}'`;
+    });
     // KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90' or  query_id='2-857d-4a57-9ee0-327da5d60a90'
-    sql = `KILL QUERY WHERE ${idArr?.join(' or ')}`
+    sql = `KILL QUERY WHERE ${idArr?.join(' or ')}`;
   } else if (defaultCard.value === 'Mutations') {
     if (!selectedMutations.length) {
       return ElMessage({
         message: 'Please select at least one piece of "Mutations" data.',
         grouping: true,
         type: 'error',
-      })
+      });
     }
     // KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
-    const idArr = selectedMutations.map(item => {
-      return `database = '${item.database}' AND table = '${item.table}' AND mutation_id='${item.mutation_id}'`
-    })
-    sql = `KILL MUTATION WHERE ${idArr?.join(' or ')}`
+    const idArr = selectedMutations.map((item) => {
+      return `database = '${item.database}' AND table = '${item.table}' AND mutation_id='${item.mutation_id}'`;
+    });
+    sql = `KILL MUTATION WHERE ${idArr?.join(' or ')}`;
   }
-  await ElMessageBox.confirm(
-    'Kill selected data?',
-    'Kill',
-    {
-      confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel',
-      type: 'warning',
-      customClass: 'show-custom-primary-color',
-    }
-  )
-  await query(sql)
+  await ElMessageBox.confirm('Kill selected data?', 'Kill', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    type: 'warning',
+    customClass: 'show-custom-primary-color',
+  });
+  await query(sql);
   if (defaultCard.value === 'Processes') {
-    await processesRef.value.refresh()
+    await processesRef.value.refresh();
   } else {
-    await mutationsRef.value.refresh()
+    await mutationsRef.value.refresh();
   }
-}
+};
 
 const refresh = () => {
   if (defaultCard.value === 'Processes') {
-    processesRef.value.refresh()
+    processesRef.value.refresh();
   } else {
-    page.value = 0
-    mutationsRef.value.refresh()
+    page.value = 0;
+    mutationsRef.value.refresh();
   }
-}
+};
 
 const handleChangeRows = (command: string) => {
-  page.value = 0
-  rows.value = command
-  mutationsRef.value.getData(command, (+command) * page.value)
-}
+  page.value = 0;
+  rows.value = command;
+  mutationsRef.value.getData(command, +command * page.value);
+};
 
 const previousPage = () => {
   if (page.value <= 0) {
-    return
+    return;
   }
-  page.value --
-  mutationsRef.value.getData(rows.value, (+rows.value) * page.value)
-}
+  page.value--;
+  mutationsRef.value.getData(rows.value, +rows.value * page.value);
+};
 
 const nextPage = () => {
   if (page.value >= pageTotal.value) {
-    return
+    return;
   }
-  page.value ++
-  mutationsRef.value.getData(rows.value, (+rows.value) * page.value)
-    .then((res: any) => {
-      res.rows_before_limit_at_least
-    })
-}
+  page.value++;
+  mutationsRef.value.getData(rows.value, +rows.value * page.value).then((res: any) => {
+    res.rows_before_limit_at_least;
+  });
+};
 
 const getTotal2Computed = (total: number) => {
-  pageTotal.value = Math.floor(total / (+rows.value))
-}
+  pageTotal.value = Math.floor(total / +rows.value);
+};
 </script>
 <template>
   <section class="processes-container">
     <section class="table-btn">
-      <div
-        class="btn"
-        @click="kill"
-      >
-        <el-icon
-          color="#FF4D4F"
-          style="margin-right: 8px;"
-        >
+      <div class="btn" @click="kill">
+        <el-icon color="#FF4D4F" style="margin-right: 8px">
           <Close />
         </el-icon>
         <span>{{ $t('Kill') }}</span>
       </div>
       <el-divider direction="vertical" />
-      <div
-        class="btn"
-        @click="refresh"
-      >
-        <el-icon
-          color="#59595F"
-          style="margin-right: 8px;"
-        >
+      <div class="btn" @click="refresh">
+        <el-icon color="#59595F" style="margin-right: 8px">
           <Refresh />
         </el-icon>
         <span>{{ $t('Refresh') }}</span>
       </div>
-      <div
-        v-if="defaultCard === 'Mutations'"
-        style="margin-left: 60px"
-        class="page-box"
-      >
+      <div v-if="defaultCard === 'Mutations'" style="margin-left: 60px" class="page-box">
         <el-dropdown @command="handleChangeRows">
           <span class="el-dropdown-link">
             {{ rows }} Rows
@@ -156,68 +140,58 @@ const getTotal2Computed = (total: number) => {
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="100">
-                100 rows
-              </el-dropdown-item>
-              <el-dropdown-item command="300">
-                300 rows
-              </el-dropdown-item>
-              <el-dropdown-item command="500">
-                500 rows
-              </el-dropdown-item>
+              <el-dropdown-item command="100"> 100 rows </el-dropdown-item>
+              <el-dropdown-item command="300"> 300 rows </el-dropdown-item>
+              <el-dropdown-item command="500"> 500 rows </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
         <el-divider direction="vertical" />
         <div class="pagenigetion-box">
-          <el-icon
-            :class="{disable: page <= 0}"
-            @click="previousPage"
-          >
+          <el-icon :class="{ disable: page <= 0 }" @click="previousPage">
             <ArrowLeft />
           </el-icon>
-          <el-icon
-            :class="{disable: page >= pageTotal}"
-            @click="nextPage"
-          >
+          <el-icon :class="{ disable: page >= pageTotal }" @click="nextPage">
             <ArrowRight />
           </el-icon>
         </div>
       </div>
     </section>
-    <el-tabs
-      v-model="defaultCard"
-      type="border-card"
-    >
+    <el-tabs v-model="defaultCard" type="border-card">
       <!-- :label="$t('Processes')" -->
-      <el-tab-pane
-        label="Processes"
-        name="Processes"
-      >
+      <el-tab-pane label="Processes" name="Processes">
         <CommonTableVue
           ref="processesRef"
           :query-func="queryProcesses"
+          :show-selection="true"
           @selection-change="changeProcesses"
         ></CommonTableVue>
       </el-tab-pane>
+      <el-tab-pane label="Processes - imports" name="ProcessesImports">
+        <CommonTableVue
+          ref="processesImportsRef"
+          :query-func="queryProcessesImports"
+          :show-selection="true"
+        ></CommonTableVue>
+      </el-tab-pane>
       <!-- :label="$t('Mutations')" -->
-      <el-tab-pane
-        label="Mutations"
-        :lazy="true"
-        name="Mutations"
-      >
+      <el-tab-pane label="Mutations" :lazy="true" name="Mutations">
         <CommonTableVue
           ref="mutationsRef"
           :query-func="queryMutations"
           :show-index="true"
+          :show-selection="true"
           @firstGetData="getTotal2Computed"
           @selection-change="changeMutations"
         ></CommonTableVue>
       </el-tab-pane>
+      <el-tab-pane label="Historical Imports" :lazy="true" name="Historical Imports">
+        <CommonTableVue ref="importsRef" :query-func="queryHistoricalImports"></CommonTableVue>
+      </el-tab-pane>
     </el-tabs>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .processes-container {
   position: relative;
   width: 100%;
@@ -256,7 +230,7 @@ const getTotal2Computed = (total: number) => {
     height: 100%;
   }
 
-  :deep(.el-tabs--border-card>.el-tabs__header) {
+  :deep(.el-tabs--border-card > .el-tabs__header) {
     background-color: #f0f0f0;
   }
 
@@ -269,14 +243,14 @@ const getTotal2Computed = (total: number) => {
   :deep(.el-tab-pane) {
     height: 100%;
   }
-  :deep(.el-tabs--border-card>.el-tabs__header .el-tabs__item) {
+  :deep(.el-tabs--border-card > .el-tabs__header .el-tabs__item) {
     border: unset;
   }
   :deep(.el-tabs__item) {
-    background-color: #E1E0DD;
+    background-color: #e1e0dd;
   }
-  :deep(.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active) {
-    background-color: #FFB300;
+  :deep(.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active) {
+    background-color: #ffb300;
     color: #fff;
   }
   :deep(.el-popper) {
