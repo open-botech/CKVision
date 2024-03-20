@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import * as sqlLimiter from 'sql-limiter';
 
 import SimpleEditorVue from './SimpleEditor.vue';
 import EditorTabPaneTableVue from './EditorTabPaneTable.vue';
@@ -66,10 +65,11 @@ const queryTableData = (rows = 100) => {
   const selecttionValue = simpleEditorInstance.value.getSelectionValue();
   loadingForTableData.value = true;
   const selectedSql = selecttionValue ? selecttionValue : props.tab.sql;
-  const enforcedSql = sqlLimiter.limit(selectedSql, ['limit'], rows)?.replace(';', '');
 
   selectedSql && sqlStore.addHistorySql(selectedSql);
-  query(enforcedSql)
+
+  //  '&max_result_rows=' + rows
+  query(selectedSql)
     .then((res) => {
       queryTableDataErrorMsg.value = undefined;
       columns.value = [];

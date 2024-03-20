@@ -36,7 +36,6 @@
     "pinia-plugin-persist": "1.0.0",
     "randomcolor": "0.6.2",
     "serve-static": "^1.15.0",
-    "sql-limiter": "3.0.0",
     "three": "0.143.0",
     "three-css2drender": "1.0.0",
     "three-spritetext": "1.6.5",
