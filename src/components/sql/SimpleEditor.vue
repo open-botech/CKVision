@@ -9,7 +9,6 @@ import createSqlCompleter from './utils/sql-completion';
 import { TabItem } from '@/store/modules/sql/types';
 import { useSqlStore } from '@/store';
 import { queryAllColumns, queryAllTables } from './query';
-import { error } from 'console';
 
 let editorInstance: monaco.editor.IStandaloneCodeEditor;
 
@@ -69,12 +68,7 @@ const initEditor = () => {
   editorInstance.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, emitQueryAction);
   editorInstance.focus();
   editorInstance.onDidChangeModelContent(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(() => {
-      emit('change', editorInstance.getValue());
-    }, 300);
+    emit('change', editorInstance.getValue());
   });
 };
 
