@@ -29,9 +29,9 @@ async function request(request: AxiosRequestConfig): Promise<QueryRes> {
   const contentType = response.headers['content-type'] as string;
   const statistics = JSON.parse(response.headers['x-clickhouse-summary']);
   const replicaName = response.headers['x-clickhouse-server-display-name'];
-  console.log('replicaName', replicaName);
   statistics.elapsed = Number(statistics.elapsed_ns) / 1e9;
   statistics.bytes_read = Number(statistics.read_bytes);
+  statistics.rows_read = Number(statistics.total_rows_to_read);
 
   const result: QueryRes = { statistics } as any;
   if (
