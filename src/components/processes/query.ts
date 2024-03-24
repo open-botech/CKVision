@@ -3,25 +3,21 @@ import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls';
 
 export const queryProcessesImports = () => {
   const sql = `SELECT
-  now() as time,
   round(elapsed,1) as elapsed ,
   
-  normalizeQuery(query) AS Query,
-  1 as count,
+  query,
   formatReadableSize(toUInt64(read_bytes)+toUInt64(written_bytes)) as bytes,
-  toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) as rows,
-  formatReadableSize(peak_memory_usage) AS "peak memory",
-  -- formatReadableSize(memory_usage) as "memory usage",
-  formatReadableSize(read_bytes) as "read bytes",
   formatReadableSize(written_bytes) as "written bytes",  
+  written_rows,
+  formatReadableSize(read_bytes) as "read bytes",
+  read_rows,
+  formatReadableSize(peak_memory_usage) AS "peak memory",
   formatReadableSize(memory_usage) AS "memory usage",
-  
   query_id,
   is_cancelled,
   user,
   multiIf(empty(client_name), http_user_agent, concat(client_name, ' ', toString(client_version_major), '.', toString(client_version_minor), '.', toString(client_version_patch))) AS client,
-  
-  cityHash64(normalizeQuery(query)) AS hash,
+  cityHash64(query) AS hash,
   thread_ids,
   ProfileEvents,
   Settings
@@ -36,13 +32,10 @@ export const queryProcessesSelects = () => {
   const sql = `SELECT
     now() as time,
     round(elapsed,1) as elapsed ,
-    
-    normalizeQuery(query) AS Query,
-    1 as count,
+    query,
     formatReadableSize(toUInt64(read_bytes)+toUInt64(written_bytes)) as bytes,
     toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) as rows,
     formatReadableSize(peak_memory_usage) AS "peak memory",
-    -- formatReadableSize(memory_usage) as "memory usage",
     formatReadableSize(read_bytes) as "read bytes",
     formatReadableSize(written_bytes) as "written bytes",  
     formatReadableSize(memory_usage) AS "memory usage",
@@ -52,7 +45,7 @@ export const queryProcessesSelects = () => {
     user,
     multiIf(empty(client_name), http_user_agent, concat(client_name, ' ', toString(client_version_major), '.', toString(client_version_minor), '.', toString(client_version_patch))) AS client,
     
-    cityHash64(normalizeQuery(query)) AS hash,
+    cityHash64(query) AS hash,
     thread_ids,
     ProfileEvents,
     Settings
