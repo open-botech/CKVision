@@ -18,32 +18,34 @@ const editableTabsValue = ref<string>();
 const tabType = TabsType;
 
 onBeforeMount(() => {
-  const currentActive = tabs.value.find((item) => item.name === sqlStore.activeTabs);
+  const currentActive = tabs.value.find((item) => item.name === sqlStore.activeTab);
   if (currentActive) {
-    editableTabsValue.value = sqlStore.activeTabs;
+    editableTabsValue.value = sqlStore.activeTab;
   } else {
     editableTabsValue.value = tabs.value[0]?.name;
-    sqlStore.setActiveTabs(tabs.value[0]?.name);
+    sqlStore.setActiveTab(tabs.value[0]?.name);
   }
 });
 
 const changeTabs = (val: any) => {
-  sqlStore.setActiveTabs(val);
+  sqlStore.setActiveTab(val);
 };
-const addTabs = () => {
+
+const addTab = () => {
   sqlStore.addEditorTabs();
   const name = tabs.value[tabs.value.length - 1].name;
-  sqlStore.setActiveTabs(name);
+  sqlStore.setActiveTab(name);
   editableTabsValue.value = name;
 };
-const removeTabs = (val: any) => {
+
+const removeTab = (val: any) => {
   const index = tabs.value.findIndex((item) => item.name === val);
   if (index >= 0) {
-    const activetabIndex = tabs.value.findIndex((item) => item.name === sqlStore.activeTabs);
+    const activetabIndex = tabs.value.findIndex((item) => item.name === sqlStore.activeTab);
     if (activetabIndex === index && index > 0) {
       const activeTab = tabs.value[index - 1];
       editableTabsValue.value = activeTab.name;
-      sqlStore.setActiveTabs(activeTab.name);
+      sqlStore.setActiveTab(activeTab.name);
     }
     sqlStore.removeTabs(index);
   }
@@ -59,7 +61,7 @@ defineExpose({
 </script>
 <template>
   <section class="editor-tabs-container">
-    <span class="add-tab-btn" @click="addTabs">
+    <span class="add-tab-btn" @click="addTab">
       <el-icon><Plus /></el-icon>
       {{ $t('Add new tab') }}
     </span>
@@ -68,7 +70,7 @@ defineExpose({
       type="card"
       editable
       class="editor-tabs"
-      @tab-remove="removeTabs"
+      @tab-remove="removeTab"
       @tab-change="changeTabs"
     >
       <el-tab-pane
