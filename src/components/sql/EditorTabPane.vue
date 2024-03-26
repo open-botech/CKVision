@@ -62,9 +62,10 @@ const changeValue = (val: string) => {
 };
 
 const queryTableData = (rows = 100) => {
-  const selecttionValue = simpleEditorInstance.value.getSelectionValue();
+  const selectionValue = simpleEditorInstance.value.getSelectionValue();
+
   loadingForTableData.value = true;
-  const selectedSql = selecttionValue ? selecttionValue : props.tab.sql;
+  const selectedSql = selectionValue ? selectionValue : props.tab.sql;
 
   selectedSql && sqlStore.addHistorySql(selectedSql);
 

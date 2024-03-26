@@ -15,7 +15,6 @@ let editorInstance: monaco.editor.IStandaloneCodeEditor;
 monaco.editor.defineTheme('cobalt', themeCobalt);
 
 const global: any = {};
-let timer: any = null;
 
 const getHints = (model: any) => {
   let id = model.id.substring(6);
@@ -40,11 +39,6 @@ watch(
 );
 
 onMounted(() => {
-  // try {
-  //   await
-  // } catch (err) {
-  //   console.log(err)
-  // }
   setHints();
   initEditor();
 });
@@ -52,9 +46,6 @@ onMounted(() => {
 const setHints = async () => {
   const res = await queryAllTables();
   const columnsRes = await queryAllColumns();
-  // const database = res.data.map((item: any) => item.database)
-  // const databaseDotTable = res.data.map((item: any) => `${item.database}.${item.name}`)
-  // const realdata = sqlStore.visitNumber !== 1 ? [] : [...database, ...databaseDotTable]
   await registerTable(res.data, columnsRes.data);
 };
 
@@ -88,8 +79,11 @@ const registerTable = async (table: any[], columns: any[]) => {
   );
 };
 
+const getValue = () => {
+  return editorInstance.getValue();
+};
+
 const getSelectionValue = () => {
-  // editorInstance.getModel().getValueInRange(editorInstance.getSelection())
   return editorInstance.getModel()?.getValueInRange(editorInstance.getSelection() as monaco.IRange);
 };
 
@@ -97,6 +91,7 @@ defineExpose({
   getEditorContainer,
   registerTable,
   getSelectionValue,
+  getValue,
 });
 </script>
 <template>
