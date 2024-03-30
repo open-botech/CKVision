@@ -22,7 +22,7 @@ export const queryProcessesImports = () => {
   ProfileEvents,
   Settings
   FROM clusterAllReplicas(main, system.processes)
-  where query_kind='Insert'
+  where query_kind='Insert' and user != 'backup'
   order by elapsed asc
 `;
   return query(sql);
@@ -91,6 +91,7 @@ export const queryHistoricalImports = () => {
         http_user_agent NOT LIKE '%clickhouse%'
         AND query_kind = 'Insert'
         AND query NOT LIKE '%query_log%'
+        and user != 'backup'
 )
 SELECT
     type,
