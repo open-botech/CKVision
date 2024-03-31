@@ -3,13 +3,15 @@ import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls';
 
 export const queryProcessesImports = () => {
   const sql = `SELECT
-  round(elapsed,1) as elapsed ,
-  
+  round(elapsed / 3600) || 'h ' || 
+    round(elapsed % 3600 / 60) || 'm ' ||
+    round(elapsed % 60) || 's' AS query_duration,
   query,
-  formatReadableSize(toUInt64(read_bytes)+toUInt64(written_bytes)) as bytes,
   formatReadableSize(written_bytes) as "written bytes",  
+  formatReadableSize(written_bytes / elapsed) as written_bytes_per_sec,
   written_rows,
   formatReadableSize(read_bytes) as "read bytes",
+  formatReadableSize(read_bytes / elapsed) as read_bytes_per_sec,
   read_rows,
   formatReadableSize(peak_memory_usage) AS "peak memory",
   formatReadableSize(memory_usage) AS "memory usage",
@@ -22,7 +24,7 @@ export const queryProcessesImports = () => {
   ProfileEvents,
   Settings
   FROM clusterAllReplicas(main, system.processes)
-  where query_kind='Insert' and user != 'backup'
+  where query_kind='Insert' and user != 'backup' and client not like 'clickhouse-js%'
   order by elapsed asc
 `;
   return query(sql);
@@ -97,9 +99,17 @@ SELECT
     type,
     event_time,
     query_start_time,
+    round((event_time - query_start_time) / 3600) || 'h ' || 
+    round(((event_time - query_start_time) % 3600) / 60) || 'm ' ||
+    round((event_time - query_start_time) % 60) || 's' AS query_duration,
+    formatReadableSize(if(event_time - query_start_time != 0, 
+      written_bytes / (event_time - query_start_time), 
+      0)) as written_bytes_per_sec,
     query_id,
-    read_rows,
     written_rows,
+    formatReadableSize(written_bytes) as "written bytes",  
+    read_rows,
+    formatReadableSize(read_bytes) as "read bytes",
     query,
     user,
     exception
