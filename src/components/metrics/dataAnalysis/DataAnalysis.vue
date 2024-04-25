@@ -14,7 +14,7 @@ import { computed, ref } from 'vue'
 import { getRealSqlOfArr, getStartAndEndTime, getUndefined } from './utils'
 import dayjs from 'dayjs'
 import TableBanner from '../TableBanner.vue'
-import { ChangeValue } from '../types'
+import { ChangeValue, DataQueryFunc } from '../types'
 
 const queryFunc = (sql: string) => {
   return query(sql)
@@ -43,7 +43,9 @@ const timeRange = computed(() => {
 })
 
 const queryFunction = (sqlFuncName: string, params: SqlParams) => {
-  return queryFunc(sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params))
+  return queryFunc(
+    sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params),
+  ) as unknown as DataQueryFunc
 }
 </script>
 <template>

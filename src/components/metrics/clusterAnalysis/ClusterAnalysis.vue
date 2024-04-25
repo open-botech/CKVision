@@ -14,7 +14,7 @@ import sqls, { SqlParams } from '../dataAnalysis/sqls'
 import { ref, watch } from 'vue'
 import { getRealSqlOfArr, getUndefined } from '../dataAnalysis/utils'
 import TableBanner from '../TableBanner.vue'
-import { ChangeValue } from '../types'
+import { ChangeValue, DataQueryFunc } from '../types'
 
 const props = defineProps<{
   activeName: string
@@ -39,10 +39,10 @@ const selectChangeData = (data: ChangeValue) => {
   }
 }
 
-// 由于 el-collapse 组件没有懒加载，导致所有组件即便是没有展开都会一进来就会加载，其他的组件还没有问题
-// 但是 echarts 由于组件已经渲染，他会获取 dom 宽高来进行 canvas 的渲染，但此时由于没有展开，导致其父元素没有宽高，渲染就会有问题
+// Since the el-collapse component does not have lazy loading, all components will load as soon as they enter, even if they are not expanded, other components have no problem
+// But echarts, since the component has already been rendered, it will get the dom width and height to render the canvas, but at this time because it is not expanded, its parent element has no width and height, rendering will have problems
 
-// 另外由于一进页面该组件中的所有的请求并未发送，减少了首页的接口请求数量，相当于变相实现了 lazyload
+// In addition, since all the requests in this component have not been sent when you enter the page, it reduces the number of interface requests on the homepage, which is equivalent to indirectly implementing lazyload
 watch(
   () => props.activeName,
   () => {
@@ -55,7 +55,9 @@ watch(
 )
 
 const queryFunction = (sqlFuncName: string, params: SqlParams) => {
-  return queryFunc(sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params))
+  return queryFunc(
+    sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params),
+  ) as unknown as DataQueryFunc
 }
 </script>
 <template>
