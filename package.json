@@ -41,6 +41,7 @@
     "three-spritetext": "1.6.5",
     "uuid": "8.3.2",
     "uuidjs": "4.2.11",
+    "vite-plugin-checker": "^0.6.4",
     "vite-plugin-svg-icons": "2.0.1",
     "vue": "3.4.21",
     "vue-i18n": "9.10.2",

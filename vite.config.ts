@@ -6,6 +6,7 @@ import proxy from './config/vite/proxy'
 import { APP_TITLE, VITE_PORT } from './config/constant'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+import checker from 'vite-plugin-checker'
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir)
@@ -39,6 +40,9 @@ export default defineConfig({
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       symbolId: 'icon-[dir]-[name]',
+    }),
+    checker({
+      typescript: true,
     }),
   ],
   build: {

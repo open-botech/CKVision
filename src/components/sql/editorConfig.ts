@@ -24,7 +24,7 @@ export const defaultOptions: monaco.editor.IEditorConstructionOptions = {
   // snippetSuggestions: "bottom",
   scrollBeyondLastLine: false,
   inlayHints: {
-    enabled: true,
+    enabled: 'on',
   },
   // suggestOnTriggerCharacters: false,
   quickSuggestions: true,
