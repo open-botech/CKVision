@@ -9,6 +9,7 @@ import {
   queryProcessesImports,
   queryMutations,
   queryHistoricalImports,
+  queryHistoricalSelects,
 } from '@/components/processes/query'
 import { query } from '@/utils/http'
 
@@ -158,24 +159,27 @@ const getTotal2Computed = (total: number) => {
       </div>
     </section>
     <el-tabs v-model="defaultCard" type="border-card">
-      <el-tab-pane label="Processes - imports" name="ProcessesImports">
+      <el-tab-pane label="Imports - current" name="ProcessesImports">
         <CommonTableVue
           ref="processesImportsRef"
           :query-func="queryProcessesImports"
           :show-selection="true"
         ></CommonTableVue>
       </el-tab-pane>
-      <el-tab-pane label="Historical imports" :lazy="true" name="Historical imports">
+      <el-tab-pane label="Imports - historical" :lazy="true" name="Historical imports">
         <CommonTableVue ref="importsRef" :query-func="queryHistoricalImports"></CommonTableVue>
       </el-tab-pane>
       <!-- :label="$t('Processes')" -->
-      <el-tab-pane label="Processes - selects" name="ProcessesSelects">
+      <el-tab-pane label="Selects - current" name="ProcessesSelects">
         <CommonTableVue
           ref="processesRef"
           :query-func="queryProcessesSelects"
           :show-selection="true"
           @selection-change="changeProcesses"
         ></CommonTableVue>
+      </el-tab-pane>
+      <el-tab-pane label="Selects - historical" :lazy="true" name="Historical selects">
+        <CommonTableVue ref="importsRef" :query-func="queryHistoricalSelects"></CommonTableVue>
       </el-tab-pane>
       <!-- :label="$t('Mutations')" -->
       <el-tab-pane label="Mutations" :lazy="true" name="Mutations">

@@ -124,3 +124,25 @@ LIMIT
 `
   return query(sql)
 }
+
+export const queryHistoricalSelects = () => {
+  const sql = `
+  SELECT
+     cast(event_time_microseconds, 'Float64') - cast(query_start_time_microseconds, 'Float64') AS query_duration,
+    event_time_microseconds,
+    query_start_time_microseconds,
+    query_id,
+    read_rows,
+    formatReadableSize(read_bytes) as "read bytes",
+    query,
+    user,
+    exception
+FROM
+    clusterAllReplicas(main, system.query_log)
+where user != 'datadog' and query_kind='Select' and type = 'QueryFinish' and query not like '%query_log%'
+ORDER BY
+    event_time DESC
+LIMIT
+    100`
+  return query(sql)
+}
