@@ -11,11 +11,7 @@
     </div>
 
     <div class="details-content">
-      <div
-        v-for="(value, key) in detailData.nodeInfo"
-        :key="key"
-        class="detail-item"
-      >
+      <div v-for="(value, key) in detailData.nodeInfo" :key="key" class="detail-item">
         <p class="label">
           {{ key }}
         </p>
@@ -26,7 +22,7 @@
     </div>
   </div>
 </template>
-<script lang='ts' setup>
+<script lang="ts" setup>
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
 defineProps({
@@ -34,17 +30,17 @@ defineProps({
     type: Object,
     default() {
       return {
-        nodeInfo: {}
+        nodeInfo: {},
       }
-    }
-  }
+    },
+  },
 })
 
 const emit = defineEmits(['closeDetail'])
 </script>
-<style lang='scss' scoped>
-.graph-details{
-  background: #FFFAF6;
+<style lang="scss" scoped>
+.graph-details {
+  background: #fffaf6;
   box-shadow: 0px 0px 18px 0px rgba(193, 173, 133, 0.3);
   z-index: 1000;
   position: fixed;
@@ -53,44 +49,44 @@ const emit = defineEmits(['closeDetail'])
   height: 43.6vh;
   display: flex;
   flex-direction: column;
-  .details-title{
+  .details-title {
     width: 268px;
     height: 52px;
-    background: #FFB300;
-    border: 1px solid #E4E4E4;
+    background: #ffb300;
+    border: 1px solid #e4e4e4;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 15px;
-    .title{
+    .title {
       font-size: 20px;
-      color: #FFFFFF;
+      color: #ffffff;
       font-weight: bold;
     }
-    .close{
+    .close {
       width: 15px;
       height: 15px;
       cursor: pointer;
     }
   }
-  .details-content{
+  .details-content {
     flex: 1;
     overflow: auto;
     padding: 15px 0;
-    
-    .detail-item{
+
+    .detail-item {
       flex-shrink: 0;
       min-height: 46px;
       width: 260px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #EFEFEF;
+      border-bottom: 1px solid #efefef;
       text-align: left;
       margin: 0 auto;
-      &:last-child{
-        border-bottom: none
+      &:last-child {
+        border-bottom: none;
       }
-      .label{
+      .label {
         display: inline-block;
         width: 105px;
         margin-right: 10px;
@@ -99,7 +95,7 @@ const emit = defineEmits(['closeDetail'])
         flex-shrink: 0;
         overflow: hidden;
       }
-      .value{
+      .value {
         display: inline-block;
         font-size: 14px;
         color: rgba(0, 0, 0, 0.85);

@@ -11,7 +11,7 @@ export const queryList = async (connection: any = {}) => {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', // manual, *follow, error
@@ -20,15 +20,15 @@ export const queryList = async (connection: any = {}) => {
       conn_host: connectionUrl?.replace(':8123', '').replace('http://', ''),
       conn_user: username,
       conn_password: password,
-      conn_database: ''
-    }) // body data type must match "Content-Type" header
+      conn_database: '',
+    }), // body data type must match "Content-Type" header
   })
   const data = await res.json()
   const finalData = data.map((item: any) => {
     const other = JSON.parse(item[1])
     return {
       job_id: item[0],
-      ...other
+      ...other,
     }
   })
   return finalData
@@ -44,7 +44,7 @@ export async function addTraining({
   start_time,
   end_time,
   job_name,
-  time_interval
+  time_interval,
 }: any) {
   const res = await fetch(`${import.meta.env.VITE_MACHINELEARNING_URL}/train`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -52,7 +52,7 @@ export async function addTraining({
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', // manual, *follow, error
@@ -68,14 +68,14 @@ export async function addTraining({
       start_time,
       end_time,
       job_name,
-      time_interval
-    }) // body data type must match "Content-Type" header
+      time_interval,
+    }), // body data type must match "Content-Type" header
   })
   const data = await res.json()
   return data
 }
 
-export async function queryResultForMl (connection: Connection, finalValue: any) {
+export async function queryResultForMl(connection: Connection, finalValue: any) {
   const { connectionUrl, username, password } = connection
   const {
     database,
@@ -85,7 +85,7 @@ export async function queryResultForMl (connection: Connection, finalValue: any)
     end_time,
     job_name,
     model_path,
-    time_interval = '1 day'
+    time_interval = '1 day',
   } = finalValue
   // http://192.168.202.63
   const res = await fetch(`${import.meta.env.VITE_MACHINELEARNING_URL}/back_testing`, {
@@ -94,7 +94,7 @@ export async function queryResultForMl (connection: Connection, finalValue: any)
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', // manual, *follow, error
@@ -111,8 +111,8 @@ export async function queryResultForMl (connection: Connection, finalValue: any)
       end_time,
       job_name,
       model_path,
-      time_interval
-    }) // body data type must match "Content-Type" header
+      time_interval,
+    }), // body data type must match "Content-Type" header
   })
   const data = await res.json()
   const {
@@ -124,13 +124,16 @@ export async function queryResultForMl (connection: Connection, finalValue: any)
     biggerForecast,
   } = formatData(data)
   return {
-    realData, forecastData, realKey, diff,
+    realData,
+    forecastData,
+    realKey,
+    diff,
     lessForecast,
     biggerForecast,
   }
 }
 
-export async function queryResultForMlUsePredict (data: any) {
+export async function queryResultForMlUsePredict(data: any) {
   const {
     model_path,
     steps,
@@ -139,7 +142,7 @@ export async function queryResultForMlUsePredict (data: any) {
     lessForecast: lessForecastOrigin,
     biggerForecast: biggerForecastOrigin,
     realKey: realKeyOrigin,
-    diff: diffOrigin
+    diff: diffOrigin,
   } = data
   const res = await fetch(`${import.meta.env.VITE_MACHINELEARNING_URL}/predict`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -147,30 +150,24 @@ export async function queryResultForMlUsePredict (data: any) {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify({
       model_path,
-      steps
-    }) // body data type must match "Content-Type" header
+      steps,
+    }), // body data type must match "Content-Type" header
   })
   const dataRes = await res.json()
-  const {
-    realData,
-    realKey,
-    diff,
-    lessForecast,
-    biggerForecast,
-  } = formatDataPredict({
+  const { realData, realKey, diff, lessForecast, biggerForecast } = formatDataPredict({
     data: dataRes,
     unit,
     realData: realDataOrigin,
     lessForecast: lessForecastOrigin,
     biggerForecast: biggerForecastOrigin,
     realKey: realKeyOrigin,
-    diff: diffOrigin
+    diff: diffOrigin,
   })
   return {
     realData,
@@ -181,19 +178,16 @@ export async function queryResultForMlUsePredict (data: any) {
   }
 }
 
-export async function deleteOne (connection: Connection, data: any) {
+export async function deleteOne(connection: Connection, data: any) {
   const { connectionUrl, username, password } = connection
-  const {
-    job_id,
-    model_path
-  } = data
+  const { job_id, model_path } = data
   const res = await fetch(`${import.meta.env.VITE_MACHINELEARNING_URL}/delete`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -204,6 +198,6 @@ export async function deleteOne (connection: Connection, data: any) {
       conn_user: username,
       conn_password: password,
       conn_database: '',
-    }) // body data type must match "Content-Type" header
+    }), // body data type must match "Content-Type" header
   })
 }

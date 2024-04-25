@@ -9,7 +9,7 @@ function getRequestUrl(connection, settings) {
   url = `${url}/?output_format_json_quote_denormals=1&output_format_json_quote_64bit_integers=1&log_queries=1&enable_http_compression=1&add_http_cors_header=1&result_overflow_mode=throw&timeout_overflow_mode=throw&max_execution_time=10&max_result_rows=90000&max_result_bytes=10000000`
   if (connection.password) {
     url += `&user=${encodeURIComponent(connection.username)}&password=${encodeURIComponent(
-      connection.password
+      connection.password,
     )}`
   } else {
     url += `&user=${encodeURIComponent(connection.username)}`
@@ -56,7 +56,7 @@ function request(request, init) {
         return response
       },
       // refactor: use catch
-      (responseBody) => Promise.reject(responseBody)
+      (responseBody) => Promise.reject(responseBody),
     )
 }
 
@@ -85,7 +85,7 @@ const queryAllColumns = (connection) => {
   const init = getRequestInit(sql)
   const url = getRequestUrl(connection, connection.params)
 
-  return request(url, init).then(res => {
+  return request(url, init).then((res) => {
     return res
   })
 }
@@ -97,7 +97,7 @@ const queryAllDatabases = (connection) => {
   const init = getRequestInit(sql)
   const url = getRequestUrl(connection, connection.params)
 
-  return request(url, init).then(res => {
+  return request(url, init).then((res) => {
     return res
   })
 }
@@ -116,7 +116,7 @@ const queryAllTables = (connection) => {
   const init = getRequestInit(sql)
   const url = getRequestUrl(connection, connection.params)
 
-  return request(url, init).then(res => {
+  return request(url, init).then((res) => {
     return res
   })
 }
@@ -126,40 +126,44 @@ const createTree = (columns, tables, database, connection) => {
     const children = columns.filter((col) => col.table === item.name)
     return {
       ...item,
-      children
+      children,
     }
   })
 
-  const databaseTree = database.map(item => {
+  const databaseTree = database.map((item) => {
     const children = tablesTree.filter((table) => table.database === item.name)
     return {
       ...item,
-      children
+      children,
     }
   })
 
   const finalTree = {
     name: connection.connectionName,
-    children: databaseTree
+    children: databaseTree,
   }
   return [finalTree]
 }
 
-self.addEventListener('message', function (e) {
-  // self.postMessage(e.data)
-  const connection = JSON.parse(e.data)
-  Promise.all([queryAllColumns(connection), queryAllTables(connection), queryAllDatabases(connection)])
-    .then(res => {
-      const dataArr = res.map(item => item.data)
-      const treeData = createTree(
-        dataArr[0],
-        dataArr[1],
-        dataArr[2],
-        connection
+self.addEventListener(
+  'message',
+  function (e) {
+    // self.postMessage(e.data)
+    const connection = JSON.parse(e.data)
+    Promise.all([
+      queryAllColumns(connection),
+      queryAllTables(connection),
+      queryAllDatabases(connection),
+    ]).then((res) => {
+      const dataArr = res.map((item) => item.data)
+      const treeData = createTree(dataArr[0], dataArr[1], dataArr[2], connection)
+      self.postMessage(
+        JSON.stringify({
+          tree: treeData,
+          columns: dataArr[0],
+        }),
       )
-      self.postMessage(JSON.stringify({
-        tree: treeData,
-        columns: dataArr[0]
-      }))
     })
-}, false);
+  },
+  false,
+)

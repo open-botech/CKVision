@@ -16,9 +16,9 @@ export const formatCustomValue = (data: any[] = [], xAxisData: any[] = []) => {
   return {
     tooltip: {
       trigger: 'item',
-      formatter (params: any) {
+      formatter(params: any) {
         return params.data[0] + ' ~ ' + params.data[1]
-      }
+      },
     },
     grid: {
       left: '3%',
@@ -41,33 +41,33 @@ export const formatCustomValue = (data: any[] = [], xAxisData: any[] = []) => {
       },
     ],
     series: [
-    //   {
-    //     name: 'height',
-    //     type: 'custom',
-    //     renderItem: renderItem,
-    //     label: {
-    //         normal: {
-    //             show: true,
-    //             position: 'top'
-    //         }
-    //     },
-    //     encode: {
-    //         x: [0, 1],
-    //         y: 2,
-    //         tooltip: 2,
-    //         label: 2
-    //     },
-    //     // data: data
-    //     data: edata
-    // },
+      //   {
+      //     name: 'height',
+      //     type: 'custom',
+      //     renderItem: renderItem,
+      //     label: {
+      //         normal: {
+      //             show: true,
+      //             position: 'top'
+      //         }
+      //     },
+      //     encode: {
+      //         x: [0, 1],
+      //         y: 2,
+      //         tooltip: 2,
+      //         label: 2
+      //     },
+      //     // data: data
+      //     data: edata
+      // },
       {
         name: 'Direct',
         type: 'custom',
         label: {
           normal: {
-              show: true,
-              position: 'top'
-          }
+            show: true,
+            position: 'top',
+          },
         },
         barWidth: '60%',
         data: data,
@@ -75,8 +75,8 @@ export const formatCustomValue = (data: any[] = [], xAxisData: any[] = []) => {
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             { offset: 0, color: '#FFB300' },
-            { offset: 1, color: '#FFD778' }
-          ])
+            { offset: 1, color: '#FFD778' },
+          ]),
         },
       },
     ],
@@ -89,13 +89,13 @@ function renderItem(params: any, api: any) {
   const size = api.size([api.value(1) - api.value(0), yValue])
   const style = api.style()
   return {
-      type: 'rect',
-      shape: {
-          x: start[0] + 1,
-          y: start[1],
-          width: size[0] - 2,
-          height: size[1]
-      },
-      style: style
+    type: 'rect',
+    shape: {
+      x: start[0] + 1,
+      y: start[1],
+      width: size[0] - 2,
+      height: size[1],
+    },
+    style: style,
   }
 }

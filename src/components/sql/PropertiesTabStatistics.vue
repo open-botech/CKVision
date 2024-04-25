@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { ref, onBeforeMount } from 'vue'
 import { TabItem } from '@/store/modules/sql/types'
 import { queryPropertiesStatistics } from './query'
@@ -18,7 +18,7 @@ onBeforeMount(() => {
 const queryData = () => {
   loading.value = true
   queryPropertiesStatistics(props.tab.node)
-    .then(res => {
+    .then((res) => {
       columns.value = res.columns
       tableData.value = res.tableData
     })
@@ -28,22 +28,16 @@ const queryData = () => {
 }
 </script>
 <template>
-  <section
-    ref="containerRef"
-    class="properties-tab-statistice"
-  >
+  <section ref="containerRef" class="properties-tab-statistice">
     <el-table
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;"
+      style="width: 100%"
       height="100%"
       tooltip-effect="dark"
       :border="true"
     >
-      <template
-        v-for="col in columns"
-        :key="col.name"
-      >
+      <template v-for="col in columns" :key="col.name">
         <el-table-column
           :show-overflow-tooltip="true"
           :prop="col.name"
@@ -54,7 +48,7 @@ const queryData = () => {
     </el-table>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .properties-tab-statistice {
   width: 100%;
   height: 100%;

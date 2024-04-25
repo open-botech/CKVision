@@ -61,4 +61,4 @@ export default {
   Describe: 'Describe',
   Nodes: 'Nodes',
   Links: 'Links',
-};
+}

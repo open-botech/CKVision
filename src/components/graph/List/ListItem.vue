@@ -1,6 +1,6 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 defineProps<{
-  item: {name: string}
+  item: { name: string }
 }>()
 
 const emit = defineEmits(['toResult', 'delete'])
@@ -12,31 +12,21 @@ const toResult = (item: any) => {
 const deleteOne = (item: any) => {
   emit('delete', item)
 }
-
 </script>
 <template>
-  <section
-    key="{i}"
-    class="list-box"
-  >
+  <section key="{i}" class="list-box">
     <div class="list-title-box">
       <p class="list-title">
         {{ item.name }}
       </p>
     </div>
     <div class="list-btn-box">
-      <span
-        class="list-btn"
-        @click="deleteOne(item)"
-      >{{ $t('Delete') }}</span>
-      <span
-        class="list-btn"
-        @click="toResult(item)"
-      >{{ $t('Turn on') }}</span>
+      <span class="list-btn" @click="deleteOne(item)">{{ $t('Delete') }}</span>
+      <span class="list-btn" @click="toResult(item)">{{ $t('Turn on') }}</span>
     </div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .list-box {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -58,7 +48,7 @@ const deleteOne = (item: any) => {
   display: flex;
   justify-content: center;
   padding-top: 16px;
-  border-top: 1px solid #F0F0F0;
+  border-top: 1px solid #f0f0f0;
 }
 .list-btn {
   width: 129px;
@@ -82,7 +72,7 @@ const deleteOne = (item: any) => {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1.6px dashed #ABABAB;
+  border: 1.6px dashed #ababab;
   cursor: pointer;
 }
 

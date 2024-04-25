@@ -1,5 +1,5 @@
 import { ProxyOptions } from 'vite'
-type ProxyTargetList = Record<string, ProxyOptions>;
+type ProxyTargetList = Record<string, ProxyOptions>
 
 const init: ProxyTargetList = {
   '/ml': {
@@ -7,8 +7,8 @@ const init: ProxyTargetList = {
     changeOrigin: true,
     rewrite: (path) => {
       return path.replace(/^\/ml/, '')
-    }
-  }
+    },
+  },
 }
 
 export default init

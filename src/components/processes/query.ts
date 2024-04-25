@@ -1,5 +1,5 @@
-import { query } from '@/utils/http';
-import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls';
+import { query } from '@/utils/http'
+import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls'
 
 export const queryProcessesImports = () => {
   const sql = `SELECT
@@ -26,9 +26,9 @@ export const queryProcessesImports = () => {
   FROM clusterAllReplicas(main, system.processes)
   where query_kind='Insert' and user != 'backup' and client not like 'clickhouse-js%'
   order by elapsed asc
-`;
-  return query(sql);
-};
+`
+  return query(sql)
+}
 
 export const queryProcessesSelects = () => {
   const sql = `SELECT
@@ -57,9 +57,9 @@ export const queryProcessesSelects = () => {
 
 
    ${JSON_SUFFIX}
-  `;
-  return query(sql);
-};
+  `
+  return query(sql)
+}
 
 export const queryMutations = (limit = 100, offset = 0) => {
   const sql = `
@@ -78,9 +78,9 @@ export const queryMutations = (limit = 100, offset = 0) => {
       FROM clusterAllReplicas(main, system.mutations)
       ORDER BY create_time DESC
       LIMIT ${limit} OFFSET ${offset}
-    ${JSON_SUFFIX}`;
-  return query(sql);
-};
+    ${JSON_SUFFIX}`
+  return query(sql)
+}
 
 export const queryHistoricalImports = () => {
   const sql = `WITH ranked_queries AS (
@@ -121,6 +121,6 @@ ORDER BY
     event_time DESC
 LIMIT
     100
-`;
-  return query(sql);
-};
+`
+  return query(sql)
+}

@@ -11,10 +11,10 @@
     </div>
   </div>
 </template>
-<script lang='ts' setup>
+<script lang="ts" setup>
 import Header from './Header.vue'
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .layout-container {
   width: 100%;
   height: 100%;

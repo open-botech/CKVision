@@ -62,4 +62,4 @@ export default {
   Describe: '描述',
   Nodes: '节点',
   Links: '链接',
-};
+}

@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { TabItem } from '@/store/modules/sql/types'
 import { ref, watch } from 'vue'
 
@@ -14,44 +14,31 @@ const activeName = ref<string>('Data')
 
 const isFirstRender = ref<boolean>(true)
 
-watch(() => activeName.value, () => {
-  if (activeName.value === 'LIneage') {
-    isFirstRender.value = false
-  }
-})
+watch(
+  () => activeName.value,
+  () => {
+    if (activeName.value === 'LIneage') {
+      isFirstRender.value = false
+    }
+  },
+)
 </script>
 <template>
   <section class="table-tab-pane-tainer">
-    <el-tabs
-      v-model="activeName"
-      type="card"
-      class="table-pane-inner-tab"
-    >
-      <el-tab-pane
-        label="Properties"
-        name="Properties"
-      >
+    <el-tabs v-model="activeName" type="card" class="table-pane-inner-tab">
+      <el-tab-pane label="Properties" name="Properties">
         <TablePaneProperties :tab="tab" />
       </el-tab-pane>
-      <el-tab-pane
-        label="Data"
-        name="Data"
-      >
+      <el-tab-pane label="Data" name="Data">
         <TablePaneData :tab="tab" />
       </el-tab-pane>
-      <el-tab-pane
-        label="Lineage"
-        name="LIneage"
-      >
-        <TablePaneLIneage
-          :tab="tab"
-          :is-first-render="isFirstRender"
-        />
+      <el-tab-pane label="Lineage" name="LIneage">
+        <TablePaneLIneage :tab="tab" :is-first-render="isFirstRender" />
       </el-tab-pane>
     </el-tabs>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .table-tab-pane-tainer {
   width: 100%;
   height: 100%;

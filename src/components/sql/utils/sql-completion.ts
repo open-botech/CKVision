@@ -35,31 +35,25 @@ const hints = [
   'EXECUTE',
   'DESCRIBE',
   'FORM',
-  'ORDER BY'
+  'ORDER BY',
 ]
 
-function getSuggestionItem (item: any) {
+function getSuggestionItem(item: any) {
   return {
     label: item.name,
     kind: monaco.languages.CompletionItemKind.Constant,
     documentation: item.name,
-    insertText: item.name
+    insertText: item.name,
   }
 }
 
-const columnsWantedKeyword = [
-  'select',
-  'where',
-  'group',
-  'having',
-  'on',
-]
+const columnsWantedKeyword = ['select', 'where', 'group', 'having', 'on']
 
 const tableWantedKeyword = ['from', 'join']
 
 function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[]) {
   // [...hints, ...databaseHints]
-  const hasDatabaseHints = [...hints, ...tables.map(item => item.database)]
+  const hasDatabaseHints = [...hints, ...tables.map((item) => item.database)]
   const createSuggestions = function (model: any, textUntilPosition: any, ...rest: any) {
     const textCurrent = model.getValue()
     const textNoSpecial = textUntilPosition.replace(/[\*\[\]@\$\(\)]/g, '')
@@ -70,11 +64,9 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
     const hasSpotActiveStr = HasSpotTextArr[HasSpotTextArr.length - 1]
 
     const keywordsRegex = /\b(from|join|select|where|group|having|on)\b/gi
-    const tableRegex = new RegExp(`\\b(${tables.map(item => item.name).join('|')})\\b`, 'gi')
+    const tableRegex = new RegExp(`\\b(${tables.map((item) => item.name).join('|')})\\b`, 'gi')
 
-    const allTokens = [...new Set(
-      textCurrent.toLowerCase().match(tableRegex)
-    )]
+    const allTokens = [...new Set(textCurrent.toLowerCase().match(tableRegex))]
 
     const mostRecentKeyword = textUntilPositionLower.match(keywordsRegex)?.pop()
     let wanted
@@ -92,23 +84,21 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
 
     const hasDot = hasSpotActiveStr.includes('.')
 
-    const database = [...new Set(tables.map(item => item.database))]
-      .filter(item => item.includes(hasSpotActiveStr))
-      .map(item => {
+    const database = [...new Set(tables.map((item) => item.database))]
+      .filter((item) => item.includes(hasSpotActiveStr))
+      .map((item) => {
         return {
           label: item,
           kind: monaco.languages.CompletionItemKind.Constant,
           documentation: item,
-          insertText: item
+          insertText: item,
         }
       })
-    const showTables = tables.filter(item => item.name.includes(hasSpotActiveStr))
-      .map(item => getSuggestionItem(item))
+    const showTables = tables
+      .filter((item) => item.name.includes(hasSpotActiveStr))
+      .map((item) => getSuggestionItem(item))
 
-    const defaultSuggestion = [
-      ...database,
-      ...showTables
-    ]
+    const defaultSuggestion = [...database, ...showTables]
 
     if (!hasDot && wanted === 'TABLE') {
       return defaultSuggestion
@@ -118,15 +108,15 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
       if (priorKeyword === 'select') {
         return defaultSuggestion
       } else {
-        const tableByAlreadyShow = tables.filter(item => {
+        const tableByAlreadyShow = tables.filter((item) => {
           return allTokens.includes(item.name)
         })
-        const columnsByAlreadyShow = columns.filter(item => {
+        const columnsByAlreadyShow = columns.filter((item) => {
           return allTokens.includes(item.table)
         })
         return [
-          ...tableByAlreadyShow.map(item => getSuggestionItem(item)),
-          ...columnsByAlreadyShow.map(item => getSuggestionItem(item)),
+          ...tableByAlreadyShow.map((item) => getSuggestionItem(item)),
+          ...columnsByAlreadyShow.map((item) => getSuggestionItem(item)),
         ]
       }
     }
@@ -135,23 +125,23 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
       const dotStrArr = hasSpotActiveStr.split('.')
       const last = dotStrArr[dotStrArr.length - 1]
       const lastlast = dotStrArr[dotStrArr.length - 2]
-      const database = tables.filter(item => item.database === lastlast)
-      const tablesByName = tables.find(item => item.name === lastlast)
+      const database = tables.filter((item) => item.database === lastlast)
+      const tablesByName = tables.find((item) => item.name === lastlast)
       if (database.length) {
         let returnData = database
         if (last) {
-          returnData = database.filter(item => item.name.includes(last))
+          returnData = database.filter((item) => item.name.includes(last))
         }
-        return returnData.map(item => {
+        return returnData.map((item) => {
           return getSuggestionItem(item)
         })
       }
       if (tablesByName) {
-        let returnData = columns.filter(item => item.table === lastlast)
+        let returnData = columns.filter((item) => item.table === lastlast)
         if (last) {
-          returnData = returnData.filter(item => item.name.includes(last))
+          returnData = returnData.filter((item) => item.name.includes(last))
         }
-        return returnData.map(item => {
+        return returnData.map((item) => {
           return getSuggestionItem(item)
         })
       }
@@ -162,13 +152,13 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
       const dotStrArr = hasSpotActiveStr.split('.')
       const last = dotStrArr[dotStrArr.length - 1]
       const lastlast = dotStrArr[dotStrArr.length - 2]
-      const database = tables.filter(item => item.database === lastlast)
+      const database = tables.filter((item) => item.database === lastlast)
       if (database.length) {
         let returnData = database
         if (last) {
-          returnData = database.filter(item => item.name.includes(last))
+          returnData = database.filter((item) => item.name.includes(last))
         }
-        return returnData.map(item => {
+        return returnData.map((item) => {
           return getSuggestionItem(item)
         })
       }
@@ -180,29 +170,34 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
     const len = noSpotActiveStr.length
     const rexp = new RegExp('([^\\w]|^)' + noSpotActiveStr + '\\w*', 'gim')
     const match = textCurrent.match(rexp)
-    const textHints = !match ? [] :
-      match.map((ele: any) => {
-        const rexp = new RegExp(noSpotActiveStr, 'gim')
-        const search = ele.search(rexp)
-        return ele.substr(search)
-      })
-    const mergeHints = Array.from(new Set([...hasDatabaseHints, ...textHints, ...getExtraHints(model)]))
+    const textHints = !match
+      ? []
+      : match.map((ele: any) => {
+          const rexp = new RegExp(noSpotActiveStr, 'gim')
+          const search = ele.search(rexp)
+          return ele.substr(search)
+        })
+    const mergeHints = Array.from(
+      new Set([...hasDatabaseHints, ...textHints, ...getExtraHints(model)]),
+    )
       .sort()
-      .filter(ele => {
+      .filter((ele) => {
         const rexp = new RegExp(ele.substr(0, len), 'gim')
-        return (match && match.length === 1 && ele === noSpotActiveStr) ||
-          ele.length === 1 ? false : noSpotActiveStr.match(rexp)
+        return (match && match.length === 1 && ele === noSpotActiveStr) || ele.length === 1
+          ? false
+          : noSpotActiveStr.match(rexp)
       })
-    return mergeHints.map(ele => ({
+    return mergeHints.map((ele) => ({
       label: ele,
-      kind: hasDatabaseHints.indexOf(ele) > -1 ?
-        monaco.languages.CompletionItemKind.Keyword :
-        monaco.languages.CompletionItemKind.Text,
+      kind:
+        hasDatabaseHints.indexOf(ele) > -1
+          ? monaco.languages.CompletionItemKind.Keyword
+          : monaco.languages.CompletionItemKind.Text,
       documentation: ele,
-      insertText: ele
+      insertText: ele,
     }))
   }
-  
+
   return {
     triggerCharacters: ['.'],
     provideCompletionItems(model: any, position: any) {
@@ -210,12 +205,12 @@ function createCompleter(getExtraHints: any, tables: any[] = [], columns: any[])
         startLineNumber: position.lineNumber,
         startColumn: 1,
         endLineNumber: position.lineNumber,
-        endColumn: position.column
+        endColumn: position.column,
       })
       return {
-        suggestions: createSuggestions(model, textUntilPosition)
+        suggestions: createSuggestions(model, textUntilPosition),
       }
-    }
+    },
   }
 }
 export default createCompleter

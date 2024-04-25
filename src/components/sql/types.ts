@@ -41,7 +41,7 @@ export enum TextInsertType {
 
 export enum TabsType {
   Editor = 'editor',
-  TableView = 'tableView'
+  TableView = 'tableView',
 }
 
 export type Statistics = {
@@ -53,12 +53,12 @@ export type Statistics = {
 export enum ColumnCommand {
   OpenTable = 'openTable',
   MakeSelect = 'makeSelect',
-  MakeSqlDescribe = 'makeSqlDescribe'
+  MakeSqlDescribe = 'makeSqlDescribe',
 }
 
 export type LineageDataItem = {
-  source_schema: string,
-  source_table: string,
-  target_schema: string,
+  source_schema: string
+  source_table: string
+  target_schema: string
   target_table: string
 }

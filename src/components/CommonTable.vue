@@ -1,56 +1,56 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, computed } from 'vue';
-import { CommonObj } from './metrics/types';
+import { onBeforeMount, ref, computed } from 'vue'
+import { CommonObj } from './metrics/types'
 
 const props = defineProps<{
-  queryFunc: (limit: number, offset: number) => Promise<any>;
-  showIndex?: boolean;
-  showSelection?: boolean;
-}>();
-console.log('showSelection');
-const showSelection = computed(() => props.showSelection !== false);
-const emit = defineEmits(['selectionChange', 'firstGetData']);
+  queryFunc: (limit: number, offset: number) => Promise<any>
+  showIndex?: boolean
+  showSelection?: boolean
+}>()
+console.log('showSelection')
+const showSelection = computed(() => props.showSelection !== false)
+const emit = defineEmits(['selectionChange', 'firstGetData'])
 
-const columns = ref<{ name: string }[]>([]);
-const tableData = ref<CommonObj[]>([]);
-const loading = ref<boolean>(true);
+const columns = ref<{ name: string }[]>([])
+const tableData = ref<CommonObj[]>([])
+const loading = ref<boolean>(true)
 
 const getData = (limit = 100, offset = 0) => {
-  loading.value = true;
+  loading.value = true
   return props
     .queryFunc(limit, offset)
     .then((res) => {
       columns.value = res.meta.map((item: { name: string }) => {
         return {
           name: item.name,
-        };
-      });
-      tableData.value = res.data;
-      return res;
+        }
+      })
+      tableData.value = res.data
+      return res
     })
     .finally(() => {
-      loading.value = false;
-    });
-};
+      loading.value = false
+    })
+}
 
 onBeforeMount(() => {
   getData().then((res: any) => {
-    emit('firstGetData', res.rows_before_limit_at_least);
-  });
-});
+    emit('firstGetData', res.rows_before_limit_at_least)
+  })
+})
 
 const handleSelectionChange = (val: any[]) => {
-  emit('selectionChange', val);
-};
+  emit('selectionChange', val)
+}
 
 const refresh = (limit = 100, offset = 0) => {
-  getData(limit, offset);
-};
+  getData(limit, offset)
+}
 
 defineExpose({
   refresh,
   getData,
-});
+})
 </script>
 <template>
   <section v-loading="loading" class="common-table-container">

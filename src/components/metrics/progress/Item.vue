@@ -14,28 +14,23 @@ const name = computed(() => {
 })
 
 const rate = computed(() => {
-  return (value.value/props.maxValue) * 100
+  return (value.value / props.maxValue) * 100
 })
 </script>
 <template>
-  <section
-    class="item-container"
-  >
+  <section class="item-container">
     <div class="name">
       {{ name }}
     </div>
     <div class="item-line">
-      <div
-        :class="`line ${backType}`"
-        :style="`width: ${rate}%`"
-      ></div>
+      <div :class="`line ${backType}`" :style="`width: ${rate}%`"></div>
     </div>
     <div class="number">
       {{ value }}
     </div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .item-container {
   width: 100%;
   display: flex;
@@ -57,7 +52,7 @@ const rate = computed(() => {
   flex-grow: 1;
   border-radius: 7px;
   margin: 0 10px;
-  background: #F8F8F8;
+  background: #f8f8f8;
   overflow: hidden;
 }
 .item-line .line {
@@ -65,10 +60,10 @@ const rate = computed(() => {
   border-radius: 0px 8px 8px 0px;
 }
 .item-line .line.yellow {
-  background: linear-gradient(270deg, #FFB300 0%, rgba(255, 179, 0, 0) 91.43%);
+  background: linear-gradient(270deg, #ffb300 0%, rgba(255, 179, 0, 0) 91.43%);
 }
 
 .item-line .line.green {
-  background: linear-gradient(270deg, #55DCA9 0%, rgba(85, 220, 169, 0) 91.43%);
+  background: linear-gradient(270deg, #55dca9 0%, rgba(85, 220, 169, 0) 91.43%);
 }
 </style>

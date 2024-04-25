@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "sourceMap": true
   },
-  "include": ["src/server**"],
+  "include": ["src/server**"]
 }

@@ -1,14 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  title: string,
+  title: string
   height: number
 }>()
 </script>
 <template>
-  <section
-    class="card-container"
-    :style="{ height: `${height || 310}px`}"
-  >
+  <section class="card-container" :style="{ height: `${height || 310}px` }">
     <h3 class="title">
       {{ title }}
     </h3>
@@ -17,7 +14,7 @@ defineProps<{
     </div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .card-container {
   width: 100%;
   height: 100%;
@@ -28,7 +25,7 @@ defineProps<{
   height: 45px;
   margin: auto;
   line-height: 44px;
-  border-bottom: 1px solid #EFEFEF;
+  border-bottom: 1px solid #efefef;
 }
 
 .card-content {

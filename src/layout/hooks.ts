@@ -5,7 +5,7 @@ export const useGoTo = () => {
   return (name: string, query?: any) => {
     router.push({
       name,
-      query
+      query,
     })
   }
 }

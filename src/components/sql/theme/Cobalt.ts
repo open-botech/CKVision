@@ -1,4 +1,4 @@
-import { editor } from 'monaco-editor';
+import { editor } from 'monaco-editor'
 export const themeCobalt: editor.IStandaloneThemeData = {
   base: 'vs-dark',
   inherit: true,
@@ -280,4 +280,4 @@ export const themeCobalt: editor.IStandaloneThemeData = {
     'editorCursor.foreground': '#FFFFFF',
     'editorWhitespace.foreground': '#FFFFFF',
   },
-};
+}

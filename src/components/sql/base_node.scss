@@ -5,7 +5,7 @@
     height: 36px;
     padding: 0;
     cursor: pointer;
-    &.active{
+    &.active {
       border: 1px dotted #cccccc;
     }
     &:hover {
@@ -35,10 +35,10 @@
     stroke: #404554;
     stroke-width: 3px;
     &.purple {
-      stroke: #404554
+      stroke: #404554;
     }
   }
   .butterflies-link:hover {
-    stroke: #404554
+    stroke: #404554;
   }
 }

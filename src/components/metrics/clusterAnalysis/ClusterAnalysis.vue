@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import Count from '@/components/metrics/Count.vue'
 import Progress from '@/components/metrics/progress/Progress.vue'
 import FiltersVue from '../filter/Filters.vue'
@@ -43,27 +43,23 @@ const selectChangeData = (data: ChangeValue) => {
 // 但是 echarts 由于组件已经渲染，他会获取 dom 宽高来进行 canvas 的渲染，但此时由于没有展开，导致其父元素没有宽高，渲染就会有问题
 
 // 另外由于一进页面该组件中的所有的请求并未发送，减少了首页的接口请求数量，相当于变相实现了 lazyload
-watch(() => props.activeName, () => {
-  if (props.activeName === '2') {
-    setTimeout(() => {
-      show.value = true
-    }, 100)
-  }
-})
+watch(
+  () => props.activeName,
+  () => {
+    if (props.activeName === '2') {
+      setTimeout(() => {
+        show.value = true
+      }, 100)
+    }
+  },
+)
 
-const queryFunction = (
-  sqlFuncName: string,
-  params: SqlParams
-) => {
+const queryFunction = (sqlFuncName: string, params: SqlParams) => {
   return queryFunc(sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params))
 }
-
 </script>
 <template>
-  <el-collapse-item
-    :title="$t('Cluster Analysis')"
-    name="2"
-  >
+  <el-collapse-item :title="$t('Cluster Analysis')" name="2">
     <FiltersVue @change="selectChangeData"></FiltersVue>
     <template v-if="show">
       <el-row :gutter="10">
@@ -72,64 +68,64 @@ const queryFunction = (
             :query-func="queryFunction"
             :banner="versionImg"
             :outer-title="'Version'"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             sql-func-name="queryVersion"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="4">
           <Count
             :query-func="queryFunction"
             :banner="serverUptime"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             :outer-title="'Server uptime'"
             sql-func-name="queryServerUptime"
             show-type="duration"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="4">
           <Count
             :query-func="queryFunction"
             :banner="databaseNumber"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             :outer-title="'Number of databases'"
             :database="databaseReal"
             sql-func-name="queryDatabaseNumber"
             show-type="toLocaleString"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="4">
           <Count
             :query-func="queryFunction"
             :banner="tableNumber"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             :outer-title="'Number of tables'"
             :database="databaseReal"
             sql-func-name="queryTableNumber"
             show-type="toLocaleString"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="4">
           <Count
             :query-func="queryFunction"
             :banner="totalRow"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             :outer-title="'Number of rows'"
             :database="databaseReal"
             :table="tableReal"
             sql-func-name="queryRowNumber"
             show-type="toLocaleString"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="4">
           <Count
             :query-func="queryFunction"
             :banner="totalColumn"
-            :number-style="{'font-size': '24px'}"
+            :number-style="{ 'font-size': '24px' }"
             :outer-title="'Number of columns'"
             :database="databaseReal"
             sql-func-name="queryColumnNumber"
             show-type="toLocaleString"
-          ></count>
+          ></Count>
         </el-col>
       </el-row>
       <el-row :gutter="10">
@@ -183,10 +179,7 @@ const queryFunction = (
           ></TableBanner>
         </el-col>
       </el-row>
-      <el-row
-        :gutter="10"
-        style="margin-bottom: 0;"
-      >
+      <el-row :gutter="10" style="margin-bottom: 0">
         <el-col :span="8">
           <Progress
             title="Replicated tables by delay"
@@ -210,5 +203,4 @@ const queryFunction = (
     </template>
   </el-collapse-item>
 </template>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

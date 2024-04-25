@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import PropertiesTabColumnsVue from './PropertiesTabColumns.vue'
@@ -21,31 +21,19 @@ const activeName = ref<string>('Columns')
       class="table-pane-properties-inner-tab"
       :tab-position="'left'"
     >
-      <el-tab-pane
-        lazy
-        label="Columns"
-        name="Columns"
-      >
+      <el-tab-pane lazy label="Columns" name="Columns">
         <PropertiesTabColumnsVue :tab="tab" />
       </el-tab-pane>
-      <el-tab-pane
-        lazy
-        label="Statistics"
-        name="Statistics"
-      >
+      <el-tab-pane lazy label="Statistics" name="Statistics">
         <PropertiesTabStatisticsVue :tab="tab" />
       </el-tab-pane>
-      <el-tab-pane
-        lazy
-        label="DDL"
-        name="DDL"
-      >
+      <el-tab-pane lazy label="DDL" name="DDL">
         <PropertiesTabDDLVue :tab="tab" />
       </el-tab-pane>
     </el-tabs>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .table-pane-properties {
   width: 100%;
   height: 100%;
@@ -68,7 +56,7 @@ const activeName = ref<string>('Columns')
     }
     &.el-tabs--left.el-tabs--card :deep(.el-tabs__item.is-left) {
       padding: 0 45px;
-      background-color: #E1E0DD;
+      background-color: #e1e0dd;
       border-right: unset;
       border-top: unset;
       border-bottom: 1px solid #fff;

@@ -9,16 +9,20 @@
 }
 
 .primary-select-dropdown .el-select-dropdown__item.hover {
-  background-color: rgba(255, 187, 51, .1);
+  background-color: rgba(255, 187, 51, 0.1);
   color: var(--el-color-primary);
 }
 
-.custom-default-btn, .custom-default-btn:focus, .custom-default-btn:hover {
+.custom-default-btn,
+.custom-default-btn:focus,
+.custom-default-btn:hover {
   border-color: var(--el-color-primary);
   background-color: #fff;
   color: var(--el-color-primary);
 }
-.custom-primary-btn, .custom-primary-btn:focus, .custom-primary-btn:hover {
+.custom-primary-btn,
+.custom-primary-btn:focus,
+.custom-primary-btn:hover {
   border-color: var(--el-color-primary);
   background-color: var(--el-color-primary);
   color: #fff;
@@ -27,15 +31,15 @@
   max-width: 600px;
 }
 .dark.el-popper.is-light {
-  border-color: #404E65;
-  background-color: #404E65;
+  border-color: #404e65;
+  background-color: #404e65;
 }
 .dark.el-popper.is-light .el-dropdown-menu {
-  background-color: #404E65;
+  background-color: #404e65;
 }
 
 .dark.el-popper.is-light .el-popper__arrow::before {
-  background-color: #404E65;
+  background-color: #404e65;
   border: unset;
 }
 .dark .el-dropdown-menu__item:not(.is-disabled):focus {
@@ -53,18 +57,20 @@
   background-color: var(--click-cat-dark-background);
   border-color: var(--click-cat-dark-background);
 }
-.show-custom-primary-color .el-button:last-of-type, .show-custom-primary-color .el-button:last-of-type:hover {
+.show-custom-primary-color .el-button:last-of-type,
+.show-custom-primary-color .el-button:last-of-type:hover {
   background-color: var(--el-color-primary);
   border-color: var(--el-color-primary);
 }
 
-.show-custom-primary-color .el-button:first-of-type, .show-custom-primary-color .el-button:first-of-type:hover {
+.show-custom-primary-color .el-button:first-of-type,
+.show-custom-primary-color .el-button:first-of-type:hover {
   color: var(--el-color-primary);
   background-color: #fff;
   border-color: var(--el-color-primary);
 }
 .el-dropdown-menu__item:not(.is-disabled):focus {
-  background-color: rgba(255, 187, 51, .1);
+  background-color: rgba(255, 187, 51, 0.1);
 }
 
 .input-with-select-with-gap.el-input-group--append > .el-input__wrapper {
@@ -74,7 +80,11 @@
 .input-with-select-with-gap.el-input-group--append .el-input__wrapper {
   border-radius: 4px;
 }
-.el-input-group--append.input-with-select-with-gap .el-input-group__append .el-select .el-input .el-input__wrapper {
+.el-input-group--append.input-with-select-with-gap
+  .el-input-group__append
+  .el-select
+  .el-input
+  .el-input__wrapper {
   border-radius: 4px;
   background-color: #fff;
 }

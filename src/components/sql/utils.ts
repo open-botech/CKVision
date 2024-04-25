@@ -1,31 +1,34 @@
-
 import { useLoginStore } from '@/store'
 import { query } from '@/utils/http'
 import { ColumnItem, DatabaseItem, TableItem } from './types'
 import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls'
 
-export const createTree = (columns: ColumnItem[], tables: TableItem[], database: DatabaseItem[]) => {
+export const createTree = (
+  columns: ColumnItem[],
+  tables: TableItem[],
+  database: DatabaseItem[],
+) => {
   const loginStore = useLoginStore()
   const tablesTree = tables.map((item) => {
     const children = columns.filter((col) => col.table === item.name)
     return {
       ...item,
-      children
+      children,
     }
   })
 
-  const databaseTree = database.map(item => {
+  const databaseTree = database.map((item) => {
     const children = tablesTree.filter((table) => table.database === item.name)
     return {
       ...item,
-      children
+      children,
     }
   })
 
   const finalTree = {
     name: loginStore.connection.connectionName,
     isRoot: true,
-    children: databaseTree
+    children: databaseTree,
   }
   return [finalTree]
 }
@@ -49,15 +52,14 @@ export const getMakeSelectSql = (table: any) => {
   const sqlTemplate = `\nSELECT\n\t${selectFields}\nFROM\n\t${db}.${tableName}\n%WHERE%\nLIMIT 100\n\n`
   const sql = sqlTemplate.replace(
     '%WHERE%',
-    where.length ? `\nWHERE\n\t${where.join('\n AND \n')}` : ''
+    where.length ? `\nWHERE\n\t${where.join('\n AND \n')}` : '',
   )
   return sql
 }
 
 export const getSqlDescribe = (table: any) => {
   const sql = `SHOW CREATE TABLE ${table.database}.${table.name} ${JSON_SUFFIX}`
-  return query(sql)
-    .then(res => {
-      return res.data[0].statement
-    })
+  return query(sql).then((res) => {
+    return res.data[0].statement
+  })
 }

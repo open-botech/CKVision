@@ -40,7 +40,7 @@ export function getCurrentChart(type: chartsType, renderer: HTMLElement) {
 export const dealWithLineData = (res: CommonResType) => {
   let category = ''
   if (res.meta.length > 2) {
-    category =  res.meta[1].name as string
+    category = res.meta[1].name as string
   }
   let nameCol = ''
   let valueCol = ''
@@ -59,16 +59,16 @@ export const dealWithLineData = (res: CommonResType) => {
         return {
           category: res.meta[1].name,
           name: item[nameCol],
-          value: item[firstName]
+          value: item[firstName],
         }
       }),
       res.data.map((item: any) => {
         return {
           category: res.meta[2].name,
           name: item[nameCol],
-          value: item[secondName]
+          value: item[secondName],
         }
-      })
+      }),
     ]
   } else {
     const categoryObj: any = {}
@@ -76,12 +76,12 @@ export const dealWithLineData = (res: CommonResType) => {
       categoryObj[item[category]] = 1
     })
     const categoryList = Object.keys(categoryObj)
-    return categoryList.map(cate => {
+    return categoryList.map((cate) => {
       return res.data.map((row: any) => {
         return {
           name: row[nameCol],
           category: cate,
-          value: cate === row[category] ? row[valueCol] : 0
+          value: cate === row[category] ? row[valueCol] : 0,
         }
       })
     })
@@ -99,7 +99,8 @@ export const dealCustomBarData = (data: number[]) => {
     const secondMax = max / 1000
     const secondMaxEnter1 = Math.ceil(secondMax)
     // const gt40 =  ? secondMaxEnter1 : 40
-    xMax = secondMaxEnter1 > 40 ? (secondMaxEnter1 % 2 ? secondMaxEnter1 + 3 : secondMaxEnter1 + 2) : 40
+    xMax =
+      secondMaxEnter1 > 40 ? (secondMaxEnter1 % 2 ? secondMaxEnter1 + 3 : secondMaxEnter1 + 2) : 40
     step = 2
     unit = 's'
   } else {
@@ -122,8 +123,8 @@ export const dealCustomBarData = (data: number[]) => {
   let tmin = scopeMin
   const edata = []
   const xAxis = ['0ms']
-  while(tmin < scopeMax){
-    const x0 = tmin 
+  while (tmin < scopeMax) {
+    const x0 = tmin
     const x1 = tmin + (unit === 's' ? interval * 1000 : interval)
     let hasUnitX = ''
     if (unit === 's') {
@@ -133,9 +134,9 @@ export const dealCustomBarData = (data: number[]) => {
     }
     xAxis.push(hasUnitX)
     let samplenum = 0
-    for(let i = 0; i < data.length; i++){
-      if(x0 <= data[i] && x1 > data[i]) {
-        samplenum++                
+    for (let i = 0; i < data.length; i++) {
+      if (x0 <= data[i] && x1 > data[i]) {
+        samplenum++
       }
     }
     tmin += interval
@@ -144,7 +145,7 @@ export const dealCustomBarData = (data: number[]) => {
 
   return {
     data: edata,
-    interval: xAxis
+    interval: xAxis,
   }
 }
 

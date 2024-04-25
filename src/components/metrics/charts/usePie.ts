@@ -38,7 +38,7 @@ export function formatPieOptions(data?: CommonData): echarts.EChartsCoreOption {
         label: {
           show: false,
           position: 'center',
-          width: 100
+          width: 100,
         },
         emphasis: {
           label: {

@@ -60,8 +60,8 @@ export function formatBarOptions(data?: dataItem[]): echarts.EChartsCoreOption {
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             { offset: 0, color: '#FFB300' },
-            { offset: 1, color: '#FFD778' }
-          ])
+            { offset: 1, color: '#FFD778' },
+          ]),
         },
       },
     ],

@@ -39,12 +39,14 @@ onBeforeMount(() => {
   //   dataloading.value = false
   // }
   // worker.postMessage(JSON.stringify(loginStore.connection))
-  
+
   getTreeData()
 })
 
 onMounted(() => {
-  treeContainerHeight.value = document.querySelector('.tree-content')?.getBoundingClientRect().height
+  treeContainerHeight.value = document
+    .querySelector('.tree-content')
+    ?.getBoundingClientRect().height
   // closeTooltip()
 })
 
@@ -60,19 +62,18 @@ onMounted(() => {
 // }
 
 const getTreeData = () => {
-  //dataloading.value = true  
+  //dataloading.value = true
   treeLoading.value = true
-  
+
   Promise.all([queryAllColumns(), queryAllTables(), queryAllDatabases()])
-    .then(res => {
-      const dataArr = res.map(item => item.data)
+    .then((res) => {
+      const dataArr = res.map((item) => item.data)
       columns.value = dataArr[0]
-      selectV2Columns.value = dataArr[0].map((item: any) => ({ label: item.name, value: `${item.database}.${item.table}.${item.name}`}))
-      tree.value = createTree(
-        dataArr[0],
-        dataArr[1],
-        dataArr[2]
-      )
+      selectV2Columns.value = dataArr[0].map((item: any) => ({
+        label: item.name,
+        value: `${item.database}.${item.table}.${item.name}`,
+      }))
+      tree.value = createTree(dataArr[0], dataArr[1], dataArr[2])
       defaultExpandKeys.value = [tree.value[0].name]
     })
     .finally(() => {
@@ -83,7 +84,7 @@ const getTreeData = () => {
 const clickCommand = (node: any, command: string) => {
   emit('tableCommand', {
     node,
-    command
+    command,
   })
 }
 
@@ -97,7 +98,7 @@ const changeSelected = (val: string) => {
   selectedColumn.selected = true
   treeInstance.value.store.nodesMap[database].expanded = true
   treeInstance.value.store.nodesMap[table].expanded = true
-  
+
   // setTimeout(() => {
   //   console.log(`#${database}-${table}-${currentCol}`)
   //   const nodeEle = document.querySelector(`#${database}-${table}-${currentCol}`)
@@ -115,7 +116,7 @@ const refreshTree = () => {
 }
 
 const shrinkAll = () => {
-  Object.keys(treeInstance.value.store.nodesMap).forEach(key => {
+  Object.keys(treeInstance.value.store.nodesMap).forEach((key) => {
     if (treeInstance.value.store.nodesMap[key].expanded) {
       treeInstance.value.store.nodesMap[key].expanded = false
     }
@@ -123,24 +124,14 @@ const shrinkAll = () => {
 }
 
 defineExpose({
-  getDragEle
+  getDragEle,
 })
 </script>
 
 <template>
-  <section
-    v-loading="treeLoading"
-    class="siderbar-content"
-  >
-    <div
-      ref="dragEle"
-      class="drag-box"
-    ></div>
-    <div
-      v-if="dataloading"
-      v-loading="true"
-      class="loading"
-    ></div>
+  <section v-loading="treeLoading" class="siderbar-content">
+    <div ref="dragEle" class="drag-box"></div>
+    <div v-if="dataloading" v-loading="true" class="loading"></div>
     <div class="search-box">
       <el-select-v2
         v-model="seletedColumn"
@@ -184,7 +175,7 @@ defineExpose({
           :default-expanded-keys="defaultExpandKeys"
           render-after-expand
           auto-expand-parent
-          :props="{children: 'children', label: 'name'}"
+          :props="{ children: 'children', label: 'name' }"
           :expand-on-click-node="false"
         >
           <template #default="{ node }">
@@ -206,10 +197,7 @@ defineExpose({
                     class="custom-tree-node has-dropdown"
                     @dblclick="() => clickCommand(node, ColumnCommand.OpenTable)"
                   >
-                    <img
-                      :src="tableImg"
-                      alt=""
-                    >
+                    <img :src="tableImg" alt="" />
                     <span>{{ node.label }}</span>
                   </span>
                   <template #dropdown>
@@ -234,7 +222,7 @@ defineExpose({
                 class="box-item"
                 effect="dark"
                 popper-class="click-cat-dark"
-                :content="`${node.data.name}${br}${node.data.type}${node.data.defaultType ? `${br}${node.data.defaultType}`:''}`"
+                :content="`${node.data.name}${br}${node.data.type}${node.data.defaultType ? `${br}${node.data.defaultType}` : ''}`"
                 placement="right"
               >
                 <span
@@ -249,25 +237,12 @@ defineExpose({
             </template>
             <template v-else>
               <span class="custom-tree-node">
-                <img
-                  :src="databaseImg"
-                  alt=""
-                >
+                <img :src="databaseImg" alt="" />
                 <span>{{ node.label }}</span>
               </span>
-              <span
-                v-if="!node.data.isRoot"
-                class="suffix"
-              >{{ node.data.children.length }}</span>
-              <span
-                v-else
-                class="root-btn"
-              >
-                <el-icon
-                  color="#C4C4C4"
-                  :size="16"
-                  @click="refreshTree"
-                ><Refresh /></el-icon>
+              <span v-if="!node.data.isRoot" class="suffix">{{ node.data.children.length }}</span>
+              <span v-else class="root-btn">
+                <el-icon color="#C4C4C4" :size="16" @click="refreshTree"><Refresh /></el-icon>
                 <SvgIcon
                   name="svg-shrink"
                   color="#C4C4C4"
@@ -277,7 +252,7 @@ defineExpose({
               </span>
             </template>
           </template>
-        <!-- </el-tree-v2> -->
+          <!-- </el-tree-v2> -->
         </el-tree>
       </el-scrollbar>
     </div>
@@ -290,7 +265,7 @@ defineExpose({
   height: 100%;
   padding: 30px 10px;
   box-sizing: border-box;
-  --el-mask-color: #10223E;
+  --el-mask-color: #10223e;
   .drag-box {
     position: absolute;
     right: 4px;
@@ -320,7 +295,7 @@ defineExpose({
   }
   .custom-tree-node {
     display: flex;
-    color: rgba(255, 255, 255, .85);
+    color: rgba(255, 255, 255, 0.85);
     img {
       margin-right: 3px;
     }
@@ -334,7 +309,7 @@ defineExpose({
   border-radius: unset;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
-  background-color: rgba(255, 255, 255, .2);
+  background-color: rgba(255, 255, 255, 0.2);
   box-shadow: unset;
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -410,7 +385,7 @@ defineExpose({
     height: 100%;
     z-index: 1;
   }
-  .absolute-back.active{
+  .absolute-back.active {
     background: rgba(255, 179, 0, 0.1);
   }
   :deep(.el-tree-node__content i) {

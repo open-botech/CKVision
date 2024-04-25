@@ -13,7 +13,12 @@ export function generateLineInstance(root: HTMLElement): echarts.ECharts {
   return echartsInstance
 }
 
-export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?: CommonObj, unit?: string): echarts.EChartsCoreOption {
+export function formatLineOptions(
+  data?: CommonMeta[],
+  grid?: CommonObj,
+  legend?: CommonObj,
+  unit?: string,
+): echarts.EChartsCoreOption {
   let nameList = []
   let dataList = []
   const isMulLine = Array.isArray(data && data[0])
@@ -23,7 +28,7 @@ export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?
       return {
         name: da[0].category,
         type: 'line',
-        data: da.map(item => item.value)
+        data: da.map((item) => item.value),
       }
     })
   } else if (data?.length) {
@@ -39,11 +44,11 @@ export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?
         right: 40,
         bottom: 40,
         left: 100,
-        height: '70%'
+        height: '70%',
       },
-      ...(grid || {})
+      ...(grid || {}),
     },
-    ...isMulLine && {
+    ...(isMulLine && {
       legend: {
         ...{
           left: 'center',
@@ -54,9 +59,9 @@ export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?
           //   return (name.length > 4 ? (name.slice(0,4) + '...') : name );
           // }
         },
-        ...(legend || {})
-      }
-    },
+        ...(legend || {}),
+      },
+    }),
     tooltip: {
       trigger: 'axis',
       formatter: function (params: CommonObj[]) {
@@ -66,7 +71,7 @@ export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?
           hasUnitVal = formatHasUnit(pa.value, unit) + 'MB'
         }
         return pa.name + ' ' + hasUnitVal
-      }
+      },
     },
     xAxis: {
       type: 'category',
@@ -80,14 +85,16 @@ export function formatLineOptions(data?: CommonMeta[], grid?: CommonObj, legend?
             return value
           }
           return formatHasUnit(value, unit)
-        }
-      }
+        },
+      },
     },
-    series: !isMulLine ? [
-      {
-        data: dataList,
-        type: 'line',
-      }
-    ] : [...dataList],
+    series: !isMulLine
+      ? [
+          {
+            data: dataList,
+            type: 'line',
+          },
+        ]
+      : [...dataList],
   }
 }

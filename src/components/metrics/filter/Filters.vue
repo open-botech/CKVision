@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onBeforeMount, reactive, ref } from 'vue'
 import { Clock } from '@element-plus/icons-vue'
 import { getTimeFilterList, queryListWithKey } from './utils'
@@ -6,17 +6,20 @@ import { CommonObj } from '../types'
 import dayjs from 'dayjs'
 
 type Option = {
-  name: string,
+  name: string
   value: string
 }
 
 const emit = defineEmits(['change'])
 
-const props = withDefaults(defineProps<{
-  selectType?: ('database' | 'table' | 'type' | 'queryKind' | 'user')[]
-}>(), {
-  selectType: () => ['database', 'table']
-})
+const props = withDefaults(
+  defineProps<{
+    selectType?: ('database' | 'table' | 'type' | 'queryKind' | 'user')[]
+  }>(),
+  {
+    selectType: () => ['database', 'table'],
+  },
+)
 
 const databaseList = ref<Option[]>([])
 const tableList = ref<Option[]>([])
@@ -29,7 +32,7 @@ const keyList = {
   table: tableList,
   queryKind: queryKindList,
   type: typeList,
-  user: initialUserList
+  user: initialUserList,
 }
 
 const defaultValue = reactive({
@@ -38,40 +41,37 @@ const defaultValue = reactive({
   queryKind: 'All',
   user: 'All',
   type: 'All',
-  time: dayjs.duration(24, 'hours').asMilliseconds()
+  time: dayjs.duration(24, 'hours').asMilliseconds(),
 })
 
 const timeFilterList = getTimeFilterList()
 
 const getTablesByDatabase = (val: string) => {
-  queryListWithKey.table(val)
-    .then(res => {
-      tableList.value = [
-        {name: 'All'},
-        ...res.data.map((item: CommonObj) => ({ name: item.name }))
-      ]
-    })
+  queryListWithKey.table(val).then((res) => {
+    tableList.value = [{ name: 'All' }, ...res.data.map((item: CommonObj) => ({ name: item.name }))]
+  })
 }
 
 onBeforeMount(() => {
   const { selectType } = props
-  Promise.all(selectType.map(type => {
-    return queryListWithKey[type]()
-  }))
-    .then(res => {
-      selectType.forEach((type, i) => {
-        const data = [
-          {name: 'All'},
-          ...res[i].data.map((item: CommonObj) => {
-            const { type, query_kind, initial_user, name } = item
-            return {
-              name: name || type || query_kind || initial_user
-            }
-          })
-        ]
-        keyList[type].value = data
-      })
+  Promise.all(
+    selectType.map((type) => {
+      return queryListWithKey[type]()
+    }),
+  ).then((res) => {
+    selectType.forEach((type, i) => {
+      const data = [
+        { name: 'All' },
+        ...res[i].data.map((item: CommonObj) => {
+          const { type, query_kind, initial_user, name } = item
+          return {
+            name: name || type || query_kind || initial_user,
+          }
+        }),
+      ]
+      keyList[type].value = data
     })
+  })
 })
 </script>
 <template>
@@ -83,10 +83,12 @@ onBeforeMount(() => {
         class="m-2"
         placeholder="Select"
         size="small"
-        @change="(val: string) => {
-          getTablesByDatabase(val)
-          emit('change', { database: val })
-        }"
+        @change="
+          (val: string) => {
+            getTablesByDatabase(val)
+            emit('change', { database: val })
+          }
+        "
       >
         <el-option
           v-for="item in databaseList"
@@ -104,9 +106,11 @@ onBeforeMount(() => {
         class="m-2"
         placeholder="Select"
         size="small"
-        @change="(val: string) => {
-          emit('change', { table: val })
-        }"
+        @change="
+          (val: string) => {
+            emit('change', { table: val })
+          }
+        "
       >
         <el-option
           v-for="item in tableList"
@@ -124,9 +128,11 @@ onBeforeMount(() => {
         class="m-2"
         placeholder="Select"
         size="small"
-        @change="(val: string) => {
-          emit('change', { queryKind: val })
-        }"
+        @change="
+          (val: string) => {
+            emit('change', { queryKind: val })
+          }
+        "
       >
         <el-option
           v-for="item in queryKindList"
@@ -144,9 +150,11 @@ onBeforeMount(() => {
         class="m-2"
         placeholder="Select"
         size="small"
-        @change="(val: string) => {
-          emit('change', { type: val })
-        }"
+        @change="
+          (val: string) => {
+            emit('change', { type: val })
+          }
+        "
       >
         <el-option
           v-for="item in typeList"
@@ -164,9 +172,11 @@ onBeforeMount(() => {
         class="m-2"
         placeholder="Select"
         size="small"
-        @change="(val: string) => {
-          emit('change', { user: val })
-        }"
+        @change="
+          (val: string) => {
+            emit('change', { user: val })
+          }
+        "
       >
         <el-option
           v-for="item in initialUserList"
@@ -183,12 +193,14 @@ onBeforeMount(() => {
       class="m-2"
       placeholder="Select"
       size="small"
-      @change="(val: string | number) => {
-        emit('change', {
-          time: val,
-          option: timeFilterList.find(item => item.value === val)
-        })
-      }"
+      @change="
+        (val: string | number) => {
+          emit('change', {
+            time: val,
+            option: timeFilterList.find((item) => item.value === val),
+          })
+        }
+      "
     >
       <el-option
         v-for="item in timeFilterList"
@@ -199,7 +211,7 @@ onBeforeMount(() => {
     </el-select>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .filter-container {
   display: flex;
   justify-content: right;
@@ -208,8 +220,8 @@ onBeforeMount(() => {
   height: 36px;
   padding-right: 10px;
   margin-bottom: 10px;
-  background-color: #F0F0F0;
-  border: 1px solid #E2E2E2;
+  background-color: #f0f0f0;
+  border: 1px solid #e2e2e2;
   box-sizing: border-box;
 
   .el-select {

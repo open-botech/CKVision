@@ -1,4 +1,4 @@
 export interface AppState {
-  title: string,
+  title: string
   [key: string]: unknown
 }

@@ -1,13 +1,10 @@
 <template>
   <section class="graph-add-wrapper">
-    <AddVue
-      @to-result="toResult"
-      @to-list="toList"
-    />
+    <AddVue @to-result="toResult" @to-list="toList" />
   </section>
 </template>
- 
-<script lang='ts' setup>
+
+<script lang="ts" setup>
 import AddVue from '@/components/graph/add/Add.vue'
 import { useGoTo } from '@/layout/hooks'
 
@@ -21,7 +18,7 @@ const toList = () => {
   goto('Graph')
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .graph-add-wrapper {
   width: 100%;
   height: 100%;

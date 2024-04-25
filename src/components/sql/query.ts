@@ -1,5 +1,5 @@
-import { query } from '@/utils/http';
-import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls';
+import { query } from '@/utils/http'
+import { JSON_SUFFIX } from '../metrics/dataAnalysis/sqls'
 
 export const queryLineage = ({ database, name }: any) => {
   const sql = `
@@ -59,12 +59,12 @@ export const queryLineage = ({ database, name }: any) => {
           )
 
          )
-    `;
+    `
 
   return query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryAllTables = () => {
   const sql = `SELECT t.database,
@@ -75,47 +75,47 @@ export const queryAllTables = () => {
     FROM system.tables as t ANY LEFT JOIN ( SELECT database,table as name,formatReadableSize(sum(bytes)) as size FROM system.parts  GROUP BY database,name ) as pa USING (database,name)
     LIMIT 10000
 
-    ${JSON_SUFFIX};`;
+    ${JSON_SUFFIX};`
   return query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryAllDatabases = () => {
   const sql = `SELECT name FROM system.databases LIMIT 10000
 
-  ${JSON_SUFFIX}`;
+  ${JSON_SUFFIX}`
   return query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryAllColumns = () => {
   const sql = `SELECT * FROM system.columns
 
     LIMIT 50000
 
-  ${JSON_SUFFIX}`;
+  ${JSON_SUFFIX}`
   return query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryTableDataPaneData = (table: any, rows = 100) => {
-  const sql = `select * from ${table.database}.${table.name} limit ${rows}`;
+  const sql = `select * from ${table.database}.${table.name} limit ${rows}`
   return query(sql).then((res) => {
-    console.log(res, 'res');
+    console.log(res, 'res')
 
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryPropertiesColumns = (table: any) => {
-  const sql = `DESCRIBE TABLE ${table.database}.${table.name} ${JSON_SUFFIX}`;
+  const sql = `DESCRIBE TABLE ${table.database}.${table.name} ${JSON_SUFFIX}`
   return query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 export const queryPropertiesStatistics = (table: any) => {
   const sql = `SELECT table,
@@ -126,9 +126,9 @@ export const queryPropertiesStatistics = (table: any) => {
     FROM system.parts
     WHERE active
     and database = '${table.database}' and table = '${table.name}'
-    GROUP BY table ${JSON_SUFFIX}`;
+    GROUP BY table ${JSON_SUFFIX}`
   return query(sql).then((res) => {
-    const data = res.data[0];
+    const data = res.data[0]
     return {
       columns: [
         {
@@ -144,8 +144,8 @@ export const queryPropertiesStatistics = (table: any) => {
           return {
             Name: item.name,
             Value: data[item.name],
-          };
+          }
         }),
-    };
-  });
-};
+    }
+  })
+}

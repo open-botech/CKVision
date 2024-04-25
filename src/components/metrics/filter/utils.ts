@@ -56,22 +56,28 @@ export const getLastQuarter = () => {
     endMonth = 12
     dayjsSetYear = dayjs().subtract(1, 'years')
   } else {
-    if ([1,4,7,10].includes(monthLastQuarter)) {
+    if ([1, 4, 7, 10].includes(monthLastQuarter)) {
       startMonth = monthLastQuarter
       endMonth = monthLastQuarter + 2
     }
-    if ([2,5,8,11].includes(monthLastQuarter)) {
+    if ([2, 5, 8, 11].includes(monthLastQuarter)) {
       startMonth = monthLastQuarter - 1
       endMonth = monthLastQuarter + 1
     }
-    if ([3,6,9,12].includes(monthLastQuarter)) {
+    if ([3, 6, 9, 12].includes(monthLastQuarter)) {
       startMonth = monthLastQuarter - 2
       endMonth = monthLastQuarter
     }
     dayjsSetYear = dayjs()
   }
-  
-  return `${dayjsSetYear.month(startMonth - 1).startOf('month').format(formatStr)},${dayjsSetYear.month(endMonth - 1).endOf('month').format(formatStr)}`
+
+  return `${dayjsSetYear
+    .month(startMonth - 1)
+    .startOf('month')
+    .format(formatStr)},${dayjsSetYear
+    .month(endMonth - 1)
+    .endOf('month')
+    .format(formatStr)}`
 }
 
 // 去年
@@ -134,37 +140,49 @@ export const getThisQuarter = () => {
   let startMonth = 0
   let endMonth = 0
   const day = dayjs()
-  if ([1,4,7,10].includes(monthLastQuarter)) {
+  if ([1, 4, 7, 10].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter
     endMonth = monthLastQuarter + 2
   }
-  if ([2,5,8,11].includes(monthLastQuarter)) {
+  if ([2, 5, 8, 11].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter - 1
     endMonth = monthLastQuarter + 1
   }
-  if ([3,6,9,12].includes(monthLastQuarter)) {
+  if ([3, 6, 9, 12].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter - 2
     endMonth = monthLastQuarter
   }
-  return `${day.month(startMonth - 1).startOf('month').startOf('day').format(formatStr)},${day.month(endMonth - 1).endOf('month').endOf('day').format(formatStr)}`
+  return `${day
+    .month(startMonth - 1)
+    .startOf('month')
+    .startOf('day')
+    .format(formatStr)},${day
+    .month(endMonth - 1)
+    .endOf('month')
+    .endOf('day')
+    .format(formatStr)}`
 }
 
 // 本季度截止到目前为止
 export const getThisQuarterSoFar = () => {
   const monthLastQuarter = dayjs().month() + 1
   let startMonth = 0
-  
+
   const day = dayjs()
-  if ([1,4,7,10].includes(monthLastQuarter)) {
+  if ([1, 4, 7, 10].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter
   }
-  if ([2,5,8,11].includes(monthLastQuarter)) {
+  if ([2, 5, 8, 11].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter - 1
   }
-  if ([3,6,9,12].includes(monthLastQuarter)) {
+  if ([3, 6, 9, 12].includes(monthLastQuarter)) {
     startMonth = monthLastQuarter - 2
   }
-  return `${day.month(startMonth - 1).startOf('month').startOf('day').format(formatStr)},?`
+  return `${day
+    .month(startMonth - 1)
+    .startOf('month')
+    .startOf('day')
+    .format(formatStr)},?`
 }
 
 export const getTimeFilterList = () => {
@@ -172,167 +190,167 @@ export const getTimeFilterList = () => {
     {
       name: 'Last 5 minutes',
       value: dayjs.duration(5, 'minutes').asMilliseconds(),
-      duration: '1 SECOND'
+      duration: '1 SECOND',
     },
     {
       name: 'Last 15 minutes',
       value: dayjs.duration(15, 'minutes').asMilliseconds(),
-      duration: '3 SECOND'
+      duration: '3 SECOND',
     },
     {
       name: 'Last 30 minutes',
       value: dayjs.duration(30, 'minutes').asMilliseconds(),
-      duration: '5 SECOND'
+      duration: '5 SECOND',
     },
     {
       name: 'Last 1 hour',
       value: dayjs.duration(1, 'hours').asMilliseconds(),
-      duration: '6 SECOND'
+      duration: '6 SECOND',
     },
     {
       name: 'Last 3 hour',
       value: dayjs.duration(3, 'hours').asMilliseconds(),
-      duration: '10 SECOND'
+      duration: '10 SECOND',
     },
     {
       name: 'Last 6 hour',
       value: dayjs.duration(6, 'hours').asMilliseconds(),
-      duration: '15 SECOND'
+      duration: '15 SECOND',
     },
     {
       name: 'Last 12 hour',
       value: dayjs.duration(12, 'hours').asMilliseconds(),
-      duration: '30 SECOND'
+      duration: '30 SECOND',
     },
     {
       name: 'Last 24 hour',
       value: dayjs.duration(24, 'hours').asMilliseconds(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'Last 2 days',
       value: dayjs.duration(2, 'days').asMilliseconds(),
-      duration: '2 MINUTE'
+      duration: '2 MINUTE',
     },
     {
       name: 'Last 7 days',
       value: dayjs.duration(7, 'days').asMilliseconds(),
-      duration: '5 MINUTE'
+      duration: '5 MINUTE',
     },
     {
       name: 'Last 30 days',
       value: dayjs.duration(30, 'days').asMilliseconds(),
-      duration: '30 MINUTE'
+      duration: '30 MINUTE',
     },
     {
       name: 'Last 90 days',
       value: dayjs.duration(90, 'days').asMilliseconds(),
-      duration: '2 HOUR'
+      duration: '2 HOUR',
     },
     {
       name: 'Last 6 months',
       value: dayjs.duration(6, 'months').asMilliseconds(),
-      duration: '3 HOUR'
+      duration: '3 HOUR',
     },
     {
       name: 'Last 1 year',
       value: dayjs.duration(1, 'years').asMilliseconds(),
-      duration: '6 HOUR'
+      duration: '6 HOUR',
     },
     {
       name: 'Last 2 year',
       value: dayjs.duration(2, 'years').asMilliseconds(),
-      duration: '12 HOUR'
+      duration: '12 HOUR',
     },
     {
       name: 'Last 5 year',
       value: dayjs.duration(5, 'years').asMilliseconds(),
-      duration: '1 DAY'
+      duration: '1 DAY',
     },
     {
       name: 'Yesterday',
       value: getYestoday(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'Day before yesterday',
       value: getQt(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'This day last week',
       value: getThisDayLatWeek(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'Previous week',
       value: getLastWeek(),
-      duration: '5 MINUTE'
+      duration: '5 MINUTE',
     },
     {
       name: 'Previous month',
       value: getLastMonth(),
-      duration: '30 MINUTE'
+      duration: '30 MINUTE',
     },
     {
       name: 'Previous fiscal quarter',
       value: getLastQuarter(),
-      duration: '2 HOUR'
+      duration: '2 HOUR',
     },
     {
       name: 'Previous year',
       value: getLastYear(),
-      duration: '6 HOUR'
+      duration: '6 HOUR',
     },
     {
       name: 'Today',
       value: getToday(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'Today so far',
       value: getTodaySoFar(),
-      duration: '1 MINUTE'
+      duration: '1 MINUTE',
     },
     {
       name: 'This week',
       value: getThisWeek(),
-      duration: '5 MINUTE'
+      duration: '5 MINUTE',
     },
     {
       name: 'This week so far',
       value: getThisWeekSoFar(),
-      duration: '5 MINUTE'
+      duration: '5 MINUTE',
     },
     {
       name: 'This month',
       value: getThisMonth(),
-      duration: '30 MINUTE'
+      duration: '30 MINUTE',
     },
     {
       name: 'This month so far',
       value: getThisMonthSoFar(),
-      duration: '30 MINUTE'
+      duration: '30 MINUTE',
     },
     {
       name: 'This year',
       value: getThisYear(),
-      duration: '6 HOUR'
+      duration: '6 HOUR',
     },
     {
       name: 'This year so far',
       value: getThisYearSoFar(),
-      duration: '6 HOUR'
+      duration: '6 HOUR',
     },
     {
       name: 'This fiscal quarter',
       value: getThisQuarter(),
-      duration: '2 HOUR'
+      duration: '2 HOUR',
     },
     {
       name: 'This fiscal quarter so far',
       value: getThisQuarterSoFar(),
-      duration: '2 HOUR'
+      duration: '2 HOUR',
     },
   ]
 }
@@ -344,7 +362,7 @@ export const getRealVal = (val: string[]) => {
     if (last === 'All') {
       realVal = ['All']
     } else {
-      realVal = val.filter(item => item !== 'All')
+      realVal = val.filter((item) => item !== 'All')
     }
   }
   return realVal

@@ -41,5 +41,5 @@ export const defaultOptions: monaco.editor.IEditorConstructionOptions = {
   // renderWhitespace: 'boundary',
   fontLigatures: true,
   // Enable auto indentation adjustment. Defaults to false. '"none" | "keep" | "brackets" | "advanced" | "full" | undefined'.
-  autoIndent: 'full'
+  autoIndent: 'full',
 }

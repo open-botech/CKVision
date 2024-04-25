@@ -1,63 +1,63 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from 'vue';
-import { Plus } from '@element-plus/icons-vue';
-import { useSqlStore } from '@/store';
+import { computed, onBeforeMount, ref } from 'vue'
+import { Plus } from '@element-plus/icons-vue'
+import { useSqlStore } from '@/store'
 
-import { TabsType } from './types';
+import { TabsType } from './types'
 
-import EditorTabPane from './EditorTabPane.vue';
-import TableTabPane from './TableTabPane.vue';
+import EditorTabPane from './EditorTabPane.vue'
+import TableTabPane from './TableTabPane.vue'
 
-const sqlStore = useSqlStore();
+const sqlStore = useSqlStore()
 
 const tabs = computed(() => {
-  return sqlStore.tabs;
-});
+  return sqlStore.tabs
+})
 
-const editableTabsValue = ref<string>();
-const tabType = TabsType;
+const editableTabsValue = ref<string>()
+const tabType = TabsType
 
 onBeforeMount(() => {
-  const currentActive = tabs.value.find((item) => item.name === sqlStore.activeTab);
+  const currentActive = tabs.value.find((item) => item.name === sqlStore.activeTab)
   if (currentActive) {
-    editableTabsValue.value = sqlStore.activeTab;
+    editableTabsValue.value = sqlStore.activeTab
   } else {
-    editableTabsValue.value = tabs.value[0]?.name;
-    sqlStore.setActiveTab(tabs.value[0]?.name);
+    editableTabsValue.value = tabs.value[0]?.name
+    sqlStore.setActiveTab(tabs.value[0]?.name)
   }
-});
+})
 
 const changeTabs = (val: any) => {
-  sqlStore.setActiveTab(val);
-};
+  sqlStore.setActiveTab(val)
+}
 
 const addTab = () => {
-  sqlStore.addEditorTabs();
-  const name = tabs.value[tabs.value.length - 1].name;
-  sqlStore.setActiveTab(name);
-  editableTabsValue.value = name;
-};
+  sqlStore.addEditorTabs()
+  const name = tabs.value[tabs.value.length - 1].name
+  sqlStore.setActiveTab(name)
+  editableTabsValue.value = name
+}
 
 const removeTab = (val: any) => {
-  const index = tabs.value.findIndex((item) => item.name === val);
+  const index = tabs.value.findIndex((item) => item.name === val)
   if (index >= 0) {
-    const activetabIndex = tabs.value.findIndex((item) => item.name === sqlStore.activeTab);
+    const activetabIndex = tabs.value.findIndex((item) => item.name === sqlStore.activeTab)
     if (activetabIndex === index && index > 0) {
-      const activeTab = tabs.value[index - 1];
-      editableTabsValue.value = activeTab.name;
-      sqlStore.setActiveTab(activeTab.name);
+      const activeTab = tabs.value[index - 1]
+      editableTabsValue.value = activeTab.name
+      sqlStore.setActiveTab(activeTab.name)
     }
-    sqlStore.removeTabs(index);
+    sqlStore.removeTabs(index)
   }
-};
+}
 
 const setEditableTabsValue = (val: string) => {
-  editableTabsValue.value = val;
-};
+  editableTabsValue.value = val
+}
 
 defineExpose({
   setEditableTabsValue,
-});
+})
 </script>
 <template>
   <section class="editor-tabs-container">

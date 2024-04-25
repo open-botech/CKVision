@@ -1,30 +1,30 @@
 export const unitForFunc = {
   day: 'toDate',
   hour: 'toHour',
-  minute: 'toMinute'
+  minute: 'toMinute',
 }
 
 export const timeIntervalOps = [
   {
     label: 'year',
-    value: 'year'
+    value: 'year',
   },
   {
     label: 'month',
-    value: 'month'
+    value: 'month',
   },
   {
     label: 'day',
-    value: 'day'
+    value: 'day',
   },
   {
     label: 'hour',
-    value: 'hour'
+    value: 'hour',
   },
   {
     label: 'minute',
-    value: 'minute'
-  }
+    value: 'minute',
+  },
 ]
 
 export const effect = 0.4

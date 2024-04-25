@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import Count from '@/components/metrics/Count.vue'
 import Progress from '@/components/metrics/progress/Progress.vue'
 import ChartsVue from '../charts/Charts.vue'
@@ -42,19 +42,12 @@ const timeRange = computed(() => {
   return getStartAndEndTime(timeReal.value)
 })
 
-const queryFunction = (
-  sqlFuncName: string,
-  params: SqlParams
-) => {
+const queryFunction = (sqlFuncName: string, params: SqlParams) => {
   return queryFunc(sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params))
 }
-
 </script>
 <template>
-  <el-collapse-item
-    :title="$t('Data Analysis')"
-    name="1"
-  >
+  <el-collapse-item :title="$t('Data Analysis')" name="1">
     <FiltersVue @change="selectChangeData"></FiltersVue>
     <el-row :gutter="10">
       <el-col :span="6">
@@ -63,7 +56,7 @@ const queryFunction = (
           :banner="versionImg"
           :outer-title="'Version'"
           sql-func-name="queryVersion"
-        ></count>
+        ></Count>
       </el-col>
       <el-col :span="6">
         <Count
@@ -72,7 +65,7 @@ const queryFunction = (
           :outer-title="'Server uptime'"
           sql-func-name="queryServerUptime"
           show-type="duration"
-        ></count>
+        ></Count>
       </el-col>
       <el-col :span="6">
         <Count
@@ -81,7 +74,7 @@ const queryFunction = (
           :outer-title="'Total rows'"
           sql-func-name="queryTotalRows"
           show-type="toLocaleString"
-        ></count>
+        ></Count>
       </el-col>
       <el-col :span="6">
         <Count
@@ -92,7 +85,7 @@ const queryFunction = (
           :table="tableReal"
           sql-func-name="queryTotalColumns"
           show-type="toLocaleString"
-        ></count>
+        ></Count>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -234,10 +227,7 @@ const queryFunction = (
     <!-- <el-row :gutter="10">
       
     </el-row> -->
-    <el-row
-      :gutter="10"
-      style="margin-bottom: 0;"
-    >
+    <el-row :gutter="10" style="margin-bottom: 0">
       <el-col :span="24">
         <TableBanner
           title="Recent part analysis"
@@ -251,5 +241,4 @@ const queryFunction = (
     </el-row>
   </el-collapse-item>
 </template>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

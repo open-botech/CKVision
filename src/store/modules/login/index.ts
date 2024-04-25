@@ -12,21 +12,21 @@ export const useLoginStore = defineStore(
         connectionUrl: '',
         username: '',
         password: '',
-        params: ''
+        params: '',
       },
       previousConnection: {
         connectionName: '',
         connectionUrl: '',
         username: '',
         password: '',
-        params: ''
+        params: '',
       },
     }),
     persist: {
       enabled: true,
       strategies: [
         { key: 'connection', storage: localStorage, paths: ['connection'] },
-        { key: 'previousConnection' ,storage: localStorage, paths: ['previousConnection'] },
+        { key: 'previousConnection', storage: localStorage, paths: ['previousConnection'] },
       ],
     },
     getters: {},

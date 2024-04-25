@@ -7,7 +7,7 @@ export const useAppStore = defineStore(
   'app',
   {
     state: () => ({
-      title: 'Fast-admin-vue3,一个快速开箱即用的Vue3+Vite模板'
+      title: 'Fast-admin-vue3,一个快速开箱即用的Vue3+Vite模板',
     }),
     getters: {},
     actions: {

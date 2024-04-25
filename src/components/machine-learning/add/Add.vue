@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onBeforeMount, onMounted, reactive, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import * as echarts from 'echarts/core'
@@ -13,7 +13,7 @@ import { useLoginStore } from '@/store'
 import { timeIntervalOps } from '../data'
 import i18n from '@/i18n'
 
-type List = {name: string}[]
+type List = { name: string }[]
 
 const emit = defineEmits(['toResult', 'toList'])
 const loginStore = useLoginStore()
@@ -28,19 +28,19 @@ const step = ref<number>(1)
 const timeIntervalUnit = ref<string>('day')
 const timeInterval = ref<string>('1')
 const formLabelAlign = reactive<{
-  database: string,
-  table: string,
-  timeField: string,
-  timeRange: any,
-  jobName: string,
-  timeInterval: string,
+  database: string
+  table: string
+  timeField: string
+  timeRange: any
+  jobName: string
+  timeInterval: string
 }>({
   database: '',
   table: '',
   timeField: '',
   timeRange: '',
   jobName: '',
-  timeInterval: '1 day'
+  timeInterval: '1 day',
 })
 
 const validateTimeRange = (rule: any, value: any, callback: any) => {
@@ -57,7 +57,7 @@ const validateTimeInterval = (rule: any, value: any, callback: any) => {
   if (!timeInterval) {
     return callback(new Error(t('please input time interval')))
   }
-  if (!(/^[0-9]*$/.test(timeInterval))) {
+  if (!/^[0-9]*$/.test(timeInterval)) {
     callback(new Error(t('please use number')))
   } else {
     callback()
@@ -65,9 +65,7 @@ const validateTimeInterval = (rule: any, value: any, callback: any) => {
 }
 
 const rules = reactive<FormRules>({
-  database: [
-    { required: true, message: t('Please select database'), trigger: 'change' }
-  ],
+  database: [{ required: true, message: t('Please select database'), trigger: 'change' }],
   table: [
     {
       required: true,
@@ -79,8 +77,8 @@ const rules = reactive<FormRules>({
     {
       required: true,
       validator: validateTimeRange,
-      trigger: 'change'
-    }
+      trigger: 'change',
+    },
   ],
   timeField: [
     {
@@ -94,15 +92,15 @@ const rules = reactive<FormRules>({
       required: true,
       message: t('Please input job name'),
       trigger: 'blur',
-    }
+    },
   ],
   timeInterval: [
     {
       required: true,
       validator: validateTimeInterval,
       trigger: 'change',
-    }
-  ]
+    },
+  ],
 })
 
 watch(step, (newVal) => {
@@ -115,7 +113,10 @@ let chartInstance: echarts.ECharts
 
 onBeforeMount(() => {
   queryDatabases()
-  formLabelAlign.timeRange = [dayjs().subtract(7, 'day').startOf('day').toDate(), dayjs().endOf('day').toDate()]
+  formLabelAlign.timeRange = [
+    dayjs().subtract(7, 'day').startOf('day').toDate(),
+    dayjs().endOf('day').toDate(),
+  ]
 })
 
 onMounted(() => {
@@ -131,7 +132,7 @@ const addTraining = (queryData: any) => {
     connectionUrl,
     username,
     password,
-    ...queryData
+    ...queryData,
   })
 }
 
@@ -141,7 +142,14 @@ const nextStep = async () => {
       console.log('error submit!', fields)
     }
   })
-  const { database, table, timeField, timeRange, jobName, timeInterval: formTimeInterval } = formLabelAlign
+  const {
+    database,
+    table,
+    timeField,
+    timeRange,
+    jobName,
+    timeInterval: formTimeInterval,
+  } = formLabelAlign
 
   const queryData = {
     database,
@@ -150,7 +158,7 @@ const nextStep = async () => {
     start_time: dayjs(timeRange[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
     end_time: dayjs(timeRange[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss'),
     job_name: jobName,
-    time_interval: formTimeInterval
+    time_interval: formTimeInterval,
   }
 
   const addReturnData = await addTraining(queryData)
@@ -158,23 +166,20 @@ const nextStep = async () => {
 }
 
 const queryDatabases = () => {
-  query(sqls.queryAllDatabases())
-    .then(res => {
-      database.value = res.data
-    })
+  query(sqls.queryAllDatabases()).then((res) => {
+    database.value = res.data
+  })
 }
 const queryTables = () => {
-  query(sqls.queryTablesByDatabase(formLabelAlign.database))
-    .then(res => {
-      tables.value = res.data
-    })
+  query(sqls.queryTablesByDatabase(formLabelAlign.database)).then((res) => {
+    tables.value = res.data
+  })
 }
 
 const queryTimeField = () => {
-  query(sqls.queryTypeIsDate(formLabelAlign.database, formLabelAlign.table))
-    .then(res => {
-      timeField.value = res.data
-    })
+  query(sqls.queryTypeIsDate(formLabelAlign.database, formLabelAlign.table)).then((res) => {
+    timeField.value = res.data
+  })
 }
 
 const queryDataForMlSecondStep = () => {
@@ -182,27 +187,28 @@ const queryDataForMlSecondStep = () => {
   if (!formLabelAlign.timeField || !isCorrect || !timeInterval.value) {
     return
   }
-  query(sqls.queryDataForMlSecondStep(
-    formLabelAlign.database,
-    formLabelAlign.table,
-    dayjs(formLabelAlign.timeRange[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    dayjs(formLabelAlign.timeRange[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    formLabelAlign.timeField,
-    formLabelAlign.timeInterval
-  ))
-    .then(res => {
-      const xKey = res.meta[0].name
-      const dataKey = res.meta[1].name
-      const data = res.data.map((item: any) => {
-        return {
-          name: item[xKey],
-          value: item[dataKey]
-        }
-      })
-      const options = formatBarOptions(data)
-      const echartsInstance = echarts.init(renderer.value as HTMLElement)
-      echartsInstance.setOption(options)
+  query(
+    sqls.queryDataForMlSecondStep(
+      formLabelAlign.database,
+      formLabelAlign.table,
+      dayjs(formLabelAlign.timeRange[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      dayjs(formLabelAlign.timeRange[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+      formLabelAlign.timeField,
+      formLabelAlign.timeInterval,
+    ),
+  ).then((res) => {
+    const xKey = res.meta[0].name
+    const dataKey = res.meta[1].name
+    const data = res.data.map((item: any) => {
+      return {
+        name: item[xKey],
+        value: item[dataKey],
+      }
     })
+    const options = formatBarOptions(data)
+    const echartsInstance = echarts.init(renderer.value as HTMLElement)
+    echartsInstance.setOption(options)
+  })
 }
 
 const changeDatabase = () => {
@@ -221,7 +227,7 @@ const changeField = () => {
 }
 
 const isCorrectTime = (times: Date[]) => {
-  const [ startTimeDate, endTimeDate ] = times
+  const [startTimeDate, endTimeDate] = times
   const startTime = +startTimeDate
   const endTime = +endTimeDate
   return startTime < endTime
@@ -248,10 +254,7 @@ const toList = () => {
 <template>
   <section class="ml-add-container">
     <h3 class="title">
-      <el-icon
-        style="margin-right: 10px"
-        @click="toList"
-      >
+      <el-icon style="margin-right: 10px" @click="toList">
         <ArrowLeft />
       </el-icon>
       {{ $t('Add') }}
@@ -266,20 +269,11 @@ const toList = () => {
       style="width: 700px"
       status-icon
     >
-      <el-form-item
-        :label="$t('Job Name')"
-        prop="jobName"
-      >
-        <el-input
-          v-model="formLabelAlign.jobName"
-          placeholder="Please input"
-        />
+      <el-form-item :label="$t('Job Name')" prop="jobName">
+        <el-input v-model="formLabelAlign.jobName" placeholder="Please input" />
       </el-form-item>
 
-      <el-form-item
-        :label="$t('Database')"
-        prop="database"
-      >
+      <el-form-item :label="$t('Database')" prop="database">
         <el-select
           v-model="formLabelAlign.database"
           popper-class="primary-select-dropdown"
@@ -294,13 +288,10 @@ const toList = () => {
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="$t('Tables')"
-        prop="table"
-      >
+      <el-form-item :label="$t('Tables')" prop="table">
         <el-select
           v-model="formLabelAlign.table"
-          popper-class="primary-select-dropdown" 
+          popper-class="primary-select-dropdown"
           placeholder="Select Table"
           filterable
           style="width: 600px"
@@ -314,14 +305,11 @@ const toList = () => {
           />
         </el-select>
       </el-form-item>
-      
-      <el-form-item
-        :label="$t('Time  Field')"
-        prop="timeField"
-      >
+
+      <el-form-item :label="$t('Time  Field')" prop="timeField">
         <el-select
           v-model="formLabelAlign.timeField"
-          popper-class="primary-select-dropdown" 
+          popper-class="primary-select-dropdown"
           placeholder="Select Time Field"
           filterable
           style="width: 600px"
@@ -335,10 +323,7 @@ const toList = () => {
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="$t('Time  Range')"
-        prop="timeRange"
-      >
+      <el-form-item :label="$t('Time  Range')" prop="timeRange">
         <el-date-picker
           v-model="formLabelAlign.timeRange[0]"
           type="date"
@@ -357,10 +342,7 @@ const toList = () => {
           @change="changeTimeRange"
         />
       </el-form-item>
-      <el-form-item
-        :label="$t('Time  Interval')"
-        prop="timeInterval"
-      >
+      <el-form-item :label="$t('Time  Interval')" prop="timeInterval">
         <el-input
           v-model="timeInterval"
           placeholder="Please input"
@@ -386,10 +368,7 @@ const toList = () => {
       </el-form-item>
     </el-form>
 
-    <section
-      ref="renderer"
-      class="charts-renderer-box"
-    ></section>
+    <section ref="renderer" class="charts-renderer-box"></section>
 
     <section class="btn">
       <!-- <el-button
@@ -398,17 +377,13 @@ const toList = () => {
       >
         Previous
       </el-button> -->
-      <el-button
-        class="custom-primary-btn"
-        type="primary"
-        @click="nextStep"
-      >
-        {{ ('End') }}
+      <el-button class="custom-primary-btn" type="primary" @click="nextStep">
+        {{ 'End' }}
       </el-button>
     </section>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .ml-add-container {
   position: relative;
   width: 100%;
@@ -433,7 +408,7 @@ const toList = () => {
     color: rgba(0, 0, 0, 0.85);
     line-height: 60px;
     text-align: left;
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid #f0f0f0;
   }
   .ml-add-form {
     width: 750px;
@@ -449,10 +424,10 @@ const toList = () => {
   .time-range-divider {
     display: inline-block;
     margin: 0 10px;
-    color: #C9C9C9;
+    color: #c9c9c9;
   }
 
-  .width100>:deep(.el-input__wrapper) {
+  .width100 > :deep(.el-input__wrapper) {
     max-width: 82px;
   }
 }

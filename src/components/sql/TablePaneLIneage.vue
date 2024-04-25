@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onBeforeMount, reactive, ref, watch } from 'vue'
 import ButterFlyVue from './butterFlyVue.vue'
 import { queryLineage } from './query'
@@ -7,7 +7,7 @@ import { TabItem } from '@/store/modules/sql/types'
 // import { LineageDataItem } from './types'
 
 const props = defineProps<{
-  isFirstRender: boolean,
+  isFirstRender: boolean
   tab: TabItem
 }>()
 
@@ -20,8 +20,8 @@ const nodes = reactive<any[]>([
     Class: nodeRender,
     className: 'nodeBackground-color',
     type: 'clickhouse', // 类型
-    sourceData: props.tab.node // 源数据
-  }
+    sourceData: props.tab.node, // 源数据
+  },
 ])
 const edges = reactive<any[]>([])
 const butterflyVue = ref<any>(null)
@@ -43,21 +43,24 @@ const options = {
   moveable: true, // 可平移
   theme: {
     edge: {
-      defaultAnimate: true
-    }
+      defaultAnimate: true,
+    },
   },
 }
 
-watch(() => props.isFirstRender, () => {
-  loading.value = true
-  setTimeout(() => {
-    redraw({
-      nodes: nodes,
-      edges: edges
-    })
-    loading.value = false
-  }, 200)
-})
+watch(
+  () => props.isFirstRender,
+  () => {
+    loading.value = true
+    setTimeout(() => {
+      redraw({
+        nodes: nodes,
+        edges: edges,
+      })
+      loading.value = false
+    }, 200)
+  },
+)
 
 onBeforeMount(async () => {
   const { database, name, engine } = props.tab.node || {}
@@ -66,37 +69,34 @@ onBeforeMount(async () => {
   edges.push(...edgesForAdd)
 })
 
-function redraw (data: any) {
+function redraw(data: any) {
   butterflyVue.value.canvasReDraw(data)
 }
 
-async function getNodeData ({ database, name, engine }: any) {
-  const res = await queryLineage({database, name})
+async function getNodeData({ database, name, engine }: any) {
+  const res = await queryLineage({ database, name })
   if (!res) return
 
   for (let item of res.data) {
     const sourceId = item.source_schema + '_' + item.source_table
     const tergetId = item.target_schema + '_' + item.target_table
-    nodesForAdd.push(
-      {
-        id: sourceId,
+    nodesForAdd.push({
+      id: sourceId,
+      name: item.source_table,
+      Class: nodeRender,
+      className: 'nodeBackground-color',
+      type: 'clickhouse', // 类型
+      sourceData: {
+        database: item.source_schema,
         name: item.source_table,
-        Class: nodeRender,
-        className: 'nodeBackground-color',
-        type: 'clickhouse', // 类型
-        sourceData: {
-          database: item.source_schema,
-          name: item.source_table
-        } // 源数据
-      }
-    )
+      }, // 源数据
+    })
     edgesForAdd.push({
       source: sourceId,
-      target: tergetId
+      target: tergetId,
     })
-   // await getNodeData({database: item.source_schema, table: item.source_table, engine })
+    // await getNodeData({database: item.source_schema, table: item.source_table, engine })
   }
-  
 }
 
 // async function datahubChange () {
@@ -213,18 +213,11 @@ async function getNodeData ({ database, name, engine }: any) {
 // }
 </script>
 <template>
-  <section
-    v-loading="loading"
-    class="table-pane-lineage-container"
-  >
-    <ButterFlyVue
-      ref="butterflyVue"
-      :canvas-conf="options"
-      :is-first-render="isFirstRender"
-    />
+  <section v-loading="loading" class="table-pane-lineage-container">
+    <ButterFlyVue ref="butterflyVue" :canvas-conf="options" :is-first-render="isFirstRender" />
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .table-pane-lineage-container {
   width: 100%;
   height: 100%;

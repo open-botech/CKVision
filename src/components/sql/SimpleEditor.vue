@@ -1,98 +1,98 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
-import { CaretRight } from '@element-plus/icons-vue';
-import * as monaco from 'monaco-editor';
+import { onMounted, ref, watch } from 'vue'
+import { CaretRight } from '@element-plus/icons-vue'
+import * as monaco from 'monaco-editor'
 
-import { defaultOptions } from './editorConfig';
-import { themeCobalt } from './theme/Cobalt';
-import createSqlCompleter from './utils/sql-completion';
-import { TabItem } from '@/store/modules/sql/types';
-import { useSqlStore } from '@/store';
-import { queryAllColumns, queryAllTables } from './query';
+import { defaultOptions } from './editorConfig'
+import { themeCobalt } from './theme/Cobalt'
+import createSqlCompleter from './utils/sql-completion'
+import { TabItem } from '@/store/modules/sql/types'
+import { useSqlStore } from '@/store'
+import { queryAllColumns, queryAllTables } from './query'
 
-let editorInstance: monaco.editor.IStandaloneCodeEditor;
+let editorInstance: monaco.editor.IStandaloneCodeEditor
 
-monaco.editor.defineTheme('cobalt', themeCobalt);
+monaco.editor.defineTheme('cobalt', themeCobalt)
 
-const global: any = {};
+const global: any = {}
 
 const getHints = (model: any) => {
-  let id = model.id.substring(6);
-  return (global[id] && global[id].hints) || [];
-};
+  let id = model.id.substring(6)
+  return (global[id] && global[id].hints) || []
+}
 
-const sqlStore = useSqlStore();
+const sqlStore = useSqlStore()
 const props = defineProps<{
-  tab: TabItem;
-}>();
+  tab: TabItem
+}>()
 
-const emit = defineEmits(['change', 'queryAction']);
+const emit = defineEmits(['change', 'queryAction'])
 
-const editorRenderer = ref<HTMLElement>();
-const simpleEditorContainer = ref<HTMLElement>();
+const editorRenderer = ref<HTMLElement>()
+const simpleEditorContainer = ref<HTMLElement>()
 
 watch(
   () => props.tab.sql,
   (newVal) => {
-    sqlStore.addSqlIsCommand && editorInstance.setValue(newVal as string);
-  }
-);
+    sqlStore.addSqlIsCommand && editorInstance.setValue(newVal as string)
+  },
+)
 
 onMounted(() => {
-  setHints();
-  initEditor();
-});
+  setHints()
+  initEditor()
+})
 
 const setHints = async () => {
-  const res = await queryAllTables();
-  const columnsRes = await queryAllColumns();
-  await registerTable(res.data, columnsRes.data);
-};
+  const res = await queryAllTables()
+  const columnsRes = await queryAllColumns()
+  await registerTable(res.data, columnsRes.data)
+}
 
 const initEditor = () => {
   editorInstance = monaco.editor.create(editorRenderer.value as HTMLElement, {
     ...defaultOptions,
     language: 'sql',
     theme: 'vs',
-  });
-  editorInstance.setValue(props.tab.sql as string);
-  editorInstance.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, emitQueryAction);
-  editorInstance.focus();
+  })
+  editorInstance.setValue(props.tab.sql as string)
+  editorInstance.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, emitQueryAction)
+  editorInstance.focus()
   editorInstance.onDidChangeModelContent(() => {
-    emit('change', editorInstance.getValue());
-  });
-};
+    emit('change', editorInstance.getValue())
+  })
+}
 
 const emitQueryAction = () => {
-  emit('queryAction');
-};
+  emit('queryAction')
+}
 
 const getEditorContainer = () => {
-  return simpleEditorContainer.value;
-};
+  return simpleEditorContainer.value
+}
 
 const registerTable = async (table: any[], columns: any[]) => {
   // registerCompletionItemProvider
   monaco.languages.registerCompletionItemProvider(
     'sql',
-    createSqlCompleter(getHints, table, columns) as any
-  );
-};
+    createSqlCompleter(getHints, table, columns) as any,
+  )
+}
 
 const getValue = () => {
-  return editorInstance.getValue();
-};
+  return editorInstance.getValue()
+}
 
 const getSelectionValue = () => {
-  return editorInstance.getModel()?.getValueInRange(editorInstance.getSelection() as monaco.IRange);
-};
+  return editorInstance.getModel()?.getValueInRange(editorInstance.getSelection() as monaco.IRange)
+}
 
 defineExpose({
   getEditorContainer,
   registerTable,
   getSelectionValue,
   getValue,
-});
+})
 </script>
 <template>
   <section ref="simpleEditorContainer" class="simple-editor-container">

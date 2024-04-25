@@ -20,9 +20,9 @@ export default defineConfig({
       },
       {
         find: 'vue-i18n',
-        replacement: 'vue-i18n/dist/vue-i18n.cjs.js'
+        replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
         // 'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
-      }
+      },
     ],
   },
   server: {
@@ -34,12 +34,12 @@ export default defineConfig({
     proxy,
   },
   plugins: [
-    vue(), 
+    vue(),
     monacoEditorPlugin({}),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       symbolId: 'icon-[dir]-[name]',
-    })
+    }),
   ],
   build: {
     outDir: APP_TITLE,
@@ -51,8 +51,8 @@ export default defineConfig({
               return id.split('components/sql')[1].split('/')[1].replace('.vue', '')
             }
           }
-        }
+        },
       },
-    }
+    },
   },
 })

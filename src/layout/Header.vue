@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import logo from '@/assets/images/logo.svg';
-import logout from '@/assets/images/login/logout.svg';
-import { useRoute, useRouter } from 'vue-router';
-import { useGoTo } from './hooks';
-import { RouteName } from './types';
-import i18n from '@/i18n';
+import logo from '@/assets/images/logo.svg'
+import logout from '@/assets/images/login/logout.svg'
+import { useRoute, useRouter } from 'vue-router'
+import { useGoTo } from './hooks'
+import { RouteName } from './types'
+import i18n from '@/i18n'
 
-const router = useRouter();
-const route = useRoute();
-const goTo = useGoTo();
+const router = useRouter()
+const route = useRoute()
+const goTo = useGoTo()
 
 const nvaList = [
   RouteName.Metrics,
@@ -16,25 +16,25 @@ const nvaList = [
   RouteName.Processes,
   RouteName.Graph,
   RouteName.HistorySQL,
-];
+]
 
 const hasRouteName = (item: string) => {
-  return (route.name as string)?.startsWith(item);
-};
+  return (route.name as string)?.startsWith(item)
+}
 
 const logoutFunc = () => {
   router.push({
     path: '/login',
-  });
-};
+  })
+}
 const goMetrics = () => {
-  goTo(RouteName.Metrics);
-};
+  goTo(RouteName.Metrics)
+}
 
 const handleChangeLocale = (locale: 'zh' | 'en') => {
-  localStorage.setItem('locale', locale);
-  i18n.global.locale = locale;
-};
+  localStorage.setItem('locale', locale)
+  i18n.global.locale = locale
+}
 </script>
 
 <template>

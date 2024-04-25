@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia';
-import piniaStore from '@/store/index';
-import { TableItem, TabsType } from '@/components/sql/types';
-import { TabItem } from './types';
+import { defineStore } from 'pinia'
+import piniaStore from '@/store/index'
+import { TableItem, TabsType } from '@/components/sql/types'
+import { TabItem } from './types'
 
-const firstDate = +new Date() + '';
+const firstDate = +new Date() + ''
 
 export const useSqlStore = defineStore('sql', {
   state: () => ({
@@ -33,33 +33,33 @@ export const useSqlStore = defineStore('sql', {
   getters: {},
   actions: {
     increamentVisitNumber() {
-      this.visitNumber++;
+      this.visitNumber++
     },
     addHistorySql(sql: string | undefined) {
-      sql && this.historySqls.unshift(sql);
+      sql && this.historySqls.unshift(sql)
     },
     setColumns(columns: any[]) {
-      this.columns = columns as never[];
+      this.columns = columns as never[]
     },
     setCurrentTab(tab: TabItem) {
-      const index = this.tabs.findIndex((item) => item.name === tab.name);
-      const tabOld = this.tabs[index];
+      const index = this.tabs.findIndex((item) => item.name === tab.name)
+      const tabOld = this.tabs[index]
       this.tabs[index] = {
         ...tabOld,
         ...(tab as any),
-      };
+      }
     },
     addTableTabs(node: TableItem) {
-      const currentKey = +new Date() + '';
+      const currentKey = +new Date() + ''
       this.tabs.push({
         name: currentKey,
         title: node.name,
         sql: '',
         type: TabsType.TableView,
         node: node as any,
-      });
-      this.activeTab = currentKey;
-      return currentKey;
+      })
+      this.activeTab = currentKey
+      return currentKey
     },
     addEditorTabs(tab: TabItem = {}) {
       this.tabs.push({
@@ -69,20 +69,20 @@ export const useSqlStore = defineStore('sql', {
         type: TabsType.Editor,
         node: {} as TableItem,
         ...tab,
-      });
+      })
     },
     removeTabs(index: number) {
-      this.tabs.splice(index, 1);
+      this.tabs.splice(index, 1)
     },
     setActiveTab(val?: string) {
-      val && (this.activeTab = val);
+      val && (this.activeTab = val)
     },
     toggleAddSqlIsCommand() {
-      this.addSqlIsCommand = !this.addSqlIsCommand;
+      this.addSqlIsCommand = !this.addSqlIsCommand
     },
   },
-});
+})
 
 export function useSqlOutsideStore() {
-  return useSqlStore(piniaStore);
+  return useSqlStore(piniaStore)
 }

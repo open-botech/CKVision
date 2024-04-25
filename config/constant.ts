@@ -1,10 +1,10 @@
 /**
  * @name Config
- * @description 项目配置
+ * @description Project Configuration
  */
 
-// 应用名
+// Application Name
 export const APP_TITLE = 'click-cat'
 
-// 本地服务端口
+// Local Service Port
 export const VITE_PORT = 4000

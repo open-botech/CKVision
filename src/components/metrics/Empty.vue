@@ -1,11 +1,8 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 <template>
-  <section class="empty">
-    No Data
-  </section>
+  <section class="empty">No Data</section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .empty {
   display: flex;
   justify-content: center;

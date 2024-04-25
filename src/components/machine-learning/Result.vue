@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import * as echarts from 'echarts/core'
@@ -12,7 +12,14 @@ import { queryResultForMl, queryResultForMlUsePredict } from './query'
 import { formatResultLineOption } from './utils'
 import { timeIntervalOps } from './data'
 
-echarts.use([LineChart, ScatterChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
+echarts.use([
+  LineChart,
+  ScatterChart,
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  CanvasRenderer,
+])
 
 const loginStore = useLoginStore()
 
@@ -43,28 +50,24 @@ onMounted(() => {
 const queryDataAndShowCharts = async () => {
   loading.value = true
   try {
-    const {
-      realData,
-      lessForecast,
-      biggerForecast,
-      forecastData,
-      realKey,
-      diff
-    } = await queryResultForMl(loginStore.connection, props.selectedItem)
+    const { realData, lessForecast, biggerForecast, forecastData, realKey, diff } =
+      await queryResultForMl(loginStore.connection, props.selectedItem)
     lessForecastOuter.value = lessForecast
     biggerForecastOuter.value = biggerForecast
     realKeyOuter.value = realKey
     realDataOuter.value = realData
     diffOuter.value = diff
     const echartsInstance = echarts.init(renderer.value as HTMLElement)
-    echartsInstance.setOption(formatResultLineOption({
-      realData,
-      forecastData,
-      realKey,
-      diff,
-      lessForecast,
-      biggerForecast
-    }))
+    echartsInstance.setOption(
+      formatResultLineOption({
+        realData,
+        forecastData,
+        realKey,
+        diff,
+        lessForecast,
+        biggerForecast,
+      }),
+    )
     loading.value = false
   } catch (error) {
     loading.value = false
@@ -74,24 +77,21 @@ const queryDataAndShowCharts = async () => {
 const queryDataAndShowChartsByPredict = async () => {
   loading.value = true
   try {
-    const {
-      realData,
-      lessForecast,
-      biggerForecast,
-      realKey,
-      diff
-    } = await queryResultForMlUsePredict({
-      model_path: props.selectedItem.model_path,
-      steps: +timeInterval.value,
-      realData: realDataOuter.value,
-      lessForecast: lessForecastOuter.value,
-      biggerForecast: biggerForecastOuter.value,
-      realKey: realKeyOuter.value,
-      diff: diffOuter.value,
-      unit: timeIntervalUnit.value
-    })
+    const { realData, lessForecast, biggerForecast, realKey, diff } =
+      await queryResultForMlUsePredict({
+        model_path: props.selectedItem.model_path,
+        steps: +timeInterval.value,
+        realData: realDataOuter.value,
+        lessForecast: lessForecastOuter.value,
+        biggerForecast: biggerForecastOuter.value,
+        realKey: realKeyOuter.value,
+        diff: diffOuter.value,
+        unit: timeIntervalUnit.value,
+      })
     const echartsInstance = echarts.init(renderer.value as HTMLElement)
-    echartsInstance.setOption(formatResultLineOption({realData, realKey, diff, lessForecast, biggerForecast}))
+    echartsInstance.setOption(
+      formatResultLineOption({ realData, realKey, diff, lessForecast, biggerForecast }),
+    )
     loading.value = false
   } catch (error) {
     loading.value = false
@@ -111,34 +111,19 @@ const runForecast = () => {
 }
 </script>
 <template>
-  <section
-    v-loading="loading"
-    class="result-container"
-  >
+  <section v-loading="loading" class="result-container">
     <div class="line-charts">
       <div class="header-btn-box">
-        <div
-          class="return-btn"
-          @click="toList"
-        >
+        <div class="return-btn" @click="toList">
           <el-icon>
             <ArrowLeft />
           </el-icon>
           {{ $t('Back') }}
         </div>
-        <span
-          class="forecast-btn"
-          @click="changeDialogVisible"
-        >{{ $t('Forecast') }}</span>
+        <span class="forecast-btn" @click="changeDialogVisible">{{ $t('Forecast') }}</span>
       </div>
-      <div
-        class="charts-box"
-      >
-        <div
-          ref="renderer"
-          style="height: 548px; width: 100%"
-          class="charts-renderer"
-        ></div>
+      <div class="charts-box">
+        <div ref="renderer" style="height: 548px; width: 100%" class="charts-renderer"></div>
       </div>
     </div>
     <el-dialog
@@ -169,11 +154,9 @@ const runForecast = () => {
             </el-select>
           </template>
         </el-input>
-        <span
-          class="forecast-btn"
-          style="margin-left: 20px;"
-          @click="runForecast"
-        >{{ $t('Run') }}</span>
+        <span class="forecast-btn" style="margin-left: 20px" @click="runForecast">{{
+          $t('Run')
+        }}</span>
       </div>
       <!-- <template #footer>
         <span class="dialog-footer">
@@ -186,7 +169,7 @@ const runForecast = () => {
     </el-dialog>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .result-container {
   width: 100%;
 }
@@ -234,7 +217,7 @@ const runForecast = () => {
   .width100 {
     width: 205px;
   }
-  .width100>:deep(.el-input__wrapper) {
+  .width100 > :deep(.el-input__wrapper) {
     max-width: 82px;
   }
 }

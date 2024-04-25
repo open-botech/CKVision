@@ -1,120 +1,120 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { Close, Refresh, ArrowLeft, ArrowRight, ArrowDown } from '@element-plus/icons-vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ref } from 'vue'
+import { Close, Refresh, ArrowLeft, ArrowRight, ArrowDown } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
-import CommonTableVue from '@/components/CommonTable.vue';
+import CommonTableVue from '@/components/CommonTable.vue'
 import {
   queryProcessesSelects,
   queryProcessesImports,
   queryMutations,
   queryHistoricalImports,
-} from '@/components/processes/query';
-import { query } from '@/utils/http';
+} from '@/components/processes/query'
+import { query } from '@/utils/http'
 
 type ListItem = {
-  name: string;
-  database: string;
-  table: string;
-  query_id: string;
-  mutation_id: string;
-};
+  name: string
+  database: string
+  table: string
+  query_id: string
+  mutation_id: string
+}
 
-const processesRef = ref<any>(null);
-const mutationsRef = ref<any>(null);
-const defaultCard = ref('ProcessesImports');
-const rows = ref<string>('100');
-const page = ref<number>(0);
-const pageTotal = ref<number>(0);
-let selectedProcesses: ListItem[] = [];
-let selectedMutations: ListItem[] = [];
+const processesRef = ref<any>(null)
+const mutationsRef = ref<any>(null)
+const defaultCard = ref('ProcessesImports')
+const rows = ref<string>('100')
+const page = ref<number>(0)
+const pageTotal = ref<number>(0)
+let selectedProcesses: ListItem[] = []
+let selectedMutations: ListItem[] = []
 
 const changeProcesses = (val: ListItem[]) => {
-  selectedProcesses = val;
-};
+  selectedProcesses = val
+}
 const changeMutations = (val: ListItem[]) => {
-  selectedMutations = val;
-};
+  selectedMutations = val
+}
 
 const kill = async () => {
-  let sql = '';
+  let sql = ''
   if (defaultCard.value === 'Processes') {
     if (!selectedProcesses.length) {
       return ElMessage({
         message: 'Please select at least one piece of "Processes" data.',
         grouping: true,
         type: 'error',
-      });
+      })
     }
     const idArr = selectedProcesses.map((item) => {
-      return `query_id ='${item.query_id}'`;
-    });
+      return `query_id ='${item.query_id}'`
+    })
     // KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90' or  query_id='2-857d-4a57-9ee0-327da5d60a90'
-    sql = `KILL QUERY WHERE ${idArr?.join(' or ')}`;
+    sql = `KILL QUERY WHERE ${idArr?.join(' or ')}`
   } else if (defaultCard.value === 'Mutations') {
     if (!selectedMutations.length) {
       return ElMessage({
         message: 'Please select at least one piece of "Mutations" data.',
         grouping: true,
         type: 'error',
-      });
+      })
     }
     // KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
     const idArr = selectedMutations.map((item) => {
-      return `database = '${item.database}' AND table = '${item.table}' AND mutation_id='${item.mutation_id}'`;
-    });
-    sql = `KILL MUTATION WHERE ${idArr?.join(' or ')}`;
+      return `database = '${item.database}' AND table = '${item.table}' AND mutation_id='${item.mutation_id}'`
+    })
+    sql = `KILL MUTATION WHERE ${idArr?.join(' or ')}`
   }
   await ElMessageBox.confirm('Kill selected data?', 'Kill', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
     type: 'warning',
     customClass: 'show-custom-primary-color',
-  });
-  await query(sql);
+  })
+  await query(sql)
   if (defaultCard.value === 'Processes') {
-    await processesRef.value.refresh();
+    await processesRef.value.refresh()
   } else {
-    await mutationsRef.value.refresh();
+    await mutationsRef.value.refresh()
   }
-};
+}
 
 const refresh = () => {
   if (defaultCard.value === 'Processes') {
-    processesRef.value.refresh();
+    processesRef.value.refresh()
   } else {
-    page.value = 0;
-    mutationsRef.value.refresh();
+    page.value = 0
+    mutationsRef.value.refresh()
   }
-};
+}
 
 const handleChangeRows = (command: string) => {
-  page.value = 0;
-  rows.value = command;
-  mutationsRef.value.getData(command, +command * page.value);
-};
+  page.value = 0
+  rows.value = command
+  mutationsRef.value.getData(command, +command * page.value)
+}
 
 const previousPage = () => {
   if (page.value <= 0) {
-    return;
+    return
   }
-  page.value--;
-  mutationsRef.value.getData(rows.value, +rows.value * page.value);
-};
+  page.value--
+  mutationsRef.value.getData(rows.value, +rows.value * page.value)
+}
 
 const nextPage = () => {
   if (page.value >= pageTotal.value) {
-    return;
+    return
   }
-  page.value++;
+  page.value++
   mutationsRef.value.getData(rows.value, +rows.value * page.value).then((res: any) => {
-    res.rows_before_limit_at_least;
-  });
-};
+    res.rows_before_limit_at_least
+  })
+}
 
 const getTotal2Computed = (total: number) => {
-  pageTotal.value = Math.floor(total / +rows.value);
-};
+  pageTotal.value = Math.floor(total / +rows.value)
+}
 </script>
 <template>
   <section class="processes-container">

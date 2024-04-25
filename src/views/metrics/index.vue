@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import DataAnalysisVue from '@/components/metrics/dataAnalysis/DataAnalysis.vue'
@@ -9,17 +9,14 @@ const activeName = ref('1')
 </script>
 <template>
   <div class="metrics">
-    <el-collapse
-      v-model="activeName"
-      accordion
-    >
+    <el-collapse v-model="activeName" accordion>
       <DataAnalysisVue :active-name="activeName"></DataAnalysisVue>
       <QueryAnalysisVue :active-name="activeName"></QueryAnalysisVue>
       <ClusterAnalysisVue :active-name="activeName"></ClusterAnalysisVue>
     </el-collapse>
   </div>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .metrics {
   padding: 20px 30px;
   width: 100%;
@@ -52,5 +49,4 @@ const activeName = ref('1')
     padding-bottom: 0;
   }
 }
-
 </style>

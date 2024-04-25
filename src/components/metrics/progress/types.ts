@@ -1,4 +1,4 @@
 export interface countDataItem {
-  name: string;
+  name: string
   value?: number
 }

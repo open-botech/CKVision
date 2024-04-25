@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-type RouteItem = RouteRecordRaw & { meta: AppRoute.RouteMeta };
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+type RouteItem = RouteRecordRaw & { meta: AppRoute.RouteMeta }
 
 export const menuRoutesList = [
   {
@@ -64,7 +64,7 @@ export const menuRoutesList = [
     },
     component: () => import('@/views/sql/index.vue'),
   },
-];
+]
 
 const routes: RouteItem[] = [
   {
@@ -79,9 +79,9 @@ const routes: RouteItem[] = [
     component: () => import('@/views/login.vue'),
     meta: {},
   },
-];
+]
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: routes as RouteItem[],
-});
+})

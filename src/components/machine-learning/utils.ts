@@ -3,20 +3,20 @@ import dayjs from 'dayjs'
 import { effect } from './data'
 
 type DataType = {
-  realData?: number[],
-  forecastData?: number[],
-  realKey?: string[],
-  diff?: number[],
-  lessForecast?: number[],
+  realData?: number[]
+  forecastData?: number[]
+  realKey?: string[]
+  diff?: number[]
+  lessForecast?: number[]
   biggerForecast?: number[]
 }
 
-export function formatResultLineOption ({
+export function formatResultLineOption({
   realData,
   lessForecast,
   biggerForecast,
   realKey,
-  diff
+  diff,
 }: DataType): echarts.EChartsCoreOption {
   return {
     tooltip: {
@@ -43,7 +43,7 @@ export function formatResultLineOption ({
     yAxis: [
       {
         splitLine: {
-          show: false
+          show: false,
         },
         type: 'value',
       },
@@ -54,10 +54,10 @@ export function formatResultLineOption ({
         data: diff,
         type: 'scatter',
         z: 10,
-        itemStyle:{
+        itemStyle: {
           color: '#F53F3F',
-          borderColor: '#FFFFFF'
-        }
+          borderColor: '#FFFFFF',
+        },
       },
       {
         name: 'real',
@@ -66,9 +66,9 @@ export function formatResultLineOption ({
         symbol: 'none',
         lineStyle: {
           color: '#4ECBB4',
-          width: 2
+          width: 2,
         },
-        z: 9
+        z: 9,
       },
       // {
       //   name: 'forcast',
@@ -111,10 +111,10 @@ export function formatResultLineOption ({
         type: 'line',
         symbol: 'none',
         lineStyle: {
-          opacity: 0
+          opacity: 0,
         }, // 隐藏线
         areaStyle: {
-          color: 'rgba(78, 203, 180, 0.3)'
+          color: 'rgba(78, 203, 180, 0.3)',
         },
         // lineStyle: {
         //   color: 'rgba(78, 203, 180, 0.3)',
@@ -127,11 +127,11 @@ export function formatResultLineOption ({
         type: 'line',
         symbol: 'none',
         lineStyle: {
-          opacity: 0
+          opacity: 0,
         }, // 隐藏线
         areaStyle: {
           opacity: 1,
-          color: '#fff'
+          color: '#fff',
         },
         // lineStyle: {
         //   color: 'rgba(78, 203, 180, 0.3)',
@@ -142,10 +142,13 @@ export function formatResultLineOption ({
   }
 }
 
-export const formatData = (data: { '0': { '0': any, '1': any } }) => {
-  const {0: {count: real}, 1: {pred: forecast}} = data['0']
+export const formatData = (data: { '0': { '0': any; '1': any } }) => {
+  const {
+    0: { count: real },
+    1: { pred: forecast },
+  } = data['0']
   const realKey = Object.keys(real).sort()
-  const realData = realKey.map(key => real[key])
+  const realData = realKey.map((key) => real[key])
   const forecastData: number[] = []
   const lessForecast: number[] = []
   const biggerForecast: number[] = []
@@ -158,7 +161,7 @@ export const formatData = (data: { '0': { '0': any, '1': any } }) => {
     biggerForecast.push(bigger)
   })
   const diff: any[] = []
-  
+
   Object.keys(forecast).forEach((key: any) => {
     const effectNum = forecast[key] * effect
     const less = forecast[key] - effectNum
@@ -168,11 +171,14 @@ export const formatData = (data: { '0': { '0': any, '1': any } }) => {
       diff.push([dayjs(+realKey[key]).format('YYYY-MM-DD HH:mm:ss'), real[realKey[key]]])
     }
   })
-  const realKeyFormat = realKey.map(item => {
+  const realKeyFormat = realKey.map((item) => {
     return dayjs(+item).format('YYYY-MM-DD HH:mm:ss')
   })
   return {
-    realData, forecastData, realKeyFormat, diff,
+    realData,
+    forecastData,
+    realKeyFormat,
+    diff,
     lessForecast,
     biggerForecast,
   }
@@ -185,7 +191,7 @@ export const formatDataPredict = ({
   realKey: realKeyOrigin,
   diff: diffOrigin,
   data,
-  unit
+  unit,
 }: any) => {
   const lastDay = realKeyOrigin[realKeyOrigin.length - 1]
   const lastDayMoment = dayjs(lastDay)

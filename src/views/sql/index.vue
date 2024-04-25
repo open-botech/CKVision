@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 
 import FilterVue from '@/components/sql/Filter.vue'
@@ -34,8 +34,8 @@ onMounted(() => {
   }
 })
 
-const tableCommand = ({node, command}: any) => {
-  const current = sqlStore.tabs.find(tab => tab.name === sqlStore.activeTabs)
+const tableCommand = ({ node, command }: any) => {
+  const current = sqlStore.tabs.find((tab) => tab.name === sqlStore.activeTabs)
   // current && (current.sql = '123')
   const oldSql = current?.sql || ''
   let newSql = ''
@@ -52,36 +52,26 @@ const tableCommand = ({node, command}: any) => {
       break
     case ColumnCommand.MakeSqlDescribe:
       sqlStore.toggleAddSqlIsCommand()
-      getSqlDescribe(node.data)
-        .then(data => {
-          newSql = data
-          current && (current.sql = oldSql + newSql)
-          setTimeout(() => sqlStore.toggleAddSqlIsCommand())
-        })
-      break  
+      getSqlDescribe(node.data).then((data) => {
+        newSql = data
+        current && (current.sql = oldSql + newSql)
+        setTimeout(() => sqlStore.toggleAddSqlIsCommand())
+      })
+      break
   }
 }
 </script>
 <template>
-  <section
-    ref="sqlContainer"
-    class="SQL-container"
-  >
-    <aside
-      ref="filterContainer"
-      class="sidebar"
-    >
-      <FilterVue
-        ref="filterInstance"
-        @table-command="tableCommand"
-      />
+  <section ref="sqlContainer" class="SQL-container">
+    <aside ref="filterContainer" class="sidebar">
+      <FilterVue ref="filterInstance" @table-command="tableCommand" />
     </aside>
     <section class="content">
       <EditorTabsVue ref="EditorTabsInstance" />
     </section>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .SQL-container {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -91,7 +81,7 @@ const tableCommand = ({node, command}: any) => {
 
   & > aside.sidebar {
     height: 100%;
-    background-color: #10223E;
+    background-color: #10223e;
     overflow-y: auto;
   }
   & > section.content {

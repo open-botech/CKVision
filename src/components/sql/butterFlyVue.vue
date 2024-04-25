@@ -1,11 +1,8 @@
 <template>
-  <div
-    id="butterFly"
-    ref="butterFly"
-  ></div>
+  <div id="butterFly" ref="butterFly"></div>
 </template>
 
-<script lang='ts' setup>
+<script lang="ts" setup>
 import $ from 'jquery'
 import DagreCanvas from './dagresCanvas'
 import RelationEdge from './edge'
@@ -16,56 +13,62 @@ let canvas: any = null
 const butterFly = ref<HTMLElement>()
 
 const props = defineProps<{
-  canvasConf: any,
+  canvasConf: any
   isFirstRender: boolean
 }>()
 const emit = defineEmits(['viewMonitor', 'viewStreamTask'])
 
-watch(() => props.isFirstRender, () => {
-  setTimeout(() => {
-    initCanvas()
-  }, 100)
-})
+watch(
+  () => props.isFirstRender,
+  () => {
+    setTimeout(() => {
+      initCanvas()
+    }, 100)
+  },
+)
 
 // onMounted(() => {
 //   setTimeout(() => {
 //     initCanvas()
 //   })
-  
+
 // })
 
-function initCanvas () {
+function initCanvas() {
   $('body').on('click', '#butterFly', function () {
-      $('#butterFly .nodeBox img').css({
-        transform: 'scale(1, 1)'
-      }).nextAll('.action').hide()
-    })
-    canvas = new DagreCanvas({
-      root: butterFly.value, // canvas的根节点(必传)
-      ...props.canvasConf,
-      theme: {
-        edge: {
-          // shapeType: 'Manhattan',
-          shapeType: 'AdvancedBezier',
-          arrow: true,
-          arrowPosition: 0.5,
-          Class: RelationEdge,
-          defaultAnimate: true,
-        }
-      }
-    })
+    $('#butterFly .nodeBox img')
+      .css({
+        transform: 'scale(1, 1)',
+      })
+      .nextAll('.action')
+      .hide()
+  })
+  canvas = new DagreCanvas({
+    root: butterFly.value, // canvas的根节点(必传)
+    ...props.canvasConf,
+    theme: {
+      edge: {
+        // shapeType: 'Manhattan',
+        shapeType: 'AdvancedBezier',
+        arrow: true,
+        arrowPosition: 0.5,
+        Class: RelationEdge,
+        defaultAnimate: true,
+      },
+    },
+  })
 
-    canvas.on('viewMonitor', (params: any) => {
-      emit('viewMonitor', params)
-    })
+  canvas.on('viewMonitor', (params: any) => {
+    emit('viewMonitor', params)
+  })
 
-    canvas.on('viewStreamTask', (params: any) => {
-      emit('viewStreamTask', params)
-    })
+  canvas.on('viewStreamTask', (params: any) => {
+    emit('viewStreamTask', params)
+  })
 
-    canvas.on('system.drag.start', (e: any) => {
-      console.log(e)
-    })
+  canvas.on('system.drag.start', (e: any) => {
+    console.log(e)
+  })
 }
 
 // function canvasDraw (data: any) {
@@ -75,13 +78,16 @@ function initCanvas () {
 //     canvas.focusCenterWithAnimate()
 //   })
 // }
-function canvasReDraw (data: any) {
+function canvasReDraw(data: any) {
   // setTimeout(() => {
-    canvas.redraw({
+  canvas.redraw(
+    {
       ...data,
-    }, () => {
+    },
+    () => {
       canvas.focusCenterWithAnimate()
-    })
+    },
+  )
   // }, 1000)
 }
 
@@ -109,23 +115,23 @@ function canvasReDraw (data: any) {
 //   }
 // }
 
-function getCanvas () {
+function getCanvas() {
   return canvas
 }
 
 defineExpose({
   canvasReDraw,
-  getCanvas
+  getCanvas,
 })
 </script>
 
 <style lang="scss">
-#butterFly{
+#butterFly {
   height: 100%;
   width: 100%;
   background-color: #f0f0f0;
   .butterflies-link {
-    stroke: #D8D8D8;
+    stroke: #d8d8d8;
     stroke-width: 1px;
     &.purple {
       stroke: #404554;

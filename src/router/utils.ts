@@ -1,7 +1,7 @@
 import { Router } from 'vue-router'
 import { menuRoutesList } from './index'
 
-export function addRouteHooks (router: Router) {
+export function addRouteHooks(router: Router) {
   router.beforeEach((to, from, next) => {
     const notLogin = menuRoutesList.find((item: any) => to.name === item.name)
     if (notLogin) {

@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 
@@ -59,27 +59,23 @@ const timeRange = computed(() => {
 // 但此时由于没有展开，导致其父元素没有宽高，渲染就会有问题
 
 // 另外由于一进页面该组件中的所有的请求并未发送，减少了首页的接口请求数量，相当于变相实现了 lazyload
-watch(() => props.activeName, () => {
-  if (props.activeName === '3') {
-    setTimeout(() => {
-      show.value = true
-    }, 100)
-  }
-})
+watch(
+  () => props.activeName,
+  () => {
+    if (props.activeName === '3') {
+      setTimeout(() => {
+        show.value = true
+      }, 100)
+    }
+  },
+)
 
-const queryFunction = (
-  sqlFuncName: string,
-  params: SqlParams
-) => {
+const queryFunction = (sqlFuncName: string, params: SqlParams) => {
   return queryFunc(sqls[sqlFuncName as 'queryPerformanceQueryAnalysis'](params))
 }
-
 </script>
 <template>
-  <el-collapse-item
-    :title="$t('Query Analysis')"
-    name="3"
-  >
+  <el-collapse-item :title="$t('Query Analysis')" name="3">
     <FiltersVue
       :select-type="['type', 'queryKind', 'user']"
       @change="selectChangeData"
@@ -97,7 +93,7 @@ const queryFunction = (
             :query-kind="queryKindReal"
             sql-func-name="queryTotalQueryAnalysis"
             show-type="toLocaleString"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="8">
           <Count
@@ -112,7 +108,7 @@ const queryFunction = (
             :time-duration="timeDuration"
             unit="MB"
             show-type="MB"
-          ></count>
+          ></Count>
         </el-col>
         <el-col :span="8">
           <Count
@@ -126,7 +122,7 @@ const queryFunction = (
             :query-kind="queryKindReal"
             :time-duration="timeDuration"
             unit="ms"
-          ></count>
+          ></Count>
         </el-col>
       </el-row>
       <el-row :gutter="10">
@@ -170,7 +166,7 @@ const queryFunction = (
             :time-range="timeRange"
             :time-duration="timeDuration"
             :query-func="queryFunction"
-            :legend="{left: 'top'}"
+            :legend="{ left: 'top' }"
             :grid="{ height: '65%' }"
             type="line"
             :height="470"
@@ -190,7 +186,7 @@ const queryFunction = (
             :time-duration="timeDuration"
             :query-func="queryFunction"
             :grid="{ height: '55%' }"
-            :legend="{left: 'top'}"
+            :legend="{ left: 'top' }"
             type="line"
             :height="790"
           ></ChartsVue>
@@ -238,10 +234,7 @@ const queryFunction = (
           ></ChartsVue>
         </el-col>
       </el-row>
-      <el-row
-        :gutter="10"
-        style="margin-bottom: 0;"
-      >
+      <el-row :gutter="10" style="margin-bottom: 0">
         <el-col :span="24">
           <!-- <VirtualizedTableVue
             title="Query overview"
@@ -264,5 +257,4 @@ const queryFunction = (
     </template>
   </el-collapse-item>
 </template>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

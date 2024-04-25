@@ -1,19 +1,19 @@
 import _ from 'lodash'
-import {Canvas, Layout} from 'butterfly-dag'
+import { Canvas, Layout } from 'butterfly-dag'
 class DagreCanvas extends Canvas {
   [x: string]: any
   constructor(opts: any) {
     super(opts)
   }
-  drageReDraw (newParam: any) {
-    const {nodes, layout, edges} = this
+  drageReDraw(newParam: any) {
+    const { nodes, layout, edges } = this
     const addResultNodes = nodes.map((item: any) => {
       return item.options
     })
     if (newParam) {
       layout.options = {
         ...layout.options,
-        ...newParam
+        ...newParam,
       }
     }
     Layout.dagreLayout({
@@ -24,14 +24,16 @@ class DagreCanvas extends Canvas {
       ranksepFunc: (newParam && newParam.ranksepFunc) || _.get(layout, 'options.ranksepFunc'),
       nodesep: (newParam && newParam.nodesep) || _.get(layout, 'options.nodesep') || 50,
       ranksep: (newParam && newParam.ranksep) || _.get(layout, 'options.ranksep') || 50,
-      controlPoints: (newParam && newParam.controlPoints) || _.get(layout, 'options.controlPoints') || false,
+      controlPoints:
+        (newParam && newParam.controlPoints) || _.get(layout, 'options.controlPoints') || false,
       data: {
         nodes: addResultNodes,
         edges: edges.map((item: any) => ({
           source: item.sourceNode.id,
-          target: item.targetNode.id
-        }))
-      }})
+          target: item.targetNode.id,
+        })),
+      },
+    })
     // 布局计算完位置后left和top赋值给node节点
     nodes.forEach((item: any, index: number) => {
       const currentNodeNewLeft = addResultNodes[index].left

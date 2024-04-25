@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { Edit } from '@element-plus/icons-vue'
 import { useSqlStore } from '@/store'
 import { useGoTo } from '@/layout/hooks'
@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const addEditorTabs = () => {
   sqlStore.addEditorTabs({
-    sql: props.sql
+    sql: props.sql,
   })
   const name = sqlStore.tabs[sqlStore.tabs.length - 1].name
   console.log(name, '11111111')
@@ -23,18 +23,12 @@ const addEditorTabs = () => {
 <template>
   <section class="list-item-container">
     <div class="sql-container">
-      <el-tooltip
-        :content="sql"
-        placement="bottom-start"
-      >
+      <el-tooltip :content="sql" placement="bottom-start">
         <span>{{ sql }}</span>
       </el-tooltip>
     </div>
-    
-    <div
-      class="btn-box"
-      @click="addEditorTabs"
-    >
+
+    <div class="btn-box" @click="addEditorTabs">
       <el-icon>
         <Edit />
       </el-icon>
@@ -42,7 +36,7 @@ const addEditorTabs = () => {
     </div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .list-item-container {
   display: flex;
   align-items: center;

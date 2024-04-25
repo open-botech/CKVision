@@ -35,10 +35,7 @@ export const getStartAndEndTime = (time: string | number) => {
   const isStr = isNumber(time)
   const current = dayjs().valueOf()
   if (isNum) {
-    return [
-      dayjs(current - (+time)).format(formatStr),
-      dayjs().format(formatStr)
-    ]
+    return [dayjs(current - +time).format(formatStr), dayjs().format(formatStr)]
   } else if (isStr) {
     const [start, end] = (time as string).split(',')
     let endTime = end
@@ -73,13 +70,13 @@ export const number2Other = (val: number, type?: string): number | string => {
       const minute = duration.minutes()
       const second = duration.seconds()
       return `
-        ${ minute ? minute + 'Minute' : '' }
-        ${ second ? second + 'Second' : '' }
+        ${minute ? minute + 'Minute' : ''}
+        ${second ? second + 'Second' : ''}
       `
     }
     return `
-      ${ days ? days + ' day' : '' }
-      ${ hours ? hours + ' hour' : '' }
+      ${days ? days + ' day' : ''}
+      ${hours ? hours + ' hour' : ''}
     `
   }
   if (type === 'MB') {

@@ -8,23 +8,22 @@ import NodeRender from './Node.vue'
 class BaseNode extends Node {
   [x: string]: any
   options: null
-  constructor (opts: any) {
+  constructor(opts: any) {
     super(opts)
     this.options = opts
   }
 
-  draw (opts: any) {
+  draw(opts: any) {
     // let that = this
     const css = {
       position: 'absolute',
       top: opts.top,
-      left: opts.left
-
+      left: opts.left,
     }
     const content = createApp(NodeRender, {
       opts,
       css,
-      node: this
+      node: this,
     })
 
     const divEle = document.createElement('div')
@@ -34,7 +33,6 @@ class BaseNode extends Node {
     const container = $(component.$el).css('top', opts.top).css('left', opts.left)
     // return component
     return container[0]
-
   }
 }
 

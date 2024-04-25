@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { computed, onBeforeMount, ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
@@ -33,16 +33,12 @@ const toResult = (item: any) => {
 }
 
 const deleteOne = async (item: any) => {
-  await ElMessageBox.confirm(
-    t('Are you sure you want to delete it?'),
-    t('Delete'),
-    {
-      confirmButtonText: t('Sure'),
-      cancelButtonText: t('Cancel'),
-      type: 'warning',
-      customClass: 'show-custom-primary-color',
-    }
-  )
+  await ElMessageBox.confirm(t('Are you sure you want to delete it?'), t('Delete'), {
+    confirmButtonText: t('Sure'),
+    cancelButtonText: t('Cancel'),
+    type: 'warning',
+    customClass: 'show-custom-primary-color',
+  })
   loading.value = true
   await deleteOneOrigin(item.id)
   const res = await queryList()
@@ -54,12 +50,9 @@ const deleteOne = async (item: any) => {
   <section
     v-loading="loading"
     class="ml-list-container"
-    :style="listLengthLess ? {gridTemplateColumns: 'repeat(auto-fit, 300px)'} : {}"
+    :style="listLengthLess ? { gridTemplateColumns: 'repeat(auto-fit, 300px)' } : {}"
   >
-    <section
-      class="list-box add-btn"
-      @click="add"
-    >
+    <section class="list-box add-btn" @click="add">
       <el-icon :size="18">
         <Plus />
       </el-icon>
@@ -74,7 +67,7 @@ const deleteOne = async (item: any) => {
     ></ListItemVue>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .ml-list-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -101,7 +94,7 @@ const deleteOne = async (item: any) => {
   display: flex;
   justify-content: center;
   padding-top: 16px;
-  border-top: 1px solid #F0F0F0;
+  border-top: 1px solid #f0f0f0;
 }
 .list-btn {
   width: 276px;
@@ -118,7 +111,7 @@ const deleteOne = async (item: any) => {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1.6px dashed #ABABAB;
+  border: 1.6px dashed #ababab;
   cursor: pointer;
 }
 

@@ -5,27 +5,26 @@ import Card from './Card.vue'
 import { CommonObj, DataQueryFunc } from './types'
 
 const props = defineProps<{
-  title: string,
-  height?: number,
-  queryFunc: DataQueryFunc,
-  sqlFuncName: string,
-  database?: string,
-  table?: string,
-  timeRange?: string[],
-  type?: string,
-  user?: string,
-  queryKind?: string,
-  timeDuration?: string,
+  title: string
+  height?: number
+  queryFunc: DataQueryFunc
+  sqlFuncName: string
+  database?: string
+  table?: string
+  timeRange?: string[]
+  type?: string
+  user?: string
+  queryKind?: string
+  timeDuration?: string
 }>()
 
-const columns = ref<{name: string}[]>([])
+const columns = ref<{ name: string }[]>([])
 const tableData = ref<CommonObj[]>()
 
 const getData = () => {
   const { database, table, type, user, queryKind, timeDuration, timeRange = [] } = props
-  props.queryFunc(
-    props.sqlFuncName,
-    {
+  props
+    .queryFunc(props.sqlFuncName, {
       database,
       table,
       type,
@@ -33,13 +32,12 @@ const getData = () => {
       query_kind: queryKind,
       startTime: timeRange[0],
       endTime: timeRange[1],
-      timeDuration
-    }
-  )
+      timeDuration,
+    })
     .then((res) => {
-      columns.value = res.meta.map(item => {
+      columns.value = res.meta.map((item) => {
         return {
-          name: item.name
+          name: item.name,
         }
       })
       const columnsType = res.meta.reduce((result: any, item: any) => {
@@ -60,28 +58,27 @@ const getData = () => {
     })
 }
 
-watch([
-  () => props.database,
-  () => props.table,
-  () => props.timeRange,
-  () => props.type,
-  () => props.user,
-  () => props.queryKind,
-  () => props.timeDuration,
-], () => {
-  getData()
-})
+watch(
+  [
+    () => props.database,
+    () => props.table,
+    () => props.timeRange,
+    () => props.type,
+    () => props.user,
+    () => props.queryKind,
+    () => props.timeDuration,
+  ],
+  () => {
+    getData()
+  },
+)
 
 onBeforeMount(() => {
   getData()
 })
-
 </script>
 <template>
-  <Card
-    :title="title"
-    :height="height || 310"
-  >
+  <Card :title="title" :height="height || 310">
     <section class="table-content">
       <el-table
         :data="tableData"
@@ -90,10 +87,7 @@ onBeforeMount(() => {
         tooltip-effect="dark"
         :border="true"
       >
-        <template
-          v-for="col in columns"
-          :key="col.name"
-        >
+        <template v-for="col in columns" :key="col.name">
           <el-table-column
             v-if="col.name !== 'Used'"
             :show-overflow-tooltip="true"
@@ -104,10 +98,7 @@ onBeforeMount(() => {
             min-width="150"
           >
             <template #header>
-              <el-tooltip
-                placement="top"
-                :content="col.name"
-              >
+              <el-tooltip placement="top" :content="col.name">
                 <div class="table-header ellipsis">
                   {{ col.name }}
                 </div>
@@ -128,7 +119,7 @@ onBeforeMount(() => {
             </template>
           </el-table-column>
         </template>
-        
+
         <!-- <template #default="scope">
             <div class="ellipsis">
               {{ scope.row[col.name] }}
@@ -139,7 +130,7 @@ onBeforeMount(() => {
     </section>
   </Card>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .card-container {
   width: 100%;
   height: 100%;
@@ -157,7 +148,7 @@ onBeforeMount(() => {
   text-overflow: ellipsis;
 }
 
-:deep(.el-table th.el-table__cell>.cell) {
+:deep(.el-table th.el-table__cell > .cell) {
   display: flex;
   align-items: center;
   justify-content: space-between;

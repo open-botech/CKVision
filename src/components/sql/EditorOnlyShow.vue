@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import * as monaco from 'monaco-editor'
 
@@ -17,20 +17,20 @@ const getHints = (model: any) => {
   return (global[id] && global[id].hints) || []
 }
 
-monaco.languages.registerCompletionItemProvider(
-  'sql',
-  createSqlCompleter(getHints, [], []) as any
-)
+monaco.languages.registerCompletionItemProvider('sql', createSqlCompleter(getHints, [], []) as any)
 
 const props = defineProps<{
-  value: string,
+  value: string
 }>()
 
 const editorRenderer = ref<HTMLElement>()
 
-watch(() => props.value, () => {
-  editorInstance.setValue(props.value)
-})
+watch(
+  () => props.value,
+  () => {
+    editorInstance.setValue(props.value)
+  },
+)
 
 onMounted(() => {
   initEditor()
@@ -40,20 +40,17 @@ const initEditor = () => {
   editorInstance = monaco.editor.create(editorRenderer.value as HTMLElement, {
     ...defaultOptions,
     language: 'sql',
-    theme: 'vs'
+    theme: 'vs',
   })
   editorInstance.setValue(props.value)
 }
 </script>
 <template>
   <section class="simple-editor-container">
-    <div
-      ref="editorRenderer"
-      :class="`editor-container`"
-    ></div>
+    <div ref="editorRenderer" :class="`editor-container`"></div>
   </section>
 </template>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .simple-editor-container {
   position: relative;
   width: 100%;

@@ -1,11 +1,6 @@
 <template>
   <div class="nodeBox">
-    <el-tooltip
-      class="box-item"
-      effect="dark"
-      :content="opts.name"
-      placement="top"
-    >
+    <el-tooltip class="box-item" effect="dark" :content="opts.name" placement="top">
       <div>
         {{ opts.name }}
       </div>
@@ -13,16 +8,19 @@
   </div>
 </template>
 
-<script lang='ts' setup>
+<script lang="ts" setup>
 // import $ from 'jquery'
-// const props = 
+// const props =
 import { ElTooltip } from 'element-plus'
 
-withDefaults(defineProps<{
-  opts: any
-}>(), {
-  opts: () => ({})
-})
+withDefaults(
+  defineProps<{
+    opts: any
+  }>(),
+  {
+    opts: () => ({}),
+  },
+)
 
 // const emit = defineEmits(['viewMonitor', 'viewStreamTask'])
 
@@ -63,9 +61,9 @@ withDefaults(defineProps<{
 </script>
 
 <style lang="scss" scoped>
-.nodeBox{
-  position:relative;
-  font-size:14px;
+.nodeBox {
+  position: relative;
+  font-size: 14px;
   display: block;
   width: 260px;
   height: 76px;
@@ -79,78 +77,78 @@ withDefaults(defineProps<{
   border-radius: 4px;
   box-sizing: border-box;
   div {
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .rate{
-    color:#474AE1;
-    margin-top:10px;
+  .rate {
+    color: #474ae1;
+    margin-top: 10px;
   }
-  img{
+  img {
     cursor: pointer;
     width: 90px;
     height: 90px;
   }
-  .action{
+  .action {
     z-index: 1000;
     display: none;
     position: absolute;
     width: 80px;
     height: 80px;
-    background:url('../../../assets/images/dass/ope-bg.png') no-repeat;
+    background: url('../../../assets/images/dass/ope-bg.png') no-repeat;
     background-size: 100% 100%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    span{
+    span {
       cursor: pointer;
     }
-    .detail{
+    .detail {
       width: 50px;
       height: 50px;
       position: absolute;
-      background:url('../../../assets/images/topo/detail.png') no-repeat;
+      background: url('../../../assets/images/topo/detail.png') no-repeat;
       background-size: 100% 100%;
-      top:34px;
+      top: 34px;
       left: -18px;
       z-index: 10000;
-      &._disabled{
-        background:url('../../../assets/images/topo/detail-disabled.png') no-repeat;
+      &._disabled {
+        background: url('../../../assets/images/topo/detail-disabled.png') no-repeat;
       }
     }
-    .monitor{
+    .monitor {
       width: 50px;
       height: 50px;
       z-index: 10000;
       position: absolute;
-      background:url('../../../assets/images/topo/monitor.png') no-repeat;
+      background: url('../../../assets/images/topo/monitor.png') no-repeat;
       background-size: 100% 100%;
-      top:34px;
+      top: 34px;
       right: -18px;
-      &._disabled{
-        background:url('../../../assets/images/topo/monitor-disabled.png') no-repeat;
+      &._disabled {
+        background: url('../../../assets/images/topo/monitor-disabled.png') no-repeat;
       }
     }
-    .ope1_disabled{
+    .ope1_disabled {
       width: 50px;
       height: 50px;
       z-index: 10000;
       position: absolute;
-      background:url('../../../assets/images/topo/ope1-disabled.png') no-repeat;
+      background: url('../../../assets/images/topo/ope1-disabled.png') no-repeat;
       background-size: 100% 100%;
-      top:-21px;
+      top: -21px;
       right: 13px;
     }
   }
-  .name{
-    margin-top:-7px;
-    color:#FFFFFFD2;
+  .name {
+    margin-top: -7px;
+    color: #ffffffd2;
     width: 250px;
   }
-  .description{
-    margin-top:5px;
-    color:#FFFFFFD2;
+  .description {
+    margin-top: 5px;
+    color: #ffffffd2;
     width: 250px;
   }
 }
