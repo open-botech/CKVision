@@ -47,7 +47,7 @@ export const getStartAndEndTime = (time: string | number) => {
   return []
 }
 
-// 保留两位小数
+// Keep two decimal places
 export const round2 = (val: any) => {
   if (!isNumber(val)) {
     return val
@@ -56,11 +56,11 @@ export const round2 = (val: any) => {
 }
 
 export const number2Other = (val: number, type?: string): number | string => {
-  // 利用 toLocaleString 的特性将数字转成带 , 的字符串
+  // Use the feature of toLocaleString to convert numbers into strings with commas
   if (type === 'toLocaleString') {
     return val.toLocaleString()
   }
-  // 将时间转换为天数
+  // Convert time to day(s)
   if (type === 'duration') {
     // return moment.utc().startOf('year').add({ seconds: val }).format('D[Day]HH[Hour]');
     const duration = dayjs.duration(val, 'seconds')
@@ -70,18 +70,18 @@ export const number2Other = (val: number, type?: string): number | string => {
       const minute = duration.minutes()
       const second = duration.seconds()
       return `
-        ${minute ? minute + 'Minute' : ''}
-        ${second ? second + 'Second' : ''}
+        ${minute ? minute + 'Minute' : ''}${minute !== 1 ? 's' : ''}
+        ${second ? second + 'Second' : ''}${second !== 1 ? 's' : ''}
       `
     }
     return `
-      ${days ? days + ' day' : ''}
-      ${hours ? hours + ' hour' : ''}
+      ${days ? days + ' day' : ''}${days !== 1 ? 's' : ''}
+      ${hours ? hours + ' hour' : ''}${hours !== 1 ? 's' : ''}
     `
   }
   if (type === 'MB') {
     return (val / 1024 / 1024).toFixed(2)
   }
-  // 不传 type ，直接返回
+  // If no 'type' is passed, return directly
   return val
 }
