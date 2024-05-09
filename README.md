@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/22762150/172976873-90907210-9450-4699-adcf-d23daa5ea866.png)
 
-ClickCat is a firendly user interface that lets you search,explore and visualize your ClickHouse Data.
+WhaleHouse is a firendly user interface that lets you search,explore and visualize your ClickHouse Data.
 
 We provides the following features,you can access http://8.135.49.240:8080 to try directly without any installing.
 
@@ -31,11 +31,11 @@ pnpm dev
 
 # Support
 
-You are free to open an [issue](https://github.com/clickcat-project/ClickCat/issues) if you have any question or idea.
+You are free to open an [issue](https://github.com/clickcat-project/WhaleHouse/issues) if you have any question or idea.
 
 # Contribute
 
-At present, the ClickCat project is mainly composed of a front-end project(Vue3 + TypeScript) + a Python project (time series prediction model).
+At present, the WhaleHouse project is mainly composed of a front-end project(Vue3 + TypeScript) + a Python project (time series prediction model).
 We are always open to people who want to use the system or contribute to it. Contact us if you are looking for implementation tasks that fit your skills.
 
 # Deploy

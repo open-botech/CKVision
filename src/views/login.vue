@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <div class="login-title">
-      <img :src="logo" alt="ClickCat" class="logo" />
-      <text class="title"> ClickCat </text>
+      <img :src="logo" alt="WhaleHouse" class="logo" />
+      <text class="title"> WhaleHouse </text>
     </div>
 
     <el-tabs v-model="activeName" class="login-type">

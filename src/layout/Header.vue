@@ -40,8 +40,8 @@ const handleChangeLocale = (locale: 'zh' | 'en') => {
 <template>
   <div class="header">
     <div class="logo-container" @click="goMetrics">
-      <img :src="logo" alt="ClickCat" title="ClickCat" />
-      <span>ClickCat</span>
+      <img :src="logo" alt="WhaleHouse" title="WhaleHouse" />
+      <span>WhaleHouse</span>
     </div>
     <div class="nav-container">
       <nav class="nav">
