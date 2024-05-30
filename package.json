@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build:test": "vue-tsc --noEmit && vite build --mode staging",
     "build:updateVersion": "sh update.sh",
-    "build": "vite build --sourcemap=inline",
+    "build": "export NODE_OPTIONS=--max-old-space-size=4096 && vite build --sourcemap=inline",
     "build-server": "tsc -p tsconfig-server.json",
     "preview": "vite preview",
     "serve": "node dist/server.js",
