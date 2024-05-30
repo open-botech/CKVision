@@ -4,7 +4,7 @@ import { Plus } from '@element-plus/icons-vue'
 import * as echarts from 'echarts/core'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
 import { ArrowLeft } from '@element-plus/icons-vue'
-import UUID from 'uuidjs'
+import { UUID } from 'uuidjs'
 
 import sqls from '@/components/metrics/dataAnalysis/sqls'
 import { query } from '@/utils/http'
@@ -95,6 +95,7 @@ onMounted(() => {
 })
 
 const nextStep = async () => {
+  // @ts-ignore
   await ruleFormRef.value?.validate(async (valid, fields) => {
     if (!valid) {
       console.log('error submit!', fields)

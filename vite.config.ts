@@ -47,16 +47,5 @@ export default defineConfig({
   ],
   build: {
     outDir: APP_TITLE,
-    rollupOptions: {
-      output: {
-        manualChunks(id, other) {
-          if (!id.includes('node_modules')) {
-            if (id.includes('components/sql')) {
-              return id.split('components/sql')[1].split('/')[1].replace('.vue', '')
-            }
-          }
-        },
-      },
-    },
   },
 })
