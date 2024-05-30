@@ -9,6 +9,7 @@ import createSqlCompleter from './utils/sql-completion'
 import { TabItem } from '@/store/modules/sql/types'
 import { useSqlStore } from '@/store'
 import { queryAllColumns, queryAllTables } from './query'
+import { formatSqlSafely } from './utils/formatter'
 
 let editorInstance: monaco.editor.IStandaloneCodeEditor
 
@@ -62,6 +63,19 @@ const initEditor = () => {
     emit('change', editorInstance.getValue())
   })
 }
+
+monaco.languages.registerDocumentFormattingEditProvider('sql', {
+  provideDocumentFormattingEdits(model, options) {
+    const formatted = formatSqlSafely(model.getValue())
+    const range = model.getFullModelRange()
+    return [
+      {
+        range: model.getFullModelRange(),
+        text: formatted,
+      },
+    ]
+  },
+})
 
 const emitQueryAction = () => {
   emit('queryAction')

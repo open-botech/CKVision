@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",
+    "@tw/willy-clickhouse-formatter": "^0.0.4",
     "axios": "^1.6.8",
     "butterfly-dag": "4.3.6",
     "dayjs": "1.11.3",
@@ -36,6 +37,7 @@
     "pinia-plugin-persist": "1.0.0",
     "randomcolor": "0.6.2",
     "serve-static": "^1.15.0",
+    "sql-formatter": "^15.3.1",
     "three": "0.143.0",
     "three-css2drender": "1.0.0",
     "three-spritetext": "1.6.5",
