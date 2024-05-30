@@ -11,8 +11,8 @@ const route = useRoute()
 const goTo = useGoTo()
 
 const nvaList = [
-  RouteName.Metrics,
   RouteName.SQL,
+  RouteName.Metrics,
   RouteName.Processes,
   RouteName.Graph,
   RouteName.HistorySQL,
@@ -27,19 +27,11 @@ const logoutFunc = () => {
     path: '/login',
   })
 }
-const goMetrics = () => {
-  goTo(RouteName.Metrics)
-}
-
-const handleChangeLocale = (locale: 'zh' | 'en') => {
-  localStorage.setItem('locale', locale)
-  i18n.global.locale = locale
-}
 </script>
 
 <template>
   <div class="header">
-    <div class="logo-container" @click="goMetrics">
+    <div class="logo-container" @click="() => goTo(RouteName.SQL)">
       <img :src="logo" alt="WhaleHouse" title="WhaleHouse" />
       <span>WhaleHouse</span>
     </div>

@@ -169,7 +169,7 @@ const login = () => {
       ElNotification.closeAll()
       loginStore.setConnection(connection)
       localStorage.setItem('connection', JSON.stringify({ connection }))
-      goTo('Metrics')
+      goTo('SQL')
     })
     .catch((err) => {
       console.error(err)

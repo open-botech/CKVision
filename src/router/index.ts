@@ -42,7 +42,7 @@ export const menuRoutesList = [
     path: '/metrics',
     props: true,
     meta: {
-      title: '工作台',
+      title: 'Metrics',
     },
     component: () => import('@/views/metrics/index.vue'),
   },
@@ -71,7 +71,7 @@ const routes: RouteItem[] = [
     path: '',
     component: () => import('@/layout/index.vue'),
     meta: {},
-    redirect: '/metrics',
+    redirect: '/sql',
     children: menuRoutesList,
   },
   {
