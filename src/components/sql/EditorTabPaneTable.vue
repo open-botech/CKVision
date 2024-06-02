@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, toRaw, toRefs, nextTick } from 'vue'
-import { ArrowDown, Download, FullScreen } from '@element-plus/icons-vue'
+import { ArrowDown, Download, FullScreen, Refresh } from '@element-plus/icons-vue'
 import { Statistics } from './types'
 import Empty from '../metrics/Empty.vue'
 
@@ -22,6 +22,9 @@ const rows = ref<string>('100')
 const containerRef = ref<HTMLElement>()
 const dragEle = ref<HTMLElement>()
 
+const handleRefresh = () => {
+  emit('changeRows', rows.value)
+}
 const handleChangeRows = (command: string) => {
   rows.value = command
   emit('changeRows', command)
@@ -111,6 +114,10 @@ defineExpose({
       </div>
     </div>
     <div class="action-box">
+      <el-icon class="el-icon--right" @click="handleRefresh">
+        <Refresh />
+      </el-icon>
+      <el-divider direction="vertical" />
       <template v-if="!!statistics">
         <span>{{ statistics?.elapsed }} sec</span>
         <el-divider direction="vertical" />
@@ -128,6 +135,7 @@ defineExpose({
             <el-dropdown-item command="100"> 100 rows </el-dropdown-item>
             <el-dropdown-item command="300"> 300 rows </el-dropdown-item>
             <el-dropdown-item command="500"> 500 rows </el-dropdown-item>
+            <el-dropdown-item command="All"> All </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

@@ -61,16 +61,15 @@ const changeValue = (val: string) => {
   })
 }
 
-const queryTableData = (rows = 100) => {
+const queryTableData = (rows = '100') => {
   const selectionValue = simpleEditorInstance.value.getSelectionValue()
 
   loadingForTableData.value = true
   const selectedSql = selectionValue ? selectionValue : props.tab.sql
-
   selectedSql && sqlStore.addHistorySql(selectedSql)
-
-  //  '&max_result_rows=' + rows
-  query(selectedSql)
+  debugger
+  const querySettings = rows === 'All' ? '' : `&max_result_rows=${rows}`
+  query(selectedSql, querySettings)
     .then((res) => {
       queryTableDataErrorMsg.value = undefined
       columns.value = []

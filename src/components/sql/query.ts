@@ -101,8 +101,10 @@ export const queryAllColumns = () => {
   })
 }
 
-export const queryTableDataPaneData = (table: any, rows = 100) => {
-  const sql = `select * from ${table.database}.${table.name} limit ${rows}`
+export const queryTableDataPaneData = (table: any, rows = '100') => {
+  const sql = `select * from ${table.database}.${table.name} ${
+    rows !== 'All' ? `limit ${rows}` : ''
+  }`
   return query(sql).then((res) => {
     console.log(res, 'res')
 

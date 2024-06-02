@@ -18,6 +18,7 @@ const statistics = ref<Statistics>()
 const reloadSomeElement = ref<boolean>(true)
 const loading = ref<boolean>(false)
 const editorContainerRef = ref<HTMLElement>()
+const queryTableDataErrorMsg = ref<string>()
 
 onBeforeMount(() => {
   queryData()
@@ -35,11 +36,12 @@ function exitFullScreenFunc(e: any) {
   }
 }
 
-const queryData = (rows = 100) => {
+const queryData = (rows = '100') => {
   loading.value = true
   queryTableDataPaneData(props.tab.node, rows)
     .then((res) => {
       console.log('res', res)
+      queryTableDataErrorMsg.value = undefined
 
       const { bytes_read, elapsed, rows_read } = res.statistics
       columns.value = res.meta
@@ -49,6 +51,10 @@ const queryData = (rows = 100) => {
         elapsed: elapsed.toFixed(2),
         rows_read,
       }
+    })
+    .catch((e) => {
+      queryTableDataErrorMsg.value = e.message
+      tableData.value = []
     })
     .finally(() => {
       loading.value = false
@@ -78,6 +84,7 @@ const fullScreen = async () => {
       :table-data="tableData"
       :statistics="statistics"
       :not-title="true"
+      :error-msg="queryTableDataErrorMsg"
       @change-rows="queryData"
       @export="exportDataFunc"
       @full-screen="fullScreen"
