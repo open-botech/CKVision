@@ -67,7 +67,6 @@ const queryTableData = (rows = '100') => {
   loadingForTableData.value = true
   const selectedSql = selectionValue ? selectionValue : props.tab.sql
   selectedSql && sqlStore.addHistorySql(selectedSql)
-  debugger
   const querySettings = rows === 'All' ? '' : `&max_result_rows=${rows}`
   query(selectedSql, querySettings)
     .then((res) => {

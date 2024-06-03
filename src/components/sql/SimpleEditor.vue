@@ -57,7 +57,12 @@ const initEditor = () => {
     theme: 'vs',
   })
   editorInstance.setValue(props.tab.sql as string)
-  editorInstance.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, emitQueryAction)
+  editorInstance.addAction({
+    id: `${props.tab.name}-run`,
+    label: 'Run',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+    run: emitQueryAction,
+  })
   editorInstance.focus()
   editorInstance.onDidChangeModelContent(() => {
     emit('change', editorInstance.getValue())
